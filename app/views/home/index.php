@@ -1,0 +1,1 @@
+<h2>Hello <?= $data['username'] ?> this is a homepage</h2>
