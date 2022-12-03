@@ -1,6 +1,6 @@
 <?php
 
-const BASEURL = "http://localhost/[your-folder-project-in-htdocs]/public";
+const BASEURL = "http://localhost/FILE_PROJECT/project-elearning/public";
 
 const HOST = 'localhost';
 const USER = 'root';

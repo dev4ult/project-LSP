@@ -1,1 +1,1 @@
-<h2>Hello <?= $data['username'] ?> this is a homepage</h2>
+<h2 class="btn btn-sm">Hello <?= $data['username'] ?> this is a homepage</h2>
