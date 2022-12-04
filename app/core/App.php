@@ -23,13 +23,11 @@ class App {
         $this->controller = new $this->controller;
 
         // change default method (index) if the method exist in the controllers class
-        if (isset($url[1])) {
-            if (method_exists($this->controller, $url[1])) {
-                $this->method = $url[1];
+        if (isset($url[1]) && method_exists($this->controller, $url[1])) {
+            $this->method = $url[1];
 
-                // clearing array to see params only
-                unset($url[1]);
-            }
+            // clearing array to see params only
+            unset($url[1]);
         }
 
         // to check if url has params
