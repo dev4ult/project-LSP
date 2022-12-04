@@ -9,4 +9,4 @@
     <link rel="stylesheet" href="<?= BASEURL ?>/css/styles.css">
 </head>
 
-<body>
+<body class="max-w-6xl p-3 mx-auto">
