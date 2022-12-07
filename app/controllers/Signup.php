@@ -9,4 +9,11 @@ class Registration extends Controller {
         $this->view('registration/index');
         $this->view('templates/footer');
     }
+
+    public function add() {
+        if ($this->model('User_model')->addNewUser($_POST) > 0) {
+        }
+        header('Location: signup.php');
+        exit;
+    }
 }
