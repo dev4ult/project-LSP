@@ -23,7 +23,7 @@
                     </label>
                 </div>
                 <div class="form-control mt-6">
-                    <button class="btn btn-primary">Login ayam gaming</button>
+                    <button class="btn btn-primary">Login</button>
                 </div>
             </div>
         </div>
