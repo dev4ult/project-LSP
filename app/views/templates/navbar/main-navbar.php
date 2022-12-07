@@ -25,7 +25,7 @@
                 <li><a>Item 3</a></li>
             </ul>
         </div>
-        <a href="<?= BASEURL ?>" class="btn btn-sm btn-ghost normal-case text-xl">daisyUI</a>
+        <a href="<?= BASEURL ?>" class="btn btn-sm btn-ghost normal-case text-xl">Home</a>
     </div>
     <div class="navbar-center hidden lg:flex">
         <ul class="menu menu-horizontal p-0">
@@ -47,6 +47,6 @@
         </ul>
     </div>
     <div class="navbar-end">
-        <a href="<?= BASEURL ?>/registration" class="btn btn-sm">Get started</a>
+        <a href="<?= BASEURL ?>/signup" class="btn btn-sm">Get started</a>
     </div>
 </div>
