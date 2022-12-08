@@ -11,14 +11,14 @@ class Signup extends Controller {
     }
 
     public function add() {
-        if ($this->model('User_model')->checkExistEmail($_POST['email']) == false) {
+        if (!$this->model('User_model')->checkExistEmail($_POST['email'])) {
+            header('Location: ' . BASEURL . '/signup');
             if ($this->model('User_model')->addNewUser($_POST) > 0) {
-                echo "<script>alert('Your request has been sent')</script>";
+                Flasher::setFlash('Succesfully requested for a new account', 'success');
+            } else {
+                Flasher::setFlash('That email already sent a request for making a new account', 'error');
             }
-        } else {
-            echo "<script>alert('That email has been sending a new user request')</script>";
         }
-        header('Location: ' . BASEURL . '/signup');
         exit;
     }
 }
