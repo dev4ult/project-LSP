@@ -6,6 +6,7 @@
                 exercitationem
                 quasi. In deleniti eaque aut repudiandae et a id nisi.</p>
         </div>
+        <?= Flasher::flash() ?>
         <div class="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
             <form action="<?= BASEURL ?>/signup/add" method="post" class="card-body">
                 <div class="form-control">
