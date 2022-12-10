@@ -1,1 +1,1 @@
-<h1>hello world</h1>
+<h1>Hello <?= $data['username'] ?>, This is a dashboard page</h1>
