@@ -1,4 +1,4 @@
-<div class="alert <?= $data['type'] ?> shadow-lg">
+<div class="alert alert-success">
     <div>
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
             class="stroke-info flex-shrink-0 w-6 h-6">
@@ -8,7 +8,5 @@
         <span><?= $data['msg'] ?></span>
     </div>
     <div class="flex-none">
-        <button class="btn btn-sm btn-ghost">Deny</button>
-        <button class="btn btn-sm btn-primary">Accept</button>
     </div>
 </div>
