@@ -64,6 +64,7 @@ class User_model {
     public function setLoginSession($umail) {
         $this->db->query('SELECT username FROM users WHERE username=:umail OR email=:umail');
         $this->db->bind('umail', $umail);
+
         $_SESSION['login'] = true;
         $_SESSION['username'] = $umail;
     }

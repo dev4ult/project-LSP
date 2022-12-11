@@ -2455,13 +2455,6 @@ html {
   color: hsl(var(--bc) / var(--tw-text-opacity));
 }
 
-.label-text-alt {
-  font-size: 0.75rem;
-  line-height: 1rem;
-  --tw-text-opacity: 1;
-  color: hsl(var(--bc) / var(--tw-text-opacity));
-}
-
 .label a:hover {
   --tw-text-opacity: 1;
   color: hsl(var(--bc) / var(--tw-text-opacity));
@@ -2887,10 +2880,6 @@ html {
   margin-top: 0.75rem;
 }
 
-.flex {
-  display: flex;
-}
-
 .hidden {
   display: none;
 }
@@ -2911,6 +2900,11 @@ html {
   width: 100%;
 }
 
+.w-fit {
+  width: -moz-fit-content;
+  width: fit-content;
+}
+
 .w-6 {
   width: 1.5rem;
 }
@@ -2921,11 +2915,6 @@ html {
 
 .w-52 {
   width: 13rem;
-}
-
-.w-fit {
-  width: -moz-fit-content;
-  width: fit-content;
 }
 
 .max-w-md {
