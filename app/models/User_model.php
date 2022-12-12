@@ -1,20 +1,23 @@
 <?php
 
+// sent to user email for verifying the new user
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-//Load Composer's autoloader
+// email validator to validate email
+use Egulias\EmailValidator\EmailValidator;
+use Egulias\EmailValidator\Validation\RFCValidation;
+
+// Load Composer's autoloader
 require '../vendor/autoload.php';
 
 class User_model {
     private $username;
     private $db;
-    private $table;
 
     public function __construct() {
         $this->username = 'Guest1001';
         $this->db = new Database();
-        $this->table = "users";
     }
 
     public function getUsername() {
@@ -22,34 +25,41 @@ class User_model {
     }
 
     public function isEmailExist($email) {
-        $this->db->query("SELECT * FROM {$this->table} WHERE email=:email");
+        $this->db->query("SELECT * FROM users WHERE email=:email");
         $this->db->bind('email', $email);
         return $this->db->single();
     }
 
-    public function sendEmailForVerify($email, $name) {
-        $mail = new PHPMailer(true);
+    public function sendEmailForVerify($email, $name, $otp_code) {
+        try {
 
-        $mail->isSMTP();
+            $mail = new PHPMailer(true);
 
-        $mail->Host = 'smtp.gmail.com';
-        $mail->SMTPAuth = true;
-        $mail->Username = 'proctelearn@gmail.com';
-        $mail->Password = 'cdzwbdwbewzgdsvw';
+            $mail->isSMTP();
 
-        $mail->SMTPSecure = "ssl";
-        $mail->Port = 465;
+            $mail->Host = '-';
+            $mail->SMTPAuth = true;
+            $mail->Username = '-';
+            $mail->Password = '-';
 
-        $mail->setFrom('proctelearn@gmail.com');
+            $mail->SMTPSecure = "ssl";
+            $mail->Port = '-';
 
-        //Recipients
-        $mail->addAddress($email, $name);
+            $mail->setFrom('proctelearn@gmail.com');
 
-        $mail->isHTML(true);
-        $mail->Subject = 'Here is the subject';
-        $mail->Body = 'This is the HTML message body <b>in bold!</b>';
+            //Recipients
+            $mail->addAddress($email, $name);
 
-        $mail->send();
+            $mail->isHTML(true);
+            $mail->Subject = 'Verify your Account';
+            $html_draft = "<h3>Verify Your Email | ProcteLearn</h3>
+                        <p>OTP CODE : $otp_code</p>";
+            $mail->Body = $html_draft;
+
+            $mail->send();
+        } catch (Exception $e) {
+            Flasher::setFlash("Message could not be sent. Error : {$mail->ErrorInfo}");
+        }
     }
 
     public function addNewUser($data) {
@@ -57,6 +67,7 @@ class User_model {
         $email = htmlspecialchars($data['email']);
         $password = htmlspecialchars($data['password']);
         $passConf = htmlspecialchars($data['password-confirmation']);
+        $otp_code = $data['otp-code'];
 
         // check if email is already been used
         if ($this->isEmailExist($email)) {
@@ -70,18 +81,17 @@ class User_model {
             return -1;
         }
 
-        $this->db->query("INSERT INTO {$this->table}(username, email, password) VALUES (:username, :email, :password)");
+        $this->db->query("INSERT INTO unreg_users(username, email, password, otp_code) VALUES (:username, :email, :password, :otp_code)");
 
         // binding value
         $this->db->bind('username', $username);
         $this->db->bind('email', $email);
         $this->db->bind('password', hash('sha256', $password));
+        $this->db->bind('otp_code', $otp_code);
 
         $this->db->execute();
         return $this->db->rowChangeCheck();
     }
-
-
 
     public function accountCheck($umail, $password) {
         $this->db->query("SELECT password FROM users WHERE username=:umail OR email=:umail AND password=:password");
