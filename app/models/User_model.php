@@ -31,7 +31,7 @@ class User_model {
         return $this->db->single();
     }
 
-    public function sendEmailForVerify($email, $name, $otp_code) {
+    public function sendEmailForVerify($email, $otp_code) {
         try {
             $mail = new PHPMailer(true);
 
@@ -48,11 +48,11 @@ class User_model {
             $mail->setFrom(EMAIL, EMAIL_FROM);
 
             //Recipients
-            $mail->addAddress($email, $name);
+            $mail->addAddress($email);
 
             $mail->isHTML(true);
             $mail->Subject = 'Your account need to be verified first';
-            $mail->Body = "<h2>OTP Code</h2><h3 style='padding: 1.25rem; font-size: 2rem; color: white; background-color: black; width: fit-content;'>$otp_code</h3>";
+            $mail->Body = "<h3 style='padding: 1.25rem; font-size: 2rem; color: white; background-color: black; width: fit-content;'>$otp_code</h3>";
             $mail->AltBody = "OTP Code : $otp_code";
 
             $mail->send();
@@ -61,11 +61,33 @@ class User_model {
         }
     }
 
+    public function isAlreadySendRequest($email) {
+        $this->db->query("SELECT * FROM unreg_users WHERE email=:email");
+        $this->db->bind('email', $email);
+        return $this->db->single();
+    }
+
     public function delRowInPeriod($email) {
-        $this->db->query("CREATE EVENT delete_row 
-                        ON SCHEDULE AT CURRENT_TIMESTAMP + INTERVAL 20 Second
+        $this->db->query("SELECT id FROM unreg_users WHERE email=:email");
+        $this->db->bind('email', $email);
+        $id = $this->db->single()['id'];
+
+        $this->db->query("CREATE EVENT delete_row_:id 
+                        ON SCHEDULE AT CURRENT_TIMESTAMP + INTERVAL 2 Minute
                         DO DELETE FROM unreg_users WHERE email=:email");
         $this->db->bind('email', $email);
+        $this->db->bind('id', $id);
+        $this->db->execute();
+    }
+
+    public function insertNewUnregUser($username, $email, $password, $otp_code) {
+        $this->db->query("INSERT INTO unreg_users(username, email, password, otp_code) VALUES (:username, :email, :password, :otp_code)");
+
+        // binding value
+        $this->db->bind('username', $username);
+        $this->db->bind('email', $email);
+        $this->db->bind('password', hash('sha256', $password));
+        $this->db->bind('otp_code', $otp_code);
         $this->db->execute();
     }
 
@@ -94,14 +116,12 @@ class User_model {
             return -1;
         }
 
-        $this->db->query("INSERT INTO unreg_users(username, email, password, otp_code) VALUES (:username, :email, :password, :otp_code)");
+        if ($this->isAlreadySendRequest($email)) {
+            Flasher::setFlash('This email has already requested for creating a new account, Please wait for 2 minutes after this account request for a new account', 'error');
+            return -1;
+        }
 
-        // binding value
-        $this->db->bind('username', $username);
-        $this->db->bind('email', $email);
-        $this->db->bind('password', hash('sha256', $password));
-        $this->db->bind('otp_code', $otp_code);
-        $this->db->execute();
+        $this->insertNewUnregUser($username, $email, $password, $otp_code);
 
         return $this->db->rowChangeCheck();
     }
