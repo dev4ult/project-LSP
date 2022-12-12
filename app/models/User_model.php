@@ -1,5 +1,11 @@
 <?php
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+//Load Composer's autoloader
+require '../vendor/autoload.php';
+
 class User_model {
     private $username;
     private $db;
@@ -19,6 +25,31 @@ class User_model {
         $this->db->query("SELECT * FROM {$this->table} WHERE email=:email");
         $this->db->bind('email', $email);
         return $this->db->single();
+    }
+
+    public function sendEmailForVerify($email, $name) {
+        $mail = new PHPMailer(true);
+
+        $mail->isSMTP();
+
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = 'proctelearn@gmail.com';
+        $mail->Password = 'cdzwbdwbewzgdsvw';
+
+        $mail->SMTPSecure = "ssl";
+        $mail->Port = 465;
+
+        $mail->setFrom('proctelearn@gmail.com');
+
+        //Recipients
+        $mail->addAddress($email, $name);
+
+        $mail->isHTML(true);
+        $mail->Subject = 'Here is the subject';
+        $mail->Body = 'This is the HTML message body <b>in bold!</b>';
+
+        $mail->send();
     }
 
     public function addNewUser($data) {
@@ -49,6 +80,8 @@ class User_model {
         $this->db->execute();
         return $this->db->rowChangeCheck();
     }
+
+
 
     public function accountCheck($umail, $password) {
         $this->db->query("SELECT password FROM users WHERE username=:umail OR email=:umail AND password=:password");
