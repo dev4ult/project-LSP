@@ -40,6 +40,8 @@
                             name="password-confirmation" required />
                     </div>
                 </div>
+                <?php $otp_code = strtoupper(substr(md5(rand()), 0, 7)); ?>
+                <input type="text" class="hidden" value="<?= $otp_code ?>" name="otp-code">
                 <div class="form-control mt-6">
                     <button type="submit" class="btn btn-primary" name="sign-up-btn">Sign up</button>
                     <span>
