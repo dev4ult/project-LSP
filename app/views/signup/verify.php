@@ -15,6 +15,7 @@
                             <span class="label-text">Verify your account with this email,
                                 <?= $data['unreg-email'] ?></span>
                         </label>
+                        <input type="email" value="<?= $data['unreg-email'] ?>" class="hidden" name="email" required>
                     </div>
                     <div class="form-control">
                         <label class="label">
@@ -37,7 +38,6 @@
                     <input type="text" class="hidden" value="<?= $otp_code ?>" name="otp-code">
                     <button type="submit" class="link link-neutral">Send new otp code</button>
                 </form>
-
             </div>
         </div>
     </div>

@@ -10,14 +10,13 @@ class Login extends Controller {
         $this->view('templates/header');
     }
 
-    public function check() {
-        if ($this->model('User_model')->userLogin($_POST)) {
+    public function validate() {
+        if ($this->model('Login_model')->validateLogin($_POST)) {
             header('Location: ' . BASEURL . '/dashboard');
         } else {
             $_SESSION['login'] = false;
             header('Location: ' . BASEURL . '/login');
         }
-        var_dump($this->model('User_model')->getUsername());
 
         exit;
     }

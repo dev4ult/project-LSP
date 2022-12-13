@@ -3,7 +3,7 @@
 class Home extends Controller {
     public function index() {
         $data['page-title'] = "Homepage";
-        $data['username'] = $this->model("User_model")->getUsername();
+        $data['username'] = 'test';
 
         $this->view('templates/header', $data);
         $this->view('templates/navbar/main-navbar');
