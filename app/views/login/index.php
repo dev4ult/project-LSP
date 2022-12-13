@@ -8,7 +8,7 @@
 
         <div class="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
             <?= Flasher::flash() ?>
-            <form action="<?= BASEURL ?>/login/check" method="post" class="card-body">
+            <form action="<?= BASEURL ?>/login/validate" method="post" class="card-body">
                 <div class="form-control">
                     <label class="label">
                         <span class="label-text">Username / Email</span>
