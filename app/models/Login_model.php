@@ -1,6 +1,8 @@
 <?php
 
 class Login_model {
+    public static $username;
+    public static $user_table;
     private $db;
 
     public function __construct() {
@@ -8,11 +10,22 @@ class Login_model {
     }
 
     public function accountCheck($umail, $password) {
-        $this->db->query("SELECT password FROM users WHERE username=:umail OR email=:umail AND password=:password");
+        $tables = ["admin", "asesi", "asesor"];
+        for ($i = 0; $i < 3; $i++) {
+            $this->db->query("SELECT username FROM " . $tables[$i] . " WHERE username=:umail OR email=:umail AND password=:password");
 
-        $this->db->bind("umail", $umail);
-        $this->db->bind("password", hash('sha256', $password));
-        return $this->db->single();
+            $this->db->bind("umail", $umail);
+            $this->db->bind("password", hash('sha256', $password));
+
+            $check = $this->db->single();
+            if ($check) {
+                self::$username = $check;
+                self::$user_table = $tables[$i];
+                return $check;
+            }
+        }
+
+        return -1;
     }
 
     public function validateLogin($data) {
@@ -38,10 +51,11 @@ class Login_model {
     }
 
     public function setLoginSession($umail) {
-        $this->db->query('SELECT username FROM users WHERE username=:umail OR email=:umail');
+        $this->db->query("SELECT username FROM " . self::$user_table . " WHERE username=:umail OR email=:umail");
         $this->db->bind('umail', $umail);
 
         $_SESSION['login'] = true;
         $_SESSION['username'] = $umail;
+        $_SESSION['user-type'] = self::$user_table;
     }
 }
