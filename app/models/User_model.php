@@ -1,11 +1,16 @@
 <?php
 
 class User_model {
-    // client side data after login
-    public $username;
-    public $user_type;
+    private $db;
 
     public function __construct() {
-        self::$username = 'Guest1001';
+        $this->db = new Database();
+    }
+
+    public function fetchAllUser($type, $page) {
+        $this->db->query("SELECT * FROM " . $type . " LIMIT :page, 5");
+        $this->db->bind("page", $page * 5);
+
+        return $this->db->resultSet();
     }
 }

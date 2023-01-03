@@ -1,1 +1,5 @@
-<h1>Hello <?= $data['username'] ?>, This is a dashboard page</h1>
+<div class="min-h-screen w-full">
+    <h1 class="text-3xl font-semibold">Hello <?= $data['username'] ?></h1>
+    <a href="<?= BASEURL ?>/dashboard/list_user/asesi" class="btn btn-primary btn-xl">ASESI</a>
+    <a href="<?= BASEURL ?>/dashboard/list_user/asesor" class="btn btn-primary btn-xl">ASESOR</a>
+</div>
