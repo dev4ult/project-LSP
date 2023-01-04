@@ -1,10 +1,9 @@
 {
-  "name": "project-elearning",
+  "name": "project-lsp",
   "version": "1.0.0",
   "description": "This is a start setup for php native project using model view controller as this project folder structure",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "npx tailwindcss -i ./src/css/input.css -o ./public/css/styles.css --watch",
     "minify": "npx tailwindcss -i ./src/css/input.css -o ./public/css/styles.css --minify"
   },

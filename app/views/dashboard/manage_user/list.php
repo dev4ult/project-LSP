@@ -16,10 +16,12 @@
                 <?php foreach ($data['list-user'] as $user) : ?>
                 <tr>
                     <th><?= $i ?></th>
+                    <td><?= $user['username'] ?></td>
                     <td><?= $user['nama'] ?></td>
                     <td><?= $user['alamat'] ?></td>
                     <td><?= $user['no_telepon'] ?></td>
-                    <td><a href="" class="btn btn-sm btn-outline">detail</a></td>
+                    <td><a href="<?= BASEURL ?>/user/detail/<?= $user["id"] ?>"
+                            class="btn btn-sm btn-outline">detail</a></td>
                 </tr>
                 <?php $i++ ?>
                 <?php endforeach; ?>
@@ -27,10 +29,9 @@
         </table>
     </div>
     <div class="btn-group mt-10">
-        <a href="<?= BASEURL ?>/dashboard/list_user/<?= $data['user-type'] ?>/<?= ($data['page'] == 1) ? 1 : $data['page'] - 1 ?>"
+        <a href="<?= BASEURL ?>/dashboard/user/<?= $data['user-type'] ?>/<?= ($data['page'] <= 1) ? 1 : $data['page'] - 1 ?>"
             class="btn">«</a>
         <button class="btn">Page <?= $data["page"] ?></button>
-        <a href="<?= BASEURL ?>/dashboard/list_user/<?= $data['user-type'] ?>/<?= $data['page'] + 1 ?>"
-            class="btn">»</a>
+        <a href="<?= BASEURL ?>/dashboard/user/<?= $data['user-type'] ?>/<?= $data['page'] + 1 ?>" class="btn">»</a>
     </div>
 </div>
