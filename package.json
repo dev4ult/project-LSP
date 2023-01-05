@@ -9,15 +9,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dev4ult/project-elearning.git"
+    "url": "git+https://github.com/dev4ult/project-lsp.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/dev4ult/project-elearning/issues"
+    "url": "https://github.com/dev4ult/project-lsp/issues"
   },
-  "homepage": "https://github.com/dev4ult/project-elearning#readme",
+  "homepage": "https://github.com/dev4ult/project-lsp#readme",
   "devDependencies": {
     "autoprefixer": "^10.4.13",
     "daisyui": "^2.42.1",
