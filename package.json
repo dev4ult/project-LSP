@@ -1,5 +1,5 @@
 {
-  "name": "project-elearning",
+  "name": "project-lsp",
   "version": "1.0.0",
   "description": "This is a start setup for php native project using model view controller as this project folder structure",
   "main": "index.js",
