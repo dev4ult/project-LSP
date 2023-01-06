@@ -178,7 +178,7 @@
 </div>
 <input type="checkbox" id="akun" class="modal-toggle" />
 <div class="modal">
-    <form action="<?= BASEURL ?>/dashboard/account_update/<?= $data['user-type'] ?>" class="modal-box">
+    <form action="<?= BASEURL ?>/dashboard/account_update/<?= $data['user-type'] ?>" method="post" class="modal-box">
         <input type="number" name="account-id" class="hidden" value="<?= $user['id'] ?>">
         <h3 class="font-bold text-lg">Update Akun <?= $user['username'] ?></h3>
         <div class="flex gap-5">

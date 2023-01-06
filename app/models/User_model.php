@@ -7,13 +7,31 @@ class User_model {
         $this->db = new Database();
     }
 
+    public function checkUserLogin($account_type = "") {
+        if (!isset($_SESSION['login']) || !$_SESSION['login'] || !isset($_SESSION['user-type'])) {
+            $_SESSION['login'] = false;
+            header('Location: ' . BASEURL . '/login');
+            exit;
+        } else if ($_SESSION['user-type'] != $account_type) {
+            header('Location: ' . BASEURL . '/dashboard/' . $_SESSION['user-type']);
+        }
+    }
+
     public function account_join_biodata($table) {
         return "SELECT * FROM " . $table . " JOIN biodata_" . $table . " ON " . $table . ".id_biodata_" . $table . " = biodata_" . $table . ".id";
     }
 
-    public function fetchAllUser($user_type, $page) {
-        $this->db->query($this->account_join_biodata($user_type) . " LIMIT :page, 5");
+    public function fetchAllUser($user_type, $keyword, $page, $limit) {
+        $query_select = $this->account_join_biodata($user_type);
+        $search_key = htmlspecialchars($keyword);
+        if ($keyword != "") {
+            $query_select = $query_select . " WHERE biodata_" . $user_type . ".nama LIKE '%" . $search_key . "%' OR " . $user_type . ".username LIKE '%" . $search_key . "%'";
+        }
+        $this->db->query($query_select . " LIMIT :page, :limit");
+
         $this->db->bind("page", $page * 5);
+        $this->db->bind("limit", (int)$limit);
+
 
         return $this->db->resultSet();
     }
@@ -56,7 +74,14 @@ class User_model {
         return $this->db->single()['id'];
     }
 
-    public function addAccount($data, $user_type) {
+    function getIdAccount($user_type, $bio_id) {
+        $this->db->query("SELECT id FROM " . $user_type . " WHERE id_biodata_" . $user_type . "=:id");
+        $this->db->bind("id", $bio_id);
+
+        return $this->db->single()['id'];
+    }
+
+    public function addUser($data, $user_type) {
 
         // account data
         $username = htmlspecialchars($data['username']);
@@ -136,8 +161,7 @@ class User_model {
             return false;
         }
 
-        $account_id = htmlspecialchars($data['account-id']);
-
+        $account_id = $this->getIdAccount($user_type, htmlspecialchars($data['account-id']));
 
         $query_set = "username=:username, email=:email";
 
@@ -215,6 +239,15 @@ class User_model {
         $this->db->bind("id", $bio_id);
 
         // execute update stmt
+        $this->db->execute();
+
+        return $this->db->rowChangeCheck();
+    }
+
+    public function deleteUser($user_type, $bio_id) {
+        $this->db->query('DELETE FROM biodata_' . $user_type . ' WHERE id=:id');
+        $this->db->bind('id', $bio_id);
+
         $this->db->execute();
 
         return $this->db->rowChangeCheck();

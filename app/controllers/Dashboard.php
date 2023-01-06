@@ -18,38 +18,51 @@ class Dashboard extends Controller {
     }
 
     public function index() {
-        if (!isset($_SESSION['login']) || !isset($_SESSION['login'])) {
-            $_SESSION['login'] = false;
-            header('Location: ' . BASEURL . '/login');
-        } else {
-            header('Location: ' . BASEURL . '/dashboard/' . $_SESSION['user-type']);
-        }
-        exit;
+        $this->model('User_model')->checkUserLogin();
     }
 
     public function admin() {
-        if (!isset($_SESSION['login']) || !$_SESSION['login']) {
-            $_SESSION['login'] = false;
-            header('Location: ' . BASEURL . '/login');
-            exit;
-        } else if ($_SESSION['user-type'] == 'admin') {
-            $data['page-title'] = 'Dashboard page';
-            $this->view('templates/header', $data);
+        $this->model('User_model')->checkUserLogin("admin");
 
-            $this->view('templates/navbar/dashboard-navbar');
+        $data['page-title'] = 'Dashboard page';
+        $this->view('templates/header', $data);
 
-            $data['username'] = $_SESSION['username'];
-            $this->view('dashboard/admin/index', $data);
+        $this->view('templates/navbar/dashboard-navbar');
 
-            $this->view('templates/footer');
-        } else {
-            header('Location: ' . BASEURL . '/dashboard');
-            exit;
-        }
+        $data['username'] = $_SESSION['username'];
+        $this->view('dashboard/admin/index', $data);
+
+        $this->view('templates/footer');
+    }
+
+    public function asesi() {
+        $this->model('User_model')->checkUserLogin("asesi");
+        $data['page-title'] = 'Dashboard page';
+        $this->view('templates/header', $data);
+
+        $this->view('templates/navbar/dashboard-navbar');
+
+        $this->view('dashboard/asesi/index');
+
+        $this->view('templates/footer');
+    }
+
+    public function asesor() {
+        $this->model('User_model')->checkUserLogin("asesor");
+        $data['page-title'] = 'Dashboard page';
+        $this->view('templates/header', $data);
+
+        $this->view('templates/navbar/dashboard-navbar');
+
+        $this->view('dashboard/asesor/index');
+
+        $this->view('templates/footer');
     }
 
     public function user_list($user_type = null, $index = 1) {
-        if (($user_type == "asesor" || $user_type == "asesi") && $_SESSION['user-type'] == "admin") {
+        $this->model('User_model')->checkUserLogin("admin");
+
+        if ($user_type == "asesor" || $user_type == "asesi") {
             $data['page-title'] = 'list ' . $user_type;
             $this->view("templates/header", $data);
             $this->view('templates/navbar/dashboard-navbar');
@@ -59,19 +72,42 @@ class Dashboard extends Controller {
             $this->view('templates/breadcrumbs', $data);
 
             $this->view('dashboard/admin/form/add_' . $user_type);
-            $data['list-user'] = $this->model('User_model')->fetchAllUser($user_type, $index - 1);
+
+            $keyword = "";
+            if (isset($_POST['search-key'])) {
+                $keyword = htmlspecialchars($_POST['search-key']);
+            }
+
+            if (isset($_POST['table-limit'])) {
+                $_SESSION['table-limit'] = $_POST['table-limit'];
+            }
+
+            $limit = 5;
+            if (isset($_SESSION['table-limit'])) {
+                $limit = $_SESSION['table-limit'];
+            }
+
+            $data['list-user'] = $this->model('User_model')->fetchAllUser($user_type, $keyword, $index - 1, $limit);
             $data["page"] = $index;
+            $data['limit'] = $limit;
+
+            $data['url'] = "dashboard/user_list/" . $user_type;
+            $this->view('dashboard/admin/form/pagination', $data);
+
             $this->view('dashboard/admin/list/user', $data);
+
 
             $this->view('templates/footer');
         } else {
-            header('Location: ' . BASEURL . '/dashboard');
+            header('Location: ' . BASEURL . '/dashboard/admin');
             exit;
         }
     }
 
     public function user_detail($user_type, $user_id) {
-        if (($user_type == "asesor" || $user_type == "asesi") && $_SESSION['user-type'] == "admin") {
+        $this->model('User_model')->checkUserLogin("admin");
+
+        if ($user_type == "asesor" || $user_type == "asesi") {
             $data['page-title'] = 'detail';
             $this->view("templates/header", $data);
 
@@ -87,46 +123,85 @@ class Dashboard extends Controller {
 
             $this->view('templates/footer');
         } else {
-            header('Location: ' . BASEURL . '/dashboard');
+            header('Location: ' . BASEURL . '/dashboard/admin');
             exit;
         }
     }
 
     public function bio_update($user_type = null) {
+        $this->model('User_model')->checkUserLogin("admin");
+
         if ($user_type == "asesor" || $user_type == "asesi") {
             if ($this->model('User_model')->updateBiodata($_POST, $user_type) > 0) {
                 Flasher::setFlash('New account has been added', 'success');
             }
             header('Location: ' . BASEURL . '/dashboard/user_detail/' . $user_type . '/' . $_POST['account-id']);
-            exit;
         } else {
-            header('Location: ' . BASEURL . '/dashboard');
-            exit;
+            header('Location: ' . BASEURL . '/dashboard/admin');
         }
+        exit;
     }
 
     public function account_update($user_type = null) {
+        $this->model('User_model')->checkUserLogin("admin");
+
         if ($user_type == "asesor" || $user_type == "asesi") {
             if ($this->model('User_model')->updateAccount($_POST, $user_type) > 0) {
                 Flasher::setFlash('This account has been updated', 'success');
             }
             header('Location: ' . BASEURL . '/dashboard/user_detail/' . $user_type . '/' . $_POST['account-id']);
-            exit;
         } else {
-            header('Location: ' . BASEURL . '/dashboard');
-            exit;
+            header('Location: ' . BASEURL . '/dashboard/admin');
         }
+        exit;
     }
 
     public function add_user($user_type = null) {
+        $this->model('User_model')->checkUserLogin("admin");
+
         if ($user_type == "asesor" || $user_type == "asesi") {
-            if ($this->model('User_model')->addAccount($_POST, $user_type) > 0) {
+            if ($this->model('User_model')->addUser($_POST, $user_type) > 0) {
                 Flasher::setFlash('This account has been updated', 'success');
             }
             header('Location: ' . BASEURL . '/dashboard/user_list/' . $user_type);
-            exit;
         } else {
-            header('Location: ' . BASEURL . '/dashboard');
+            header('Location: ' . BASEURL . '/dashboard/admin');
+        }
+        exit;
+    }
+
+    public function delete_user($user_type = null, $bio_id) {
+        $this->model('User_model')->checkUserLogin("admin");
+
+        if ($user_type == "asesor" || $user_type == "asesi") {
+            if ($this->model('User_model')->deleteUser($user_type, $bio_id) > 0) {
+                Flasher::setFlash('One account has been deleted', 'success');
+            }
+            header('Location: ' . BASEURL . '/dashboard/user_list/' . $user_type);
+        } else {
+            header('Location: ' . BASEURL . '/dashboard/admin');
+        }
+        exit;
+    }
+
+    public function search_user($user_type = null, $index = 1) {
+        $this->model('User_model')->checkUserLogin("admin");
+
+        if ($user_type == "asesor" || $user_type == "asesi") {
+            $data['page-title'] = 'list ' . $user_type;
+            $this->view("templates/header", $data);
+            $this->view('templates/navbar/dashboard-navbar');
+
+            $data["page"] = $this->breadcrumbs;
+            $data['user-type'] = $user_type;
+            $this->view('templates/breadcrumbs', $data);
+
+            $this->view('dashboard/admin/form/add_' . $user_type);
+            $data['list-user'] = $this->model('User_model')->findUserByKeyword($_POST['search-key'], $user_type, $index);
+            $data["page"] = $index;
+            $this->view('dashboard/admin/list/user', $data);
+        } else {
+            header('Location: ' . BASEURL . '/dashboard/admin');
             exit;
         }
     }
