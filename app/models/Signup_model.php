@@ -12,20 +12,24 @@ use Egulias\EmailValidator\Validation\RFCValidation;
 require '../vendor/autoload.php';
 
 
-class Signup_model {
+class Signup_model
+{
     private $db;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->db = new Database();
     }
 
-    public function isEmailRegistered($email) {
-        $this->db->query("SELECT * FROM users WHERE email=:email");
+    public function isEmailRegistered($email)
+    {
+        $this->db->query("SELECT * FROM asesi WHERE email=:email");
         $this->db->bind('email', $email);
         return $this->db->single();
     }
 
-    public function sendOTPCode($email, $otp_code) {
+    public function sendOTPCode($email, $otp_code)
+    {
         try {
             $mail = new PHPMailer(true);
 
@@ -55,40 +59,45 @@ class Signup_model {
         }
     }
 
-    public function getOTPCode($email) {
-        $this->db->query("SELECT otp_code FROM unreg_users WHERE email=:email");
+    public function getOTPCode($email)
+    {
+        $this->db->query("SELECT otp_code FROM unreg_asesi WHERE email=:email");
         $this->db->bind('email', $email);
         return $this->db->single();
     }
 
-    public function delAfterReq($email) {
-        $this->db->query("SELECT id FROM unreg_users WHERE email=:email");
+    public function delAfterReq($email)
+    {
+        $this->db->query("SELECT id FROM unreg_asesi WHERE email=:email");
         $this->db->bind('email', $email);
         $id = $this->db->single()['id'];
 
         $this->db->query("CREATE EVENT delete_row_:id 
                         ON SCHEDULE AT CURRENT_TIMESTAMP + INTERVAL 2 Minute
-                        DO DELETE FROM unreg_users WHERE email=:email");
+                        DO DELETE FROM unreg_asesi WHERE email=:email");
         $this->db->bind('email', $email);
         $this->db->bind('id', $id);
         $this->db->execute();
     }
 
-    public function getUnregUser($email) {
-        $this->db->query("SELECT username, email, password FROM unreg_users WHERE email=:email");
+    public function getUnregUser($email)
+    {
+        $this->db->query("SELECT username, email, password FROM unreg_asesi WHERE email=:email");
         $this->db->bind('email', $email);
         return $this->db->single();
     }
 
-    public function deleteTempUser($email) {
-        $this->db->query("DELETE FROM unreg_users WHERE email=:email");
+    public function deleteTempUser($email)
+    {
+        $this->db->query("DELETE FROM unreg_asesi WHERE email=:email");
         $this->db->bind('email', $email);
         $this->db->execute();
     }
 
-    public function insertNewUser($email) {
+    public function insertNewUser($email)
+    {
         $user = $this->getUnregUser($email);
-        $this->db->query("INSERT INTO users(username, email, password) VALUES (:username, :email, :password)");
+        $this->db->query("INSERT INTO asesi(username, email, password) VALUES (:username, :email, :password)");
 
         $this->db->bind('username', $user['username']);
         $this->db->bind('email', $user['email']);
@@ -97,8 +106,9 @@ class Signup_model {
         $this->db->execute();
     }
 
-    public function saveTempUser($username, $email, $password, $otp_code) {
-        $this->db->query("INSERT INTO unreg_users(username, email, password, otp_code) VALUES (:username, :email, :password, :otp_code)");
+    public function saveTempUser($username, $email, $password, $otp_code)
+    {
+        $this->db->query("INSERT INTO unreg_asesi(username, email, password, otp_code) VALUES (:username, :email, :password, :otp_code)");
 
         // binding value
         $this->db->bind('username', $username);
@@ -108,12 +118,14 @@ class Signup_model {
         $this->db->execute();
     }
 
-    public function isEmail($email) {
+    public function isEmail($email)
+    {
         $validator = new EmailValidator();
         return $validator->isValid($email, new RFCValidation());
     }
 
-    public function validateSignup($data) {
+    public function validateSignup($data)
+    {
         $username = htmlspecialchars($data['username']);
         $email = htmlspecialchars($data['email']);
         $password = htmlspecialchars($data['password']);
