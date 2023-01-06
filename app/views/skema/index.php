@@ -22,8 +22,25 @@ function makeCode($arr, $delimiter)
 }
 ?>
 
-<a href="" class="block mt-10 btn btn-outline btn-warning">Tambah skema</a>
-<div class="overflow-x-auto mt-4">
+<!-- Button Tambah dan Search -->
+<div class="manageSkema w-full flex justify-between items-center my-6">
+  <a href="<?= BASEURL ?>/skema/create/" class="btn btn-outline btn-warning">Tambah skema</a>
+  <form action="<?= BASEURL ?>/skema/index/" method="post">
+    <div class="form-control flex items-center">
+      <div class="input-group">
+        <input type="text" placeholder="Search…" class="input input-bordered" name="keyword" />
+        <button class="btn btn-square">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<!-- Tabel -->
+<div class="overflow-x-auto">
   <table class="table table-zebra w-full">
     <!-- head -->
     <thead>
@@ -47,21 +64,20 @@ function makeCode($arr, $delimiter)
           <td><?= $ds['skkni']; ?></td>
           <td class="text-center">
             <span class="block font-bold">(3) Persyaratan</span>
-            <br>
-            <a href="#" class="btn btn-success">Ubah Persyaratan</a>
+            <a href="#" class="btn btn-success rounded-md mt-5">Ubah Persyaratan</a>
           </td>
-          <td class="text-center">
-            <a href="#" class="btn btn-warning">Nonaktifkan</a>
-            <br>
-            <br>
-            <a href="#" class="btn btn-info">Ubah/Perbarui</a>
+          <td class="text-center flex flex-col items-center justify-between">
+            <a href="#" class="btn btn-outline btn-warning rounded-md">Nonaktifkan</a>
+            <a href="#" class="btn btn-outline btn-info rounded-md mt-5">Ubah/Perbarui</a>
           </td>
         </tr>
       <?php endforeach; ?>
     </tbody>
   </table>
 </div>
-<div class="btn-group mt-10">
+
+<!-- Pagination -->
+<div class="btn-group my-10">
   <a href="<?= BASEURL ?>/skema/index/<?= ($data['page'] == 1) ? 1 : $data['page'] - 1 ?>" class="btn">«</a>
   <button class="btn">Page <?= $data["page"] ?></button>
   <a href="<?= BASEURL ?>/skema/index/<?= $data['page'] + 1 ?>" class="btn">»</a>
