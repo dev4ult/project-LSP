@@ -35,5 +35,10 @@
                 <span class="badge badge-xs badge-primary indicator-item"></span>
             </div>
         </button>
+        <div class="avatar placeholder mx-4">
+            <div class="bg-neutral-focus text-neutral-content rounded-full w-8">
+                <span class="text-xs">AA</span>
+            </div>
+        </div>
     </div>
 </div>
