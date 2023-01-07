@@ -119,6 +119,14 @@ class Signup_model {
         $password = htmlspecialchars($data['password']);
         $passConf = htmlspecialchars($data['password-confirmation']);
 
+        $nama = htmlspecialchars($data['nama']);
+        $nim = htmlspecialchars($data['nim']);
+        $no_telepon = htmlspecialchars($data['no-telepon']);
+        $alamat = htmlspecialchars($data['alamat']);
+        $jurusan = htmlspecialchars($data['jurusan']);
+        $prodi = htmlspecialchars($data['prodi']);
+        $jenis_kelamin = htmlspecialchars($data['jenis-kelamin']);
+
         $otp_code = $data['otp-code'];
 
         // to check if there is an empty input
