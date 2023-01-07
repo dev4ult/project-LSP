@@ -20,6 +20,7 @@ function makeCode($arr, $delimiter)
 
   return $result;
 }
+
 ?>
 
 <!-- Button Tambah dan Search -->
@@ -39,6 +40,8 @@ function makeCode($arr, $delimiter)
   </form>
 </div>
 
+
+
 <!-- Tabel -->
 <div class="overflow-x-auto">
   <table class="table table-zebra w-full">
@@ -49,6 +52,7 @@ function makeCode($arr, $delimiter)
         <th>Kode Skema</th>
         <th>Nama Skema</th>
         <th>SKK/KKNI</th>
+        <th>Status</th>
         <th>Persyaratan</th>
         <th>Aksi</th>
       </tr>
@@ -59,16 +63,29 @@ function makeCode($arr, $delimiter)
       <?php foreach ($data['list-skema'] as $ds) : ?>
         <tr>
           <td><?= $no++; ?></td>
-          <td><?= makeCode(["KKNI II", $ds['id'], $ds['nama_skema']], "/"); ?></td>
-          <td><?= $ds['nama_skema']; ?></td>
+          <?php $level = explode(" ", $ds['level']); ?>
+          <td><?= makeCode(["KKNI " . end($level), $ds['id'], $ds['nama_skema']], "/"); ?></td>
+          <td>
+            <?= $ds['level']; ?> pada kompetensi <?= $ds['nama_skema']; ?>
+            <ul class="list-inside list-disc relative translate-x-4">
+              <li><span>10</span> Unit Kompetensi</li>
+              <li><span>10</span> Asesi Terdaftar</li>
+              <li><span>10</span> Asesi telah Asesmen Mandiri (APL-02)</li>
+            </ul>
+          </td>
           <td><?= $ds['skkni']; ?></td>
+          <td class="text-center"><?= $ds['status']; ?></td>
           <td class="text-center">
             <span class="block font-bold">(3) Persyaratan</span>
             <a href="#" class="btn btn-success rounded-md mt-5">Ubah Persyaratan</a>
           </td>
           <td class="text-center flex flex-col items-center justify-between">
-            <a href="#" class="btn btn-outline btn-warning rounded-md">Nonaktifkan</a>
-            <a href="#" class="btn btn-outline btn-info rounded-md mt-5">Ubah/Perbarui</a>
+            <?php if ($ds['status'] == "Aktif") : ?>
+              <a href="<?= BASEURL ?>/skema/status/<?= $ds['id'] ?>/<?= $ds['status'] ?>" class="btn btn-outline btn-warning rounded-md">Nonaktifkan</a>
+            <?php else : ?>
+              <a href="<?= BASEURL ?>/skema/status/<?= $ds['id'] ?>/<?= $ds['status'] ?>" class="btn btn-outline btn-warning rounded-md">Aktifkan</a>
+            <?php endif; ?>
+            <a href="<?= BASEURL ?>/skema/detail/<?= $ds['id'] ?>" class="btn btn-outline btn-info rounded-md mt-5">Ubah/Perbarui</a>
           </td>
         </tr>
       <?php endforeach; ?>
