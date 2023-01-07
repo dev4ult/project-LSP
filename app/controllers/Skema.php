@@ -6,7 +6,13 @@ class Skema extends Controller
     $data['page-title'] = "Skema";
     $data['username'] = 'test';
     $data['page'] = $page;
-    $data["list-skema"] = $this->model("Skema_model")->fetchAllSkema($page);
+    if (isset($_POST['keyword'])) {
+      $data["list-skema"] = $this->model("Skema_model")->searchData($page, $_POST['keyword']);
+    } else {
+      $data["list-skema"] = $this->model("Skema_model")->fetchAllSkema($page);
+      // var_dump($data['list-skema']);
+      // die;
+    }
     $this->view('templates/header', $data);
     $this->view('templates/navbar/main-navbar');
     $this->view('skema/index', $data);
@@ -18,7 +24,6 @@ class Skema extends Controller
     if ($this->model("Skema_model")->addSkema($_POST) > 0) {
       header('Location: ' . BASEURL . '/skema/index');
     } else {
-      Flasher::setFlash("Harap isi dengan benar", 'warning');
       header('Location: ' . BASEURL . '/skema/create');
     }
   }
@@ -49,8 +54,7 @@ class Skema extends Controller
     if ($this->model("Skema_model")->updateSkema($id, $_POST) > 0) {
       header('Location: ' . BASEURL . '/skema/index');
     } else {
-      Flasher::setFlash("Harap isi dengan benar", 'warning');
-      header('Location: ' . BASEURL . '/skema/index');
+      header('Location: ' . BASEURL . '/skema/detail/' . $id);
     }
   }
 
@@ -63,5 +67,17 @@ class Skema extends Controller
     $this->view('templates/navbar/main-navbar');
     $this->view('skema/edit', $data);
     $this->view('templates/footer');
+  }
+
+  public function countRegistered($id)
+  {
+    $jumlah = $this->model("Skema_model")->countAsesiRegistered($id);
+    return $jumlah;
+  }
+
+  public function countAssessed($id)
+  {
+    $jumlah = $this->model("Skema_model")->countAsesiAssessed($id);
+    return $jumlah;
   }
 }
