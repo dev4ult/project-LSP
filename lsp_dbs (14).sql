@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 06, 2023 at 12:39 PM
+-- Generation Time: Jan 07, 2023 at 06:00 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -278,10 +278,32 @@ INSERT INTO `biodata_asesor` (`id`, `nama`, `jenis_kelamin`, `nip`, `no_telepon`
 
 CREATE TABLE `daftar_asesi_sertifikasi` (
   `id` int(11) NOT NULL,
-  `status_sertifikasi` enum('Lulus','Tidak Lulus') NOT NULL,
+  `status_kelulusan` enum('Lulus','Belum Lulus') NOT NULL,
+  `status_asesmen` enum('Sudah','Belum') NOT NULL,
   `id_biodata_asesi` int(11) NOT NULL,
   `id_skema_sertifikasi` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `daftar_asesi_sertifikasi`
+--
+
+INSERT INTO `daftar_asesi_sertifikasi` (`id`, `status_kelulusan`, `status_asesmen`, `id_biodata_asesi`, `id_skema_sertifikasi`) VALUES
+(1, 'Belum Lulus', 'Belum', 1, 21),
+(2, 'Belum Lulus', 'Sudah', 2, 21),
+(3, 'Belum Lulus', 'Belum', 3, 23),
+(4, 'Belum Lulus', 'Sudah', 4, 23),
+(5, 'Belum Lulus', 'Belum', 5, 25),
+(6, 'Belum Lulus', 'Sudah', 6, 25),
+(7, 'Belum Lulus', 'Belum', 7, 21),
+(8, 'Belum Lulus', 'Sudah', 8, 28),
+(9, 'Belum Lulus', 'Belum', 9, 29),
+(10, 'Belum Lulus', 'Sudah', 10, 30),
+(11, 'Belum Lulus', 'Belum', 11, 32),
+(12, 'Belum Lulus', 'Belum', 12, 33),
+(13, 'Belum Lulus', 'Sudah', 13, 34),
+(14, 'Belum Lulus', 'Belum', 14, 35),
+(15, 'Belum Lulus', 'Sudah', 15, 36);
 
 -- --------------------------------------------------------
 
@@ -386,35 +408,57 @@ CREATE TABLE `skema_sertifikasi` (
   `nama_skema` varchar(255) NOT NULL,
   `skkni` varchar(255) NOT NULL,
   `status` enum('Aktif','Nonaktif') NOT NULL,
+  `level` varchar(20) DEFAULT NULL,
   `id_biodata_asesor` int(11) DEFAULT NULL,
-  `id_jurusan` int(11) NOT NULL
+  `id_jurusan` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `skema_sertifikasi`
 --
 
-INSERT INTO `skema_sertifikasi` (`id`, `nama_skema`, `skkni`, `status`, `id_biodata_asesor`, `id_jurusan`) VALUES
-(1, ' Web Developer', 'Sed magni laborum placeat consequatur et. Sed qui quos dolorum sit nihil. Unde sapiente iure distinctio cum dolor magni quia. Est provident facilis quisquam et.', 'Aktif', 1, 1),
-(2, ' Database Administrator', 'Ipsa consequatur nisi consequatur harum itaque nihil. Ipsa eveniet qui quia sint. Accusantium rerum consequatur rerum magnam nisi.', 'Aktif', 2, 2),
-(3, ' Network Engineer', 'Quia aut cupiditate ducimus qui nisi. Sed ea repudiandae quibusdam. Est dolore explicabo et rerum dolorum inventore numquam. Consequatur commodi eius iure ut assumenda voluptas dolorum.', 'Aktif', 3, 3),
-(4, ' Web Developer', 'Voluptates ut sit alias possimus voluptates. Repellendus doloribus doloremque est id rerum vero consequatur. Quia in delectus veritatis adipisci modi aliquam. Numquam doloremque officiis voluptatem officia omnis.', 'Nonaktif', 4, 4),
-(5, ' Database Administrator', 'Voluptates explicabo ducimus quidem voluptatum. Dignissimos iusto tenetur eius magnam aut placeat provident. Odio soluta ducimus sed aut reprehenderit ducimus. Quibusdam voluptatem quibusdam quis at eligendi quidem.', 'Aktif', 5, 5),
-(6, ' Web Developer', 'Odit et accusantium eos quod fugiat. Porro enim fugiat dolores perferendis velit sequi non illo. Exercitationem itaque ut dolorum placeat.', 'Nonaktif', 6, 6),
-(7, ' Laravel Developer', 'Laudantium eius illo enim atque velit vel. Nobis ut aut dolor nulla. Omnis laborum quia ex eius magni tempore et.', 'Nonaktif', 7, 7),
-(8, ' Web Developer', 'Dolorem consectetur ad veritatis expedita temporibus praesentium suscipit. Maxime accusamus perspiciatis et assumenda. Autem dolores vel explicabo modi pariatur rerum nesciunt.', 'Nonaktif', 8, 1),
-(9, ' Web Developer', 'Molestiae rerum quae molestiae. Iure ratione id vel eum ducimus et.', 'Aktif', 9, 2),
-(10, ' Cloud Developer', 'Aut qui natus odit. Odio deleniti autem qui dicta voluptas. Ipsa ut quisquam doloribus fuga voluptatem nisi excepturi. Voluptas aut ut maxime quis pariatur quia.', 'Nonaktif', 10, 3),
-(11, ' Laravel Developer', 'Laboriosam amet placeat sint vel eaque. Sunt architecto in optio. Repudiandae vero ab natus ut molestiae.', 'Nonaktif', 11, 4),
-(12, ' Laravel Developer', 'Consectetur rerum et quia saepe quibusdam laborum. Consequuntur nesciunt sit ut sit quas consequuntur vero. Enim dolorem ut excepturi molestiae voluptates qui id. Veritatis voluptas iusto necessitatibus dignissimos voluptatem aliquid.', 'Nonaktif', 12, 5),
-(13, ' Laravel Developer', 'Cupiditate debitis deserunt tempora laudantium ullam sunt. Numquam pariatur incidunt accusantium quisquam.', 'Nonaktif', 13, 6),
-(14, ' Laravel Developer', 'Atque enim deleniti natus consequuntur. Et est sit aliquid voluptas. Consequatur mollitia libero quisquam repellendus numquam nemo. Voluptas alias qui sed sed.', 'Aktif', 14, 7),
-(15, ' Database Administrator', 'Molestiae est ipsam ut omnis. Eveniet nemo aspernatur aperiam quas qui dolorem sint. Dolorum enim quidem aliquid eos eveniet.', 'Aktif', 15, 1),
-(16, ' Cloud Developer', 'Facilis porro officiis in quam. Culpa facere et officia cumque fuga reprehenderit nostrum quod. Minima quibusdam facilis ducimus asperiores est temporibus. Aliquid qui iure quisquam aut aut.', 'Aktif', 16, 2),
-(17, ' Network Engineer', 'Blanditiis voluptatem voluptatem nemo. Harum eveniet delectus sapiente id. Voluptatem impedit sint ea culpa ducimus nisi. Et amet commodi laudantium.', 'Aktif', 17, 3),
-(18, ' Cloud Developer', 'Qui dolorem distinctio qui. Voluptatem perspiciatis repellendus voluptatum et enim velit dolores dolore. Et velit asperiores quae pariatur eveniet culpa. Magnam aut aliquam blanditiis debitis sint.', 'Aktif', 18, 4),
-(19, ' Network Engineer', 'Minus minima impedit dolore eveniet. Nihil et sunt harum quam. Quae sequi quam rerum molestiae mollitia sint ratione.', 'Aktif', 19, 5),
-(20, 'Flutter Developer', 'Nam voluptas aut repellat sunt repellendus et consectetur. Nostrum eum temporibus aut odit voluptas aut est. Magnam ut et molestias.', 'Aktif', 20, 6);
+INSERT INTO `skema_sertifikasi` (`id`, `nama_skema`, `skkni`, `status`, `level`, `id_biodata_asesor`, `id_jurusan`) VALUES
+(21, ' Laravel Developer', 'SKKNI Industri Modifikasi Kendaraan Bermotor', 'Aktif', 'Level II', 1, 1),
+(22, ' Database Administrator', 'SKKNI Teknis Ototronik', 'Nonaktif', 'Level I', 2, 2),
+(23, ' Network Engineer', 'SKKNI Industri Modifikasi Kendaraan Bermotor', 'Nonaktif', 'Level V', 3, 3),
+(24, ' Laravel Developer', 'SKKNI Perakitan Telepon Seluler', 'Nonaktif', 'Level III', 4, 4),
+(25, 'Flutter Developer', 'SKKNI Industri Cat', 'Aktif', 'Level IV', 5, 5),
+(26, ' Cloud Developer', 'SKKNI Perakitan Telepon Seluler', 'Nonaktif', 'Level V', 6, 6),
+(27, ' Cloud Developer', 'SKKNI Perakitan Telepon Seluler', 'Nonaktif', 'Level IV', 7, 7),
+(28, ' Database Administrator', 'SKKNI Perakitan Telepon Seluler', 'Aktif', 'Level V', 8, 1),
+(29, ' Database Administrator', 'SKKNI Industri Cat', 'Nonaktif', 'Level IV', 9, 2),
+(30, ' Laravel Developer', 'SKKNI Perakitan Telepon Seluler', 'Aktif', 'Level I', 10, 3),
+(32, 'Flutter Developer', 'SKKNI Perakitan Telepon Seluler', 'Nonaktif', 'Level I', 12, 5),
+(33, ' Cloud Developer', 'SKKNI Peralatan Elektronika', 'Aktif', 'Level II', 13, 6),
+(34, ' Web Developer', 'SKKNI Perakitan Telepon Seluler', 'Aktif', 'Level I', 14, 7),
+(35, ' Network Engineer', 'SKKNI Industri Cat', 'Aktif', 'Level III', 15, 1),
+(36, ' Database Administrator', 'SKKNI Perakitan Telepon Seluler', 'Aktif', 'Level III', 16, 2),
+(39, ' Network Engineer', 'SKKNI Industri Modifikasi Kendaraan Bermotor', 'Aktif', 'Level II', 19, 5),
+(40, ' Laravel Developer', 'SKKNI Perakitan Telepon Seluler', 'Aktif', 'Level V', 20, 6),
+(41, 'Machine Learning Developer', 'SKKNI Teknis Ototronik', 'Aktif', 'Level I', NULL, NULL),
+(46, 'Machine Learning Developer', 'SKKNI Industri Cat', 'Aktif', 'Level V', NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `skkni`
+--
+
+CREATE TABLE `skkni` (
+  `id` int(11) NOT NULL,
+  `skkni` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `skkni`
+--
+
+INSERT INTO `skkni` (`id`, `skkni`) VALUES
+(1, 'SKKNI Industri Modifikasi Kendaraan Bermotor'),
+(2, 'SKKNI Perakitan Telepon Seluler'),
+(3, 'SKKNI Peralatan Elektronika'),
+(4, 'SKKNI Industri Cat'),
+(5, 'SKKNI Teknis Ototronik');
 
 -- --------------------------------------------------------
 
@@ -488,7 +532,7 @@ ALTER TABLE `biodata_asesor`
 --
 ALTER TABLE `daftar_asesi_sertifikasi`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `fk_daftar_asesi` (`id_biodata_asesi`),
+  ADD UNIQUE KEY `asesi_skema_UK` (`id_biodata_asesi`,`id_skema_sertifikasi`),
   ADD KEY `fk_daftar_skema` (`id_skema_sertifikasi`);
 
 --
@@ -529,8 +573,15 @@ ALTER TABLE `prodi`
 --
 ALTER TABLE `skema_sertifikasi`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `fk_skema_asesor` (`id_biodata_asesor`),
-  ADD KEY `fk_skema_jurusan` (`id_jurusan`);
+  ADD UNIQUE KEY `nama_level_UK` (`nama_skema`,`level`),
+  ADD KEY `fk_skema_jurusan` (`id_jurusan`),
+  ADD KEY `fk_skema_asesor` (`id_biodata_asesor`);
+
+--
+-- Indexes for table `skkni`
+--
+ALTER TABLE `skkni`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `unit_kompetensi`
@@ -583,7 +634,7 @@ ALTER TABLE `biodata_asesor`
 -- AUTO_INCREMENT for table `daftar_asesi_sertifikasi`
 --
 ALTER TABLE `daftar_asesi_sertifikasi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `jenjang_studi`
@@ -619,7 +670,13 @@ ALTER TABLE `prodi`
 -- AUTO_INCREMENT for table `skema_sertifikasi`
 --
 ALTER TABLE `skema_sertifikasi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+
+--
+-- AUTO_INCREMENT for table `skkni`
+--
+ALTER TABLE `skkni`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `unit_kompetensi`
@@ -679,8 +736,7 @@ ALTER TABLE `prodi`
 -- Constraints for table `skema_sertifikasi`
 --
 ALTER TABLE `skema_sertifikasi`
-  ADD CONSTRAINT `fk_biodata_asesor` FOREIGN KEY (`id_biodata_asesor`) REFERENCES `biodata_asesor` (`id`) ON DELETE SET NULL,
-  ADD CONSTRAINT `fk_skema_asesor` FOREIGN KEY (`id_biodata_asesor`) REFERENCES `biodata_asesor` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_skema_asesor` FOREIGN KEY (`id_biodata_asesor`) REFERENCES `biodata_asesor` (`id`) ON DELETE SET NULL,
   ADD CONSTRAINT `fk_skema_jurusan` FOREIGN KEY (`id_jurusan`) REFERENCES `jurusan` (`id`);
 
 --
