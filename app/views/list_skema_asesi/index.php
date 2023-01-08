@@ -53,8 +53,14 @@
                     <td><?= codeSchemaGenerate(["KKNI II", $schema['id'], $schema['nama_skema']], "/"); ?></td>
                     <td>
                         <ul>
-                            <li><?= $schema['nama_skema']; ?></li>
-                            <!-- <li></li> -->
+                            <li class = "font-semibold"><?= $schema['nama_skema']; ?></li>
+                            <li class="list-disc ml-4"> Persyaratan 
+                                (<?= $this->model("Skema_model")->getTotalData($schema['id'], "persyaratan_skema") ?>)
+                            </li>
+                            <li class="list-disc ml-4"> Unit Kompetensi 
+                                (<?= $this->model("Skema_model")->getTotalData($schema['id'], "unit_kompetensi") ?>)
+                            </li>
+                            <li><button class="btn btn-success">lihat detail</button></li>
                         </ul>
                     </td>
                 </tr>
