@@ -7,6 +7,11 @@ class User_model {
         $this->db = new Database();
     }
 
+    public function fetchAllJurusan() {
+        $this->db->query("SELECT nama FROM jurusan");
+        return $this->db->resultSet();
+    }
+
     public function checkUserLogin($account_type = "") {
         if (!isset($_SESSION['login']) || !$_SESSION['login'] || !isset($_SESSION['user-type'])) {
             $_SESSION['login'] = false;
@@ -96,24 +101,26 @@ class User_model {
         // biodata
         $nama = htmlspecialchars($data['nama']);
         $no_telepon = htmlspecialchars($data['no_telepon']);
-        $pendidikan_terakhir = htmlspecialchars($data['pendidikan_terakhir']);
         $alamat = htmlspecialchars($data['alamat']);
         $jenis_kelamin = htmlspecialchars($data['jenis-kelamin']);
 
-        $query_field = "(nama, no_telepon, pendidikan_terakhir, alamat, jenis_kelamin";
-        $query_values = "(:nama, :no_telepon, :pendidikan_terakhir, :alamat, :jenis_kelamin";
+        $query_field = "(nama, no_telepon, jurusan, prodi, alamat, jenis_kelamin";
+        $query_values = "(:nama, :no_telepon, :jurusan, :prodi, :alamat, :jenis_kelamin";
         if ($user_type == "asesor") {
             $nik = htmlspecialchars($data['nik']);
             $nip = htmlspecialchars($data['nip']);
+            $pendidikan_terakhir = htmlspecialchars($data['pendidikan-terakhir']);
             $tempat_lahir = htmlspecialchars($data['tempat_lahir']);
             $tanggal_lahir = htmlspecialchars($data['tanggal_lahir']);
 
-            $query_field = $query_field . ", nik, nip, tempat_lahir, tanggal_lahir)";
-            $query_values = $query_values . ", :nik, :nip, :tempat_lahir, :tanggal_lahir)";
+            $query_field = $query_field . ", nik, nip, pendidikan_terakhir, tempat_lahir, tanggal_lahir)";
+            $query_values = $query_values . ", :nik, :nip, :pendidikan_terakhir, :tempat_lahir, :tanggal_lahir)";
         } else if ($user_type == "asesi") {
             $nim = htmlspecialchars($data['nim']);
-            $query_field = $query_field . ", nim)";
-            $query_values = $query_values . ", :nim)";
+            $jurusan = htmlspecialchars($data['jurusan']);
+            $prodi = htmlspecialchars($data['prodi']);
+            $query_field = $query_field . ", nim, jurusan, prodi)";
+            $query_values = $query_values . ", :nim, :jurusan, :prodi)";
         } else {
             return false;
         }
@@ -122,17 +129,19 @@ class User_model {
 
         $this->db->bind("nama", $nama);
         $this->db->bind("no_telepon", $no_telepon);
-        $this->db->bind("pendidikan_terakhir", $pendidikan_terakhir);
         $this->db->bind("alamat", $alamat);
         $this->db->bind("jenis_kelamin", $jenis_kelamin);
 
         if ($user_type == "asesor") {
             $this->db->bind("nik", $nik);
             $this->db->bind("nip", $nip);
+            $this->db->bind("pendidikan_terakhir", $pendidikan_terakhir);
             $this->db->bind("tempat_lahir", $tempat_lahir);
             $this->db->bind("tanggal_lahir", $tanggal_lahir);
         } else {
             $this->db->bind("nim", $nim);
+            $this->db->bind("jurusan", $jurusan);
+            $this->db->bind("prodi", $prodi);
         }
 
         $this->db->execute();
@@ -200,21 +209,23 @@ class User_model {
         $bio_id = htmlspecialchars($data['bio-id']);
         $nama = htmlspecialchars($data['nama']);
         $no_telepon = htmlspecialchars($data['no_telepon']);
-        $pendidikan_terakhir = htmlspecialchars($data['pendidikan_terakhir']);
         $alamat = htmlspecialchars($data['alamat']);
         $jenis_kelamin = htmlspecialchars($data['jenis-kelamin']);
 
-        $query_set = "nama=:nama, no_telepon=:no_telepon, pendidikan_terakhir=:pendidikan_terakhir, alamat=:alamat, jenis_kelamin=:jenis_kelamin";
+        $query_set = "nama=:nama, no_telepon=:no_telepon, alamat=:alamat, jenis_kelamin=:jenis_kelamin";
 
         if ($user_type == "asesor") {
             $nik = htmlspecialchars($data['nik']);
             $nip = htmlspecialchars($data['nip']);
+            $pendidikan_terakhir = htmlspecialchars($data['pendidikan_terakhir']);
             $tempat_lahir = htmlspecialchars($data['tempat_lahir']);
             $tanggal_lahir = htmlspecialchars($data['tanggal_lahir']);
-            $query_set = $query_set . ", nik=:nik, nip=:nip, tempat_lahir=:tanggal_lahir, tanggal_lahir=:tanggal_lahir";
+            $query_set = $query_set . ", nik=:nik, nip=:nip, pendidikan_terakhir=:pendidikan_terakhir, tempat_lahir=:tanggal_lahir, tanggal_lahir=:tanggal_lahir";
         } else if ($user_type == "asesi") {
             $nim = htmlspecialchars($data['nim']);
-            $query_set = $query_set . ", nim=:nim";
+            $jurusan = htmlspecialchars($data['jurusan']);
+            $prodi = htmlspecialchars($data['prodi']);
+            $query_set = $query_set . ", nim=:nim, jurusan=:jurusan, prodi=:prodi";
         } else {
             return false;
         }
@@ -223,17 +234,19 @@ class User_model {
 
         $this->db->bind("nama", $nama);
         $this->db->bind("no_telepon", $no_telepon);
-        $this->db->bind("pendidikan_terakhir", $pendidikan_terakhir);
         $this->db->bind("alamat", $alamat);
         $this->db->bind("jenis_kelamin", $jenis_kelamin);
 
         if ($user_type == "asesor") {
             $this->db->bind("nik", $nik);
             $this->db->bind("nip", $nip);
+            $this->db->bind("pendidikan_terakhir", $pendidikan_terakhir);
             $this->db->bind("tempat_lahir", $tempat_lahir);
             $this->db->bind("tanggal_lahir", $tanggal_lahir);
         } else {
             $this->db->bind("nim", $nim);
+            $this->db->bind("jurusan", $jurusan);
+            $this->db->bind("prodi", $prodi);
         }
 
         $this->db->bind("id", $bio_id);

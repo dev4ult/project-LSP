@@ -24,10 +24,15 @@ class Dashboard extends Controller {
     public function admin() {
         $this->model('User_model')->checkUserLogin("admin");
 
-        $data['page-title'] = 'Dashboard page';
+        $data['page-title'] = 'dashboard';
         $this->view('templates/header', $data);
 
         $this->view('templates/navbar/dashboard-navbar');
+
+        $data['page'] = $this->breadcrumbs;
+        array_pop($data['page']['name']);
+        array_pop($data['page']['link']);
+        $this->view('templates/breadcrumbs', $data);
 
         $data['username'] = $_SESSION['username'];
         $this->view('dashboard/admin/index', $data);
@@ -71,7 +76,9 @@ class Dashboard extends Controller {
             $data['user-type'] = $user_type;
             $this->view('templates/breadcrumbs', $data);
 
-            $this->view('dashboard/admin/form/add_' . $user_type);
+            $data['jurusan'] = $this->model("User_model")->fetchAllJurusan();
+
+            $this->view('dashboard/admin/form/add_' . $user_type, $data);
 
             $keyword = "";
             if (isset($_POST['search-key'])) {
@@ -113,10 +120,13 @@ class Dashboard extends Controller {
 
             $data["page"] = $this->breadcrumbs;
             array_push($data["page"]["name"], "list " . $user_type);
-            array_push($data["page"]["link"], "dashboard/user_list");
+            array_push($data["page"]["link"], "dashboard/user_list/" . $user_type);
+
 
             $this->view('templates/breadcrumbs', $data);
             $data['user-type'] = $user_type;
+
+            $data['jurusan'] = $this->model("User_model")->fetchAllJurusan();
 
             $data['user'] = $this->model('User_model')->fetchSingleUser($user_type, $user_id);
             $this->view('dashboard/admin/detail/' . $user_type, $data);
@@ -133,7 +143,7 @@ class Dashboard extends Controller {
 
         if ($user_type == "asesor" || $user_type == "asesi") {
             if ($this->model('User_model')->updateBiodata($_POST, $user_type) > 0) {
-                Flasher::setFlash('New account has been added', 'success');
+                Flasher::setFlash('This account has been updated', 'success');
             }
             header('Location: ' . BASEURL . '/dashboard/user_detail/' . $user_type . '/' . $_POST['account-id']);
         } else {

@@ -1,4 +1,5 @@
 <?php $user = $data['user']; ?>
+
 <?= Flasher::flash() ?>
 <div class="min-h-screen w-full">
     <div class="rounded-lg shadow-md p-5">
@@ -28,9 +29,14 @@
                 <td><?= $user["alamat"] ?></td>
             </tr>
             <tr class="text-2xl font-semibold">
-                <td>Pendidikan Terakhir</td>
+                <td>Jurusan</td>
                 <td class="px-5">:</td>
-                <td><?= $user["pendidikan_terakhir"] ?></td>
+                <td id="nama-jurusan"><?= $user["jurusan"] ?></td>
+            </tr>
+            <tr class="text-2xl font-semibold">
+                <td>Prodi</td>
+                <td class="px-5">:</td>
+                <td id="nama-prodi"><?= $user["prodi"] ?></td>
             </tr>
         </table>
     </div>
@@ -105,14 +111,114 @@
                 </label>
             </div>
         </div>
-        <div class="form-control">
-            <label class="label">
-                <span class="label-text">Pendidikan Terakhir</span>
-            </label>
-            <label class="input-group input-group-md">
-                <input type="text" placeholder="Type here" class="input input-bordered input-md"
-                    name="pendidikan_terakhir" value="<?= $user['pendidikan_terakhir'] ?>" />
-            </label>
+        <div class="flex gap-5">
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">Jurusan</span>
+                </label>
+                <select class="select select-bordered w-full max-w-xs" name="jurusan" required>
+                    <option disabled>-- PILIH JURUSAN --</option>
+                    <?php foreach ($data['jurusan'] as $jurusan) : ?>
+                    <option <?= $jurusan['nama'] == $user['jurusan'] ? "disabled selected" : "" ?>
+                        value="<?= $jurusan['nama'] ?>">
+                        <?= $jurusan['nama'] ?></option>
+                    <?php endforeach ?>
+                </select>
+            </div>
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">Prodi</span>
+                </label>
+                <select class="select select-bordered w-full max-w-xs" name="prodi" required>
+                    <option disabled selected>-- PILIH JURUSAN TERLEBIH DAHULU--</option>
+                </select>
+            </div>
+            <script>
+            let prodi = {
+                'Teknik Informatika dan Komputer': [
+                    'Teknik Informatika',
+                    'Teknik Multimedia Digital',
+                    'Teknik Multimedia dan Jaringan',
+                    'Teknik Komputer dan Jaringan'
+                ],
+                'Teknik Sipil': [
+                    'Konstruksi Sipil',
+                    'Konstruksi Gedung',
+                    'Teknik Perancangan Jalan dan Jembatan',
+                    'Teknik Konstruksi Gedung',
+                ],
+                'Teknik Mesin': [
+                    'Teknik Mesin',
+                    'Teknik Mesin - PSDKU Kab. Demak',
+                    'Teknik Konversi Energi',
+                    'Manufaktur',
+                    'Manufaktur - PSDKU Kab. Pekalongan',
+                    'Pembangkit Tenaga Listrik',
+                    'Teknologi Rekayasa Konversi Energi',
+                    'Teknologi Rekayasa Perawatan Alat Berat',
+                    'Magister Rekayasa Teknologi Manufaktur',
+                ],
+                'Teknik Elektro': [
+                    'Elektronika Industri',
+                    'Teknik Listrik',
+                    'Telekomunikasi',
+                    'Instrumentasi Kontrol Industri',
+                    'Teknik Otomasi Listrik Industri',
+                    'Broadband Multimedia',
+                    'Magister Teknik Elektro',
+                ],
+                'Teknik Grafika dan Penerbitan': [
+                    'Penerbitan',
+                    'Teknik Grafika',
+                    'Desain Grafis',
+                    'Teknologi Industri Cetak Kemasan',
+                ],
+                'Akuntansi': [
+                    'Akuntansi',
+                    'Keuangan dan Perbankan',
+                    'Akuntansi Keuangan',
+                    'Keuangan dan Perbankan',
+                    'Keuangan dan Perbankan Syariah',
+                    'Manajemen Keuangan',
+                    'Manajemen Pemasaran (WNBK',
+                ],
+                'Administrasi Niaga': [
+                    'Administrasi Bisnis',
+                    'Administrasi Bisnis Terapan',
+                    'Usaha Jasa Konvensi, Perjalanan Insentif dan Pameran /MICE',
+                    'Usaha Jasa Konvensi, Perjalanan Insentif dan Pameran /MICE - PSDKU Kab. Demak',
+                    'Bahasa Inggris untuk Komunikasi Bisnis dan Profesional',
+                ],
+
+            };
+
+            let selectedJurusan = $('#nama-jurusan').text();
+            let selectedProdi = $('#nama-prodi').text();
+
+            $('select[name="prodi"]').empty();
+            for (let i = 0; i < prodi[selectedJurusan].length; i++) {
+                // Output choice in the target field
+                $('select[name="prodi"]').append("<option " + (selectedProdi == prodi[selectedJurusan][i] ?
+                        "disabled selected" : "") + " value='" + prodi[selectedJurusan][i] +
+                    "'>" + prodi[selectedJurusan][i] + "</option>");
+            }
+
+            // When an option is changed, search the above for matching choices
+            $('select[name="jurusan"]').on('change', function() {
+                // Set selected option as variable
+                selectedJurusan = $(this).val();
+
+                // Empty the target field
+                $('select[name="prodi"]').empty();
+
+                // For each chocie in the selected option
+                for (let i = 0; i < prodi[selectedJurusan].length; i++) {
+                    // Output choice in the target field
+                    $('select[name="prodi"]').append("<option value='" + prodi[selectedJurusan][i] +
+                        "'>" + prodi[selectedJurusan][i] + "</option>");
+                }
+            });
+            </script>
         </div>
         <div class="mt-3">
             <label class="label-text">Jenis Kelamin</label>
