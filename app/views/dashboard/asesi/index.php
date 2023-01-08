@@ -13,7 +13,7 @@
             <div class="text-white px-4 py-3">
                 <h1 class="text-3xl font-semibold">1</h1>
                 <h3 class="py-1">Pilih Skema</h3>
-                <a class="link link-hover py-1" href="<?= BASEURL ?>/dashboard/asesi/#"> -> Selengkapnya</a>
+                <a class="link link-hover py-1" href="<?= BASEURL ?>/asesi/list_skema"> -> Selengkapnya</a>
             </div>
         </div>
         <div class="upload-document-menu m-3 bg-slate-900 rounded-xl">
