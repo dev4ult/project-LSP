@@ -19,6 +19,26 @@
             return $this->db->resultSet();
         }
 
+        public function getSkemaById($id){
+
+            $query = "SELECT * FROM skema_sertifikasi WHERE id=:id";
+
+            $this->db->query($query);
+            $this->db->bind("id", $id);
+
+            return $this->db->single();
+        }
+
+        public function getDataSkemaById($id_skema, $table){
+
+            $query = "SELECT * FROM ".$table." WHERE id_skema=:id_skema";
+
+            $this->db->query($query);
+            $this->db->bind('id_skema', $id_skema);
+
+            return $this->db->single();
+        }
+
         public function getTotalData($id_skema, $table){
 
             $query = "SELECT * FROM ".$table." WHERE id_skema=:id_skema";
@@ -27,5 +47,15 @@
             $this->db->bind("id_skema", $id_skema);
 
             return count($this->db->resultSet());
+        }
+
+        public function searchSkema(){
+            $keyword = $_POST['keyword'];
+            $query = "SELECT * FROM skema_sertifikasi WHERE nama_skema LIKE :keyword";
+
+            $this->db->query($query);
+            $this->db->bind('keyword', "%$keyword%");
+
+            return $this->db->resultSet();
         }
     }

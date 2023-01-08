@@ -1705,6 +1705,40 @@ html {
   --tw-backdrop-sepia:  ;
 }
 
+.container {
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .container {
+    max-width: 640px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 768px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    max-width: 1024px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .container {
+    max-width: 1280px;
+  }
+}
+
+@media (min-width: 1536px) {
+  .container {
+    max-width: 1536px;
+  }
+}
+
 .alert {
   display: flex;
   width: 100%;
@@ -3536,6 +3570,11 @@ html {
   margin-bottom: 0.75rem;
 }
 
+.my-4 {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
 .my-10 {
   margin-top: 2.5rem;
   margin-bottom: 2.5rem;
@@ -3556,8 +3595,22 @@ html {
   margin-bottom: 2rem;
 }
 
+.my-6 {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.my-40 {
+  margin-top: 10rem;
+  margin-bottom: 10rem;
+}
+
 .mt-10 {
   margin-top: 2.5rem;
+}
+
+.ml-4 {
+  margin-left: 1rem;
 }
 
 .mt-6 {
@@ -3568,8 +3621,12 @@ html {
   margin-top: 0.75rem;
 }
 
-.ml-4 {
-  margin-left: 1rem;
+.mt-20 {
+  margin-top: 5rem;
+}
+
+.ml-5 {
+  margin-left: 1.25rem;
 }
 
 .flex {
@@ -3833,6 +3890,10 @@ html {
 
 .font-bold {
   font-weight: 700;
+}
+
+.font-normal {
+  font-weight: 400;
 }
 
 .font-medium {
