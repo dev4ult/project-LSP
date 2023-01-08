@@ -12,20 +12,19 @@ class Login_model {
     public function accountCheck($umail, $password) {
         $tables = ["admin", "asesi", "asesor"];
         for ($i = 0; $i < 3; $i++) {
-            $this->db->query("SELECT username FROM " . $tables[$i] . " WHERE username=:umail OR email=:umail AND password=:password");
+            $this->db->query("SELECT password FROM " . $tables[$i] . " WHERE username=:umail OR email=:umail");
 
             $this->db->bind("umail", $umail);
-            $this->db->bind("password", hash('sha256', $password));
 
-            $check = $this->db->single();
-            if ($check) {
-                self::$username = $check;
+            $hashed_password = $this->db->single()['password'];
+            if (hash("sha256", $password) == $hashed_password) {
+                self::$username = $password;
                 self::$user_table = $tables[$i];
-                return $check;
+                return true;
             }
         }
 
-        return -1;
+        return false;
     }
 
     public function validateLogin($data) {
@@ -41,7 +40,7 @@ class Login_model {
         }
 
         // account check
-        if (!$this->accountCheck($umail, $password)) {
+        if ($this->accountCheck($umail, $password) == false) {
             Flasher::setFlash('Username / Email or Password is wrong');
             return false;
         } else {
