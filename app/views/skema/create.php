@@ -19,10 +19,10 @@
           <input type="text" placeholder="" class="input input-bordered" id="skema" name="skema" required />
         </div>
         <div class="form-control w-[500px] mt-4">
-          <label class="label" for="SKKNI">
+          <label class="label" for="level">
             <span class="label-text text-lg font-semibold">Level KKNI</span>
           </label>
-          <select class="select select-bordered" id="SKKNI" name="level" required>
+          <select class="select select-bordered" id="level" name="level" required>
             <option disabled selected>-- Pilih Level --</option>
             <option value="Level I">Level I</option>
             <option value="Level II">Level II</option>
@@ -32,10 +32,10 @@
           </select>
         </div>
         <div class="form-control w-[500px] mt-4">
-          <label class="label" for="skema">
+          <label class="label" for="bukti-ket">
             <span class="label-text text-lg font-semibold">Keterangan Bukti yang Akan Diperoleh</span>
           </label>
-          <input type="text" placeholder="" class="input input-bordered" id="skema" name="bukti-keterangan" />
+          <input type="text" placeholder="" class="input input-bordered" id="bukti-ket" name="bukti-keterangan" />
         </div>
       </div>
       <div class="right-form w-1/2">
@@ -51,10 +51,10 @@
           </select>
         </div>
         <div class="form-control w-full mt-4">
-          <label class="label" for="SKKNI">
+          <label class="label" for="Kedalaman">
             <span class="label-text text-lg font-semibold">Kedalaman Bukti yang Akan Diperoleh</span>
           </label>
-          <select class="select select-bordered" id="SKKNI" name="bukti-kedalaman">
+          <select class="select select-bordered" id="Kedalaman" name="bukti-kedalaman">
             <option disabled selected>-- Pilih SKK/KKNI --</option>
             <option value="SKKNI Industri Modifikasi Kendaraan Bermotor">SKKNI Industri Modifikasi Kendaraan Bermotor</option>
             <option value="SKKNI Perakitan Telepon Seluler">SKKNI Perakitan Telepon Seluler</option>

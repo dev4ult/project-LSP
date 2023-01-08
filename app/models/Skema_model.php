@@ -98,7 +98,7 @@ class Skema_model
 
   public function countAsesiRegistered($id)
   {
-    $query = "SELECT COUNT(*) as jumlah from daftar_asesi_sertifikasi where id_skema_sertifikasi =:id";
+    $query = "SELECT COUNT(*) as jumlah from daftar_asesi_sertifikasi WHERE id_skema_sertifikasi =:id";
     $this->db->query($query);
     $this->db->bind("id", $id);
     return $this->db->single();

@@ -20,7 +20,8 @@
         <a class="link link-hover">Cookie policy</a>
     </div>
 </footer>
-<script src="./js/main.js"></script>
+<script src="<?= BASEURL ?>/js/main.js"></script>
+<script src="<?= BASEURL ?>/js/persyaratan.js"></script>
 </body>
 
 </html>

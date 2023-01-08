@@ -71,13 +71,16 @@ class Skema extends Controller
 
   public function countRegistered($id)
   {
-    $jumlah = $this->model("Skema_model")->countAsesiRegistered($id);
-    return $jumlah;
+    return $this->model("Skema_model")->countAsesiRegistered($id);
   }
 
   public function countAssessed($id)
   {
-    $jumlah = $this->model("Skema_model")->countAsesiAssessed($id);
-    return $jumlah;
+    return $this->model("Skema_model")->countAsesiAssessed($id);
+  }
+
+  public function countPersyaratan($id)
+  {
+    return $this->model("Persyaratan_model")->countPersyaratanByID($id);
   }
 }

@@ -35,6 +35,13 @@ function getAmountAssessed($id)
   return call_user_func_array([$skema, $method], [$id])['jumlah'];
 }
 
+function getAmountPersyaratan($id)
+{
+  $skema = new Skema();
+  $method = "countPersyaratan";
+  return call_user_func_array([$skema, $method], [$id])['jumlah'];
+}
+
 ?>
 
 <!-- Button Tambah dan Search -->
@@ -91,8 +98,8 @@ function getAmountAssessed($id)
             <td><?= $ds['skkni']; ?></td>
             <td class="text-center"><?= $ds['status']; ?></td>
             <td class="text-center">
-              <span class="block font-bold">(3) Persyaratan</span>
-              <a href="#" class="btn btn-success rounded-md mt-5">Ubah Persyaratan</a>
+              <span class="block font-bold">(<span><?= getAmountPersyaratan($ds['id']); ?></span>) Persyaratan</span>
+              <a href="<?= BASEURL ?>/persyaratan/skema/<?= $ds['nama_skema'] ?>/<?= $ds['level'] ?>" class="btn btn-success rounded-md mt-5">Ubah Persyaratan</a>
             </td>
             <td class="text-center flex flex-col items-center justify-between">
               <?php if ($ds['status'] == "Aktif") : ?>
