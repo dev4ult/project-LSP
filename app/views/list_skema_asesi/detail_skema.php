@@ -44,10 +44,11 @@
                 <tbody>
                     <?php 
                         $no = 1;
+                        foreach($data['list-persyaratan'] as $syarat)
                     ?>
                         <tr>
                             <td><?= $no++; ?></td>
-                            <td><?= $data['list-persyaratan']['deskripsi'] ?></td>
+                            <td><?= $syarat['deskripsi'] ?></td>
                         </tr>
                 </tbody>
             </table>

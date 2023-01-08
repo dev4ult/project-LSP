@@ -36,7 +36,7 @@
             $this->db->query($query);
             $this->db->bind('id_skema', $id_skema);
 
-            return $this->db->single();
+            return $this->db->resultSet();
         }
 
         public function getTotalData($id_skema, $table){
