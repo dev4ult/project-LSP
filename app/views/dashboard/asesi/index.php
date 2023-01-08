@@ -3,7 +3,7 @@
         <h1 class="text-2xl font-semibold">Dashboard
             <span class="text-sm text-slate-500 font-semibold">Sistem informasi Lembaga Sertifikasi Profesi</span>
         </h1>
-        <h2 class="text-2xl py-4 font-semibold">Selamat Datang, <?= $_SESSION['username'] ?></h2>
+        <h2 class="text-2xl py-4 font-semibold">Selamat Datang, <?= $data['username'] ?></h2>
         <p> Terima kasih telah bergabung menjadi Asesi dengan Lembaga Sertifikasi Profesi. 
             Untuk mengikuti ujian sertifikasi profesi keahlian, Prosedur yang harus dilalui sebagai berikut.
         </p>

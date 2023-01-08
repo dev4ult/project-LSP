@@ -2,21 +2,6 @@
 
     class Asesi extends Controller {
 
-        public function index(){
-
-            $this->model('User_model')->checkUserLogin("asesi");
-            $data['page-title'] = 'Dashboard Asesi LSP';
-
-            $this->view('templates/header', $data);
-            $this->view('templates/navbar/dashboard-navbar');
-
-            $data['username'] = $_SESSION['username'];
-            $this->view('dashboard/asesi/index', $data);
-
-            $this->view('templates/footer');
-            
-        }
-
         public function list_skema($page = 1){
 
             $data['page-title'] = 'Skema Sertifikasi';
@@ -50,6 +35,7 @@
         }
 
         public function search_skema($page = 1){
+
             $data['page-title'] = 'Skema Sertifikasi';
 
             $this->view('templates/header', $data);
@@ -66,5 +52,19 @@
             $this->view('list_skema_asesi/index', $data);
             $this->view('templates/footer');
 
+        }
+
+        public function upload_document(){
+            $data['page-title'] = 'Upload Dokumen Skema';
+
+            $this->view('templates/header', $data);
+            $this->view('templates/navbar/dashboard-navbar');
+
+            // if(){
+            //     Flasher::setFlash('Maaf, Anda belum mengunggah Dokumen Pokok !', 'danger');
+            // }
+
+            $this->view('form_upload_dokumen/index');
+            $this->view('templates/footer');
         }
     }
