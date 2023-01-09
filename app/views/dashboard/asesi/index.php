@@ -20,7 +20,7 @@
             <div class="text-white px-4 py-3">
                 <h1 class="text-3xl font-semibold">2</h1>
                 <h3 class="py-1">Upload Dokumen</h3>
-                <a class="link link-hover py-1" href="<?= BASEURL ?>/dashboard/asesi/#"> -> Selengkapnya</a>
+                <a class="link link-hover py-1" href="<?= BASEURL ?>/asesi/upload_document"> -> Selengkapnya</a>
             </div>
         </div>
         <div class="message-notification-menu m-3 bg-slate-900 rounded-xl">

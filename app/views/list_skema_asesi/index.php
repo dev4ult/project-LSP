@@ -40,7 +40,7 @@
     <h1 class="text-lg font-medium pl-5 my-3">Data Skema Sertifikasi Profesi Tersedia</h1>
 
     <div class="overflow-x-auto">
-        <table class="table w-full">
+        <table class="table table-zebra w-full">
             <thead>
                 <tr>
                     <th>No</th>
@@ -56,14 +56,14 @@
                     <td><?= codeSchemaGenerate(["KKNI II", $schema['id'], $schema['nama_skema']], "/"); ?></td>
                     <td>
                         <ul>
-                            <li class = "font-semibold"><?= $schema['nama_skema']; ?></li>
-                            <li class="list-disc ml-5"> Persyaratan 
+                            <li class = "font-semibold mb-2"><?= $schema['nama_skema']; ?></li>
+                            <li class="list-disc ml-5 my-2"> Persyaratan 
                                 (<?= $this->model("Skema_model")->getTotalData($schema['id'], "persyaratan_skema") ?>)
                             </li>
-                            <li class="list-disc ml-5"> Unit Kompetensi 
+                            <li class="list-disc ml-5 my-2"> Unit Kompetensi 
                                 (<?= $this->model("Skema_model")->getTotalData($schema['id'], "unit_kompetensi") ?>)
                             </li>
-                            <li><a class="btn btn-success" href="<?= BASEURL; ?>/asesi/detail_skema/<?= $schema['id']; ?>" >lihat detail</a></li>
+                            <li><a class="btn btn-success my-2" href="<?= BASEURL; ?>/asesi/detail_skema/<?= $schema['id']; ?>" >lihat detail</a></li>
                         </ul>
                     </td>
                 </tr>
