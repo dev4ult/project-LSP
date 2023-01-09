@@ -63,7 +63,7 @@
                             <li class="list-disc ml-5 my-2"> Unit Kompetensi 
                                 (<?= $this->model("Skema_model")->getTotalData($schema['id'], "unit_kompetensi") ?>)
                             </li>
-                            <li><a class="btn btn-success my-2" href="<?= BASEURL; ?>/asesi/detail_skema/<?= $schema['id']; ?>" >lihat detail</a></li>
+                            <li><a class="btn btn-success btn-sm my-2" href="<?= BASEURL; ?>/asesi/detail_skema/<?= $schema['id']; ?>" >lihat detail</a></li>
                         </ul>
                     </td>
                 </tr>

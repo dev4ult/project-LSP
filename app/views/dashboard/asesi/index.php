@@ -1,4 +1,4 @@
-<div class="dashboard-container border-collapse">
+<section class="dashboard-container border-collapse">
     <section class="head m-4">
         <h1 class="text-2xl font-semibold">Dashboard
             <span class="text-sm text-slate-500 font-semibold">Sistem informasi Lembaga Sertifikasi Profesi</span>
@@ -52,4 +52,4 @@
             </div>
         </div>
     </section>
-</div>
+</section>

@@ -34,7 +34,7 @@
                             <td>1</td>
                             <td>NULL</td>
                             <td>NULL</td>
-                            <td><a href="<?= BASEURL ?>" class="btn btn-success">Unggah Persyaratan</a></td>
+                            <td><a href="<?= BASEURL ?>/asesi/form_upload_document" class="btn btn-success">Lihat Persyaratan</a></td>
                         </tr>
                     </tbody>
                 </table>

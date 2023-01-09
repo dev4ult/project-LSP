@@ -1,14 +1,31 @@
 <?php
 
     class Asesi extends Controller {
+        private $breadcrumbs;
+
+        public function __construct() {
+            $this->breadcrumbs = [
+                "name" => [
+                    "home",
+                    "dashboard"
+                ],
+                "link" => [
+                    "home",
+                    "dashboard"
+                ]
+            ];
+        }
 
         public function list_skema($page = 1){
 
             $data['page-title'] = 'Skema Sertifikasi';
 
             $this->view('templates/header', $data);
-            $this->view('templates/navbar/dashboard-navbar');
-            
+            $this->view('templates/navbar/main-navbar');
+
+            // $data['page'] = $this->breadcrumbs;
+            // $this->view('templates/breadcrumbs', $data);
+
             $data['list-skema'] = $this->model('Skema_model')->fetchAllSchema("aktif", $page);
            
             $data['page'] = $page;
@@ -19,10 +36,13 @@
 
         public function detail_skema($id){
 
-            $data['page-title'] = 'Skema Sertifikasi';
+            $data['page-title'] = 'Detail Skema Sertifikasi';
 
             $this->view('templates/header', $data);
-            $this->view('templates/navbar/dashboard-navbar');
+            $this->view('templates/navbar/main-navbar');
+
+            // $data['page'] = $this->breadcrumbs;    
+            // $this->view('templates/breadcrumbs', $data);
 
             $data['skema'] = $this->model('Skema_model')->getSkemaById($id);
             $data['list-persyaratan'] = $this->model('Skema_model')->getDataSkemaById($id, "persyaratan_skema");
@@ -39,7 +59,7 @@
             $data['page-title'] = 'Skema Sertifikasi';
 
             $this->view('templates/header', $data);
-            $this->view('templates/navbar/dashboard-navbar');
+            $this->view('templates/navbar/main-navbar');
 
             $data['list-skema'] = $this->model('Skema_model')->searchSkema();
            
@@ -55,10 +75,11 @@
         }
 
         public function upload_document(){
+
             $data['page-title'] = 'Upload Dokumen Skema';
 
             $this->view('templates/header', $data);
-            $this->view('templates/navbar/dashboard-navbar');
+            $this->view('templates/navbar/main-navbar');
 
             // if(){
             //     Flasher::setFlash('Maaf, Anda belum mengunggah Dokumen Pokok !', 'danger');
@@ -66,5 +87,29 @@
 
             $this->view('form_upload_dokumen/index');
             $this->view('templates/footer');
+
+        }
+
+        public function form_upload_document(){
+
+            $data['page-title'] = 'Form Upload Dokumen';
+
+            $this->view('templates/header', $data);
+            $this->view('templates/navbar/main-navbar');
+
+            $data['syarat'] = $this->model('Dokumen_model')->fetchAllListPersyaratan();
+
+            $this->view('form_upload_dokumen/form_upload', $data);
+
+            $this->view('templates/footer');
+
+        }
+
+        public function tambah(){
+            if($this->model('Dokumen_model')->uploadFile($_POST) > 0){
+
+            } else {
+                
+            }
         }
     }
