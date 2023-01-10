@@ -81,10 +81,6 @@
             $this->view('templates/header', $data);
             $this->view('templates/navbar/main-navbar');
 
-            // if(){
-            //     Flasher::setFlash('Maaf, Anda belum mengunggah Dokumen Pokok !', 'danger');
-            // }
-
             $this->view('form_upload_dokumen/index');
             $this->view('templates/footer');
 
@@ -98,6 +94,7 @@
             $this->view('templates/navbar/main-navbar');
 
             $data['syarat'] = $this->model('Dokumen_model')->fetchAllListPersyaratan();
+            $data['dokumen-syarat'] = $this->model('Dokumen_model')->getPersyaratan();
 
             $this->view('form_upload_dokumen/form_upload', $data);
 
@@ -106,10 +103,11 @@
         }
 
         public function tambah(){
-            if($this->model('Dokumen_model')->uploadFile($_POST) > 0){
 
-            } else {
-                
-            }
+            if($this->model('Dokumen_model')->uploadFile($_POST) > 0){
+                Flasher::setFlash("Berhasil");
+            } 
+            header('Location: '.BASEURL.'/asesi/form_upload_document');
+            exit;
         }
     }

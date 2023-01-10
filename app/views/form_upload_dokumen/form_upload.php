@@ -7,10 +7,11 @@
     <hr>
     <div class="form-section my-6">
         <h1 class="text-xl font-semibold">Input Dokumen Pokok Asesi</h1>
-        <p>Masukkan Data Pokok Anda, Kemudian Klik <span>Tambah</span></p>
-        <div class="form-input flex gap-10 my-8">
-            <div class="form-control">
-                <label class="label">
+        <p>Masukkan Data Pokok Anda, Kemudian Klik <span class="btn btn-info btn-xs">Tambah</span></p>
+        <form action="<?= BASEURL; ?>/asesi/tambah" method="POST" enctype="multipart/form-data">
+            <div class="form-input flex gap-10 my-8">
+                <div class="form-control">
+                    <label class="label">
                         <span class="label-text font-medium">Jenis Dokumen Persyaratan</span>
                     </label>
                     <select class="select select-bordered w-full max-w-xs" name="syarat">
@@ -20,24 +21,26 @@
                             <?= $syarat['deskripsi'] ?></option>
                         <?php endforeach ?>
                     </select>
+                </div>
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text font-medium">Upload File</span>
+                    </label>
+                    <label class="input-group input-group-md">
+                        <input type="file" class="file-input file-input-bordered w-full max-w-xs" name="document"/>
+                    </label>
+                    <label class="label">
+                        <span class="label-text font-medium">File JPG/PNG/PDF, Maks 2 Mb</span>
+                    </label>
+                </div>
+                <div class="form-submit pt-9">
+                    <button type="submit" class="btn btn-md btn-info rounded-md" name="upload_file">Tambah</button>
+                </div>
             </div>
-            <div class="form-control">
-                <label class="label">
-                    <span class="label-text font-medium">Upload File</span>
-                </label>
-                <label class="input-group input-group-md">
-                    <input type="file" class="file-input file-input-bordered w-full max-w-xs" name="document"/>
-                </label>
-                <label class="label">
-                    <span class="label-text">File JPG/PNG/PDF, Maks 2 Mb</span>
-                </label>
-            </div>
-            <div class="form-submit pt-9">
-                <button type="submit" class="btn btn-md btn-info rounded-md" name="upload_file">Tambah</button>
-            </div>
-        </div>
+        </form>        
     </div>
 </section>
+<?= Flasher::flash() ?>
 <section class="list-persyaratan mb-6">
     <h1 class="text-xl font-semibold my-4">Data Dokumen Persyaratan</h1>
     <div class="overflow-x-auto">
@@ -51,18 +54,32 @@
                 </tr>
             </thead>
             <tbody>
-                <?php $no = 1;
-                    foreach ($data['syarat'] as $syarat):
+                <?php $no = 1;     
+                      $idDokumen = array_map(function($p){   
+                            return $p['id_persyaratan']; 
+                      },  $data['dokumen-syarat']);
+
+                      foreach ($data['syarat'] as $syarat):
                 ?>
                 <tr>
                     <th><?= $no++ ?></th>
-                    <td><?= $syarat['deskripsi'] ?></td>
-                    <td>tidak ada dokumen</td>
                     <td>
                         <ul>
-                            <li class="pb-4"><button class="btn btn-warning btn-sm rounded-md" href="">Update Document</button></li>
-                            <li class="pb-4"><button class="btn btn-error btn-sm rounded-md" href="">Delete Document</button></li>
+                            <li class="font-semibold"><?= $syarat['deskripsi'] ?></li>
+                            <?php 
+                                foreach ($data['dokumen-syarat'] as $ds) :
+                                    $name= in_array($syarat['id'], $idDokumen) ? $ds['file_dokumen'] : '';
+                                endforeach;
+                            ?>
+                            <li>Dokumen : <?= $name ?></li>
                         </ul>
+                    </td>
+                    <?php 
+                        $status = in_array($syarat['id'], $idDokumen) ? 'Dokumen Telah ada' : 'Tidak Ada Dokumen';
+                    ?>
+                    <td><?= $status ?></td>
+                    <td>
+                        <button type="submit" class="btn btn-error btn-sm rounded-md" href="">Hapus</button>
                     </td>
                 </tr>
                 <?php endforeach; ?>
