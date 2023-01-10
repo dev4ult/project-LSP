@@ -81,7 +81,10 @@
             $this->view('templates/header', $data);
             $this->view('templates/navbar/main-navbar');
 
-            $this->view('form_upload_dokumen/index');
+            $data['skema-asesi'] = $this->model('Skema_model')->getSkemaAsesi();
+            $data['count'] = $this->model('Skema_model')->getTotalUpload();
+
+            $this->view('form_upload_dokumen/index', $data);
             $this->view('templates/footer');
 
         }
@@ -117,5 +120,12 @@
             }
             header('Location: '.BASEURL.'/asesi/form_upload_document');
             exit;
+        }
+
+        public function daftar($idSkema){
+            if($this->model('Skema_model')->registSkema($idSkema) > 0){
+                header('Location: '.BASEURL.'/asesi/upload_document');
+                exit;
+            }
         }
     }

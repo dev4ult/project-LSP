@@ -93,7 +93,7 @@
                                 <p class="py-4">Apa anda yakin ingin menghapus dokumen ini ?</p>
                                 <form action="<?= BASEURL; ?>/asesi/hapus/<?= $syarat['id'] ?>" method="post" class="modal-action" enctype="multipart/form-data">
                                     <button type="submit" class="btn">Hapus</button>
-                                    <button class="btn btn-outline">Batal</button>
+                                    <a href="#" class="btn btn-outline">BATAL</a>
                                 </form>
                             </div>
                         </div>

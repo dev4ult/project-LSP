@@ -70,10 +70,10 @@
             </div>
             <?= Flasher::flash() ?>
             <div class="button-group my-4 flex justify-center">
-                <form method="post">
-                    <input type="submit" class ="btn btn-success btn-sm disabled" value="Daftar"/>
+                <form action="<?= BASEURL ?>/asesi/daftar/<?= $data['skema']['id'] ?>" method="post">
+                    <input type="submit" class ="btn btn-success btn-sm disabled" value="Proses Pendaftaran"/>
                 </form>
-                <a class ="btn btn-outline btn-sm mx-5" href="<?= BASEURL ?>/asesi/list_skema">Kembali</a>
+                <a class ="btn btn-outline btn-sm mx-5" href="<?= BASEURL ?>/asesi/list_skema">KEMBALI</a>
             </div>
         </section>
     </div>
