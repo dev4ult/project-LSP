@@ -105,8 +105,16 @@
         public function tambah(){
 
             if($this->model('Dokumen_model')->uploadFile($_POST) > 0){
-                Flasher::setFlash("Berhasil");
+                Flasher::setFlash("Berhasil Ditambahkan");
             } 
+            header('Location: '.BASEURL.'/asesi/form_upload_document');
+            exit;
+        }
+
+        public function hapus($idPersyaratan){
+            if($this->model('Dokumen_model')->deleteFile($idPersyaratan) > 0){
+                Flasher::setFlash("Berhasil Dihapus");
+            }
             header('Location: '.BASEURL.'/asesi/form_upload_document');
             exit;
         }

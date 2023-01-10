@@ -33,8 +33,23 @@
             $query = "SELECT * FROM dokumen_persyaratan WHERE id_biodata_asesi = :id_biodata_asesi";
 
             $this->db->query($query);
+
             $this->db->bind('id_biodata_asesi', $idBio);
             return $this->db->resultSet();
+
+        }
+
+        public function getfileName($id_persyaratan){
+
+            $idBio = $this->getIdBiodata($_SESSION['username']);
+
+            $query = "SELECT file_dokumen FROM dokumen_persyaratan WHERE id_persyaratan = :id_persyaratan";
+
+            $this->db->query($query);
+
+            $this->db->bind('id_persyaratan', $id_persyaratan);
+            return $this->db->single()['file_dokumen'];
+
         }
 
         public function uploadFile($data){ 
@@ -49,15 +64,18 @@
             $file_type = $file_ext[1];
 
             if(!in_array($file_type, $extensions)){
+
                 Flasher::setFlash('Extensi file salah !');
                 return false;
+                
             } else if($file_size > 2097152){
+
                 Flasher::setFlash('Ukuran file tidak boleh melebihi 2 MB');
                 return false;
+
             } else {
-                $data['size'] = $file_size;
-                $data['path'] = "public/img/".$file_name;
-                move_uploaded_file($file_tmp, $data['path']);
+
+                move_uploaded_file($file_tmp, 'public/img/'.$file_name);
     
                 $query = "INSERT INTO dokumen_persyaratan VALUES('', :id_biodata_asesi, :id_persyaratan, :file_dokumen)";
 
@@ -71,5 +89,19 @@
                 return $this->db->rowChangeCheck();
 
             } 
+        }
+
+        public function deleteFile($id_persyaratan) {
+
+            $idBio = $this->getIdBiodata($_SESSION['username']);
+
+            $this->db->query('DELETE FROM dokumen_persyaratan WHERE id_persyaratan=:id_persyaratan AND id_biodata_asesi=:id_biodata_asesi');
+
+            $this->db->bind('id_persyaratan', $id_persyaratan);
+            $this->db->bind('id_biodata_asesi', $idBio);
+    
+            $this->db->execute();
+    
+            return $this->db->rowChangeCheck();
         }
     }

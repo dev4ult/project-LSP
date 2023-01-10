@@ -40,7 +40,9 @@
         </form>        
     </div>
 </section>
+
 <?= Flasher::flash() ?>
+
 <section class="list-persyaratan mb-6">
     <h1 class="text-xl font-semibold my-4">Data Dokumen Persyaratan</h1>
     <div class="overflow-x-auto">
@@ -55,34 +57,49 @@
             </thead>
             <tbody>
                 <?php $no = 1;     
-                      $idDokumen = array_map(function($p){   
+                      $idPersyaratan = array_map(function($p){   
                             return $p['id_persyaratan']; 
                       },  $data['dokumen-syarat']);
 
-                      foreach ($data['syarat'] as $syarat):
+                      foreach ($data['syarat'] as $syarat): 
                 ?>
                 <tr>
                     <th><?= $no++ ?></th>
                     <td>
                         <ul>
                             <li class="font-semibold"><?= $syarat['deskripsi'] ?></li>
-                            <?php 
-                                foreach ($data['dokumen-syarat'] as $ds) :
-                                    $name= in_array($syarat['id'], $idDokumen) ? $ds['file_dokumen'] : '';
-                                endforeach;
-                            ?>
-                            <li>Dokumen : <?= $name ?></li>
+                            <li>Dokumen : <span class="text-blue-500">
+                                <?php if(in_array($syarat['id'], $idPersyaratan)){
+                                    echo $this->model('Dokumen_model')->getfileName($syarat['id']);
+                                }
+                                ?>
+                                </span>
+                            </li>
                         </ul>
                     </td>
-                    <?php 
-                        $status = in_array($syarat['id'], $idDokumen) ? 'Dokumen Telah ada' : 'Tidak Ada Dokumen';
-                    ?>
+                        <?php 
+                            $status = in_array($syarat['id'], $idPersyaratan) ? 'Dokumen Telah Tersedia' : 'Tidak Ada Dokumen';
+                        ?>
                     <td><?= $status ?></td>
                     <td>
-                        <button type="submit" class="btn btn-error btn-sm rounded-md" href="">Hapus</button>
+                        <?php 
+                            $btn_status = in_array($syarat['id'], $idPersyaratan) ? '' : 'btn-disabled';
+                        ?>
+                        <a href="#delete-modal-<?= $syarat['id'] ?>" class="btn btn-error btn-sm rounded-md <?= $btn_status ?>">Hapus</a>
+                        <!-- MODAL -->
+                        <div class="modal modal-bottom sm:modal-middle" id="delete-modal-<?= $syarat['id'] ?>">
+                            <div class="modal-box">
+                                <h3 class="font-bold text-lg">Delete Document</h3>
+                                <p class="py-4">Apa anda yakin ingin menghapus dokumen ini ?</p>
+                                <form action="<?= BASEURL; ?>/asesi/hapus/<?= $syarat['id'] ?>" method="post" class="modal-action" enctype="multipart/form-data">
+                                    <button type="submit" class="btn">Hapus</button>
+                                    <button class="btn btn-outline">Batal</button>
+                                </form>
+                            </div>
+                        </div>
                     </td>
                 </tr>
-                <?php endforeach; ?>
+                <?php endforeach;?>
             </tbody>
         </table>
     </div>
