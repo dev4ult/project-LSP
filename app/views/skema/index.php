@@ -42,6 +42,13 @@ function getAmountPersyaratan($id)
   return call_user_func_array([$skema, $method], [$id])['jumlah'];
 }
 
+function getAmountKompetensi($id)
+{
+  $skema = new Skema();
+  $method = "countKompetensi";
+  return call_user_func_array([$skema, $method], [$id])['jumlah'];
+}
+
 ?>
 
 <!-- Button Tambah dan Search -->
@@ -90,7 +97,7 @@ function getAmountPersyaratan($id)
             <td>
               <?= $ds['level']; ?> pada kompetensi <?= $ds['nama_skema']; ?>
               <ul class="list-inside list-disc relative translate-x-4">
-                <li><span>10</span> Unit Kompetensi</li>
+                <li><span><?= getAmountKompetensi($ds['id']); ?></span> Unit Kompetensi</li>
                 <li><span><?= getAmountRegistered($ds['id']); ?></span> Asesi Terdaftar</li>
                 <li><span><?= getAmountAssessed($ds['id']); ?></span> Asesi telah Asesmen Mandiri (APL-02)</li>
               </ul>
@@ -99,7 +106,8 @@ function getAmountPersyaratan($id)
             <td class="text-center"><?= $ds['status']; ?></td>
             <td class="text-center">
               <span class="block font-bold">(<span><?= getAmountPersyaratan($ds['id']); ?></span>) Persyaratan</span>
-              <a href="<?= BASEURL ?>/persyaratan/skema/<?= $ds['nama_skema'] ?>/<?= $ds['level'] ?>" class="btn btn-success rounded-md mt-5">Ubah Persyaratan</a>
+              <!-- The button to open modal -->
+              <label for="my-modal-6" data-skema="<?= $ds['nama_skema']; ?>" data-level="<?= $ds['level']; ?>" class="btn btn-success rounded-md mt-5 show-syarat">Lihat Persyaratan</label>
             </td>
             <td class="text-center flex flex-col items-center justify-between">
               <?php if ($ds['status'] == "Aktif") : ?>
@@ -107,7 +115,7 @@ function getAmountPersyaratan($id)
               <?php else : ?>
                 <a href="<?= BASEURL ?>/skema/status/<?= $ds['id'] ?>/<?= $ds['status'] ?>" class="btn btn-outline btn-warning rounded-md">Aktifkan</a>
               <?php endif; ?>
-              <a href="<?= BASEURL ?>/skema/detail/<?= $ds['id'] ?>" class="btn btn-outline btn-info rounded-md mt-5">Ubah/Perbarui</a>
+              <a href="<?= BASEURL ?>/skema/detail/<?= $ds['nama_skema'] ?>/<?= $ds['level'] ?>" class="btn btn-outline btn-info rounded-md mt-5">Detail</a>
             </td>
           </tr>
         <?php endforeach; ?>
@@ -127,4 +135,27 @@ function getAmountPersyaratan($id)
   <a href="<?= BASEURL ?>/skema/index/<?= ($data['page'] == 1) ? 1 : $data['page'] - 1 ?>" class="btn">«</a>
   <button class="btn">Page <?= $data["page"] ?></button>
   <a href="<?= BASEURL ?>/skema/index/<?= $data['page'] + 1 ?>" class="btn">»</a>
+</div>
+
+<!-- Put this part before </body> tag -->
+<input type="checkbox" id="my-modal-6" class="modal-toggle" />
+<div class="modal">
+  <div class="modal-box w-[800px] max-w-[800px]">
+    <h3 class="font-bold text-lg">Persyaratan Skema Sertifikasi</h3>
+    <div class="group-input-persyaratan w-full flex justify-between">
+      <div class="list-umum w-1/2">
+        <h1 class="text-lg font-semibold mt-5 mb-3">Kategori Umum</h1>
+        <ul class="list-inside input-umum w-full list-disc relative translate-x-4">
+        </ul>
+      </div>
+      <div class="list-teknis w-1/2">
+        <h1 class="text-lg font-semibold mt-5 mb-3">Kategori Teknis</h1>
+        <ul class="list-inside input-teknis w-full list-disc relative translate-x-4">
+        </ul>
+      </div>
+    </div>
+    <div class="modal-action">
+      <label for="my-modal-6" class="btn">Tutup</label>
+    </div>
+  </div>
 </div>

@@ -22,10 +22,21 @@ class Persyaratan_model
     }
   }
 
-  public function fetchAllPersyaratan()
+  public function fetchAllPersyaratan($kategori)
   {
-    $query = "SELECT id, deskripsi from list_persyaratan ORDER BY id ASC";
+    $query = "SELECT id, deskripsi from list_persyaratan WHERE kategori=:kategori ORDER BY id ASC";
     $this->db->query($query);
+    $this->db->bind("kategori", $kategori);
+    return $this->db->resultSet();
+  }
+
+  public function fetchAllPersyaratanByIdSkemaKategori($id, $kategori)
+  {
+    $query = "SELECT persyaratan_skema.deskripsi FROM persyaratan_skema JOIN list_persyaratan ON persyaratan_skema.deskripsi = list_persyaratan.deskripsi WHERE persyaratan_skema.id_skema =:idSkema AND list_persyaratan.kategori =:kategori;
+    ";
+    $this->db->query($query);
+    $this->db->bind("kategori", $kategori);
+    $this->db->bind("idSkema", $id);
     return $this->db->resultSet();
   }
 
@@ -38,15 +49,34 @@ class Persyaratan_model
     return $this->db->single();
   }
 
-  public function addDataPersyaratanSkema($nama, $level, $deskripsi)
+  public function getIdPersyaratanBySkema($deskripsi, $idSkema)
   {
-    $idSkema = $this->getIdSkemaByNama($nama, $level)['id'];
+    $query = "SELECT id FROM persyaratan_skema WHERE deskripsi=:deskripsi AND id_skema=:id";
+    $this->db->query($query);
+    $this->db->bind("deskripsi", $deskripsi);
+    $this->db->bind("id", $idSkema);
+    return $this->db->single();
+  }
+
+  public function addDataPersyaratanSkema($id, $deskripsi)
+  {
+    // $idSkema = $this->getIdSkemaByNama($nama, $level)['id'];
     $query = "INSERT INTO persyaratan_skema VALUES ('', :deskripsi, :idskema)";
     $this->db->query($query);
     $this->db->bind("deskripsi", $deskripsi);
-    $this->db->bind("idskema", $idSkema);
+    $this->db->bind("idskema", $id);
     $this->db->execute();
     $this->db->rowChangeCheck();
+  }
+
+  public function deleteDataPersyaratanSkema($deskripsi, $idSkema)
+  {
+    // $id = $this->getIdPersyaratanBySkema($deskripsi, $idSkema);
+    $query = "DELETE FROM persyaratan_skema WHERE id_skema=:idSyarat AND deskripsi=:deskripsi";
+    $this->db->query($query);
+    $this->db->bind("idSyarat", $idSkema);
+    $this->db->bind("deskripsi", $deskripsi);
+    $this->db->execute();
   }
 
   public function fetchPersyaratanBySkema($nama, $level)

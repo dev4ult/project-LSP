@@ -1,3 +1,4 @@
+<a href="<?= BASEURL ?>/skema/index/" class="btn btn-outline btn-warning my-5">Back</a>
 <h1 class="text-3xl font-bold my-5 mb-6">Input Persyaratan Skema Sertifikasi LSP</h1>
 <?= Flasher::flash(); ?>
 
@@ -44,33 +45,65 @@
       </div>
     </div>
     <h1 class="inline-block text-xl font-bold mt-8 mb-3 mr-5 ">Persyaratan Skema</h1><span class="badge badge-info cursor-pointer" onclick="addSection()">Tambah Persyaratan</span>
-    <div class="group-input-persyaratan w-[500px] flex flex-wrap justify-between">
-      <?php foreach ($data['list-persyaratan'] as $ds) : ?>
-        <?php if (isset($data['persyaratan-skema'])) : ?>
-          <?php foreach ($data['persyaratan-skema'] as $ps) : ?>
-            <?php if ($ps['deskripsi'] == $ds['deskripsi']) : ?>
-              <?php $match = true;
-              break; ?>
-            <?php endif; ?>
-          <?php endforeach; ?>
-        <?php endif; ?>
-        <?php if (isset($match) && $match == true) : ?>
-          <div class="form-control w-1/2">
-            <label class="cursor-pointer label flex justify-start">
-              <input type="checkbox" disabled checked="checked" class="checkbox checkbox-info mr-3" name="check[]" value="<?= $ds['deskripsi']; ?>" />
-              <span class="label-text font-semibold"><?= $ds['deskripsi']; ?></span>
-            </label>
-          </div>
-          <?php $match = false; ?>
-        <?php else : ?>
-          <div class="form-control w-1/2">
-            <label class="cursor-pointer label flex justify-start">
-              <input type="checkbox" class="checkbox checkbox-info mr-3" name="check[]" value="<?= $ds['deskripsi']; ?>" />
-              <span class="label-text font-semibold"><?= $ds['deskripsi']; ?></span>
-            </label>
-          </div>
-        <?php endif; ?>
-      <?php endforeach; ?>
+    <div class="group-input-persyaratan w-full flex flex-wrap justify-between">
+      <div class="list-umum w-[500px]">
+        <h1 class="text-lg font-semibold mt-5 mb-3">Kategori Umum</h1>
+        <?php foreach ($data['list-persyaratan-umum'] as $ds) : ?>
+          <?php if (isset($data['persyaratan-skema'])) : ?>
+            <?php foreach ($data['persyaratan-skema'] as $ps) : ?>
+              <?php if ($ps['deskripsi'] == $ds['deskripsi']) : ?>
+                <?php $match = true;
+                break; ?>
+              <?php endif; ?>
+            <?php endforeach; ?>
+          <?php endif; ?>
+          <?php if (isset($match) && $match == true) : ?>
+            <div class="form-control w-1/2">
+              <label class="cursor-pointer label flex justify-start">
+                <input type="checkbox" disabled checked="checked" class="checkbox checkbox-info mr-3" name="check[]" value="<?= $ds['deskripsi']; ?>" />
+                <span class="label-text font-semibold"><?= $ds['deskripsi']; ?></span>
+              </label>
+            </div>
+            <?php $match = false; ?>
+          <?php else : ?>
+            <div class="form-control w-1/2">
+              <label class="cursor-pointer label flex justify-start">
+                <input type="checkbox" class="checkbox checkbox-info mr-3" name="check[]" value="<?= $ds['deskripsi']; ?>" />
+                <span class="label-text font-semibold"><?= $ds['deskripsi']; ?></span>
+              </label>
+            </div>
+          <?php endif; ?>
+        <?php endforeach; ?>
+      </div>
+      <div class="list-teknis w-[500px]">
+        <h1 class="text-lg font-semibold mt-5 mb-3">Kategori Teknis</h1>
+        <?php foreach ($data['list-persyaratan-teknis'] as $ds) : ?>
+          <?php if (isset($data['persyaratan-skema'])) : ?>
+            <?php foreach ($data['persyaratan-skema'] as $ps) : ?>
+              <?php if ($ps['deskripsi'] == $ds['deskripsi']) : ?>
+                <?php $match = true;
+                break; ?>
+              <?php endif; ?>
+            <?php endforeach; ?>
+          <?php endif; ?>
+          <?php if (isset($match) && $match == true) : ?>
+            <div class="form-control w-1/2">
+              <label class="cursor-pointer label flex justify-start">
+                <input type="checkbox" disabled checked="checked" class="checkbox checkbox-info mr-3" name="check[]" value="<?= $ds['deskripsi']; ?>" />
+                <span class="label-text font-semibold"><?= $ds['deskripsi']; ?></span>
+              </label>
+            </div>
+            <?php $match = false; ?>
+          <?php else : ?>
+            <div class="form-control w-1/2">
+              <label class="cursor-pointer label flex justify-start">
+                <input type="checkbox" class="checkbox checkbox-info mr-3" name="check[]" value="<?= $ds['deskripsi']; ?>" />
+                <span class="label-text font-semibold"><?= $ds['deskripsi']; ?></span>
+              </label>
+            </div>
+          <?php endif; ?>
+        <?php endforeach; ?>
+      </div>
     </div>
     <button type="submit" name="submit" class="btn btn-info my-5 mt-8">Tambahkan</button>
   </form>

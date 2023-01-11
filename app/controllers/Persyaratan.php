@@ -24,7 +24,8 @@ class Persyaratan extends Controller
   {
     $data['page-title'] = "Persyaratan";
     $data['list-skema'] = $this->model("Persyaratan_model")->fetchSkema();
-    $data['list-persyaratan'] = $this->model("Persyaratan_model")->fetchAllPersyaratan();
+    $data['list-persyaratan-umum'] = $this->model("Persyaratan_model")->fetchAllPersyaratan("Umum");
+    $data['list-persyaratan-teknis'] = $this->model("Persyaratan_model")->fetchAllPersyaratan("Teknis");
     if ($nama != "") {
       $data['skema-selected'] = preg_replace("/(?<=[a-z])(?=[A-Z])/", " ", $nama);
       $data['list-level'] = $this->model("Persyaratan_model")->fetchLevelBySkema($data['skema-selected']);
@@ -45,8 +46,9 @@ class Persyaratan extends Controller
     $finish = "";
     $namaSkema = htmlspecialchars($_POST['skema']);
     $kkni = htmlspecialchars($_POST['level-kkni']);
+    $idSkema = $this->model("Persyaratan_model")->getIdSkemaByNama($namaSkema, $kkni)['id'];
     foreach ($_POST['check'] as $chk) {
-      $finish = $this->model("Persyaratan_model")->addDataPersyaratanSkema($namaSkema, $kkni, $chk);
+      $finish = $this->model("Persyaratan_model")->addDataPersyaratanSkema($idSkema, $chk);
     }
     if ($finish) {
       header('Location: ' . BASEURL . '/persyaratan/skema');
