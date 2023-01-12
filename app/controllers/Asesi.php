@@ -105,6 +105,20 @@
 
         }
 
+        public function jadwal_asesmen(){
+
+            $data['page-title'] = 'Jadwal Asesmen Sertifikasi Asesi';
+
+            $this->view('templates/header', $data);
+            $this->view('templates/navbar/main-navbar');
+
+            $data['jadwal'] = $this->model('Skema_model')->getScheduleSkema();
+            $this->view('jadwal_skema_asesi/index', $data);
+
+            $this->view('templates/footer');
+
+        }
+
         public function tambah(){
 
             if($this->model('Dokumen_model')->uploadFile($_POST) > 0){

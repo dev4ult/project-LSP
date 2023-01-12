@@ -23,26 +23,12 @@
                 <a class="link link-hover py-1" href="<?= BASEURL ?>/asesi/upload_document"> -> Selengkapnya</a>
             </div>
         </div>
-        <div class="message-notification-menu m-3 bg-slate-900 rounded-xl">
-            <div class="text-white px-4 py-3">
-                <h1 class="text-3xl font-semibold">3</h1>
-                <h3 class="py-1">Tunggu Notifikasi</h3>
-                <a class="link link-hover py-1" href="<?= BASEURL ?>/dashboard/asesi/#"> -> Selengkapnya</a>
-            </div>
-        </div>
         <div class="schedule-view-menu m-3 bg-slate-900 rounded-xl">
             <div class="text-white px-4 py-3">
                 <h1 class="text-3xl font-semibold">4</h1>
                 <h3 class="py-1">Lihat Jadwal</h3>
-                <a class="link link-hover py-1" href="<?= BASEURL ?>/dashboard/asesi/#"> -> Selengkapnya</a>
+                <a class="link link-hover py-1" href="<?= BASEURL ?>/asesi/jadwal_asesmen"> -> Selengkapnya</a>
             </div>   
-        </div>
-        <div class="competition-unit-menu m-3 bg-slate-900 rounded-xl">
-            <div class="text-white px-4 py-3">
-                <h1 class="text-3xl font-semibold">5</h1>
-                <h3 class="py-1">Unit Kompetensi</h3>
-                <a class="link link-hover py-1" href="<?= BASEURL ?>/dashboard/asesi/#"> -> Selengkapnya</a>
-            </div>
         </div>
         <div class="sertification-menu m-3 bg-slate-900 rounded-xl">
             <div class="text-white px-4 py-3">
