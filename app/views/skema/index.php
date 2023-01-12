@@ -115,7 +115,7 @@ function getAmountKompetensi($id)
               <?php else : ?>
                 <a href="<?= BASEURL ?>/skema/status/<?= $ds['id'] ?>/<?= $ds['status'] ?>" class="btn btn-outline btn-warning rounded-md">Aktifkan</a>
               <?php endif; ?>
-              <a href="<?= BASEURL ?>/skema/detail/<?= $ds['nama_skema'] ?>/<?= $ds['level'] ?>" class="btn btn-outline btn-info rounded-md mt-5">Detail</a>
+              <a href="<?= BASEURL ?>/skema/detail/<?= $ds['id'] ?>" class="btn btn-outline btn-info rounded-md mt-5">Detail</a>
             </td>
           </tr>
         <?php endforeach; ?>

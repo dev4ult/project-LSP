@@ -14,13 +14,13 @@
       <div class="left-form w-1/2">
         <div class="form-control w-[500px]">
           <label class="label" for="skema">
-            <span class="label-text text-lg font-semibold">Nama Skema Profesi</span>
+            <span class="label-text text-lg font-semibold after:content-['*'] after:text-pink-500 after:ml-0.5">Nama Skema Profesi</span>
           </label>
           <input type="text" placeholder="" class="input input-bordered" id="skema" name="skema" required />
         </div>
         <div class="form-control w-[500px] mt-4">
           <label class="label" for="level">
-            <span class="label-text text-lg font-semibold">Level KKNI</span>
+            <span class="label-text text-lg font-semibold after:content-['*'] after:text-pink-500 after:ml-0.5">Level KKNI</span>
           </label>
           <select class="select select-bordered" id="level" name="level" required>
             <option disabled selected>-- Pilih Level --</option>
@@ -32,16 +32,21 @@
           </select>
         </div>
         <div class="form-control w-[500px] mt-4">
-          <label class="label" for="bukti-ket">
-            <span class="label-text text-lg font-semibold">Keterangan Bukti yang Akan Diperoleh</span>
+          <label class="label" for="jurusan">
+            <span class="label-text text-lg font-semibold after:content-['*'] after:text-pink-500 after:ml-0.5">Jurusan</span>
           </label>
-          <input type="text" placeholder="" class="input input-bordered" id="bukti-ket" name="bukti-keterangan" />
+          <select class="select select-bordered" id="jurusan" name="jurusan">
+            <option disabled selected>-- Pilih Jurusan --</option>
+            <?php foreach ($data['jurusan'] as $jurusan) : ?>
+              <option value="<?= $jurusan['nama']; ?>"><?= $jurusan['nama']; ?></option>
+            <?php endforeach; ?>
+          </select>
         </div>
       </div>
       <div class="right-form w-1/2">
         <div class="form-control w-full">
           <label class="label" for="SKKNI">
-            <span class="label-text text-lg font-semibold">SKK/KKNI LSP</span>
+            <span class="label-text text-lg font-semibold after:content-['*'] after:text-pink-500 after:ml-0.5">SKK/KKNI LSP</span>
           </label>
           <select class="select select-bordered" id="SKKNI" name="SKKNI" required>
             <option disabled selected>-- Pilih SKK/KKNI --</option>
@@ -51,16 +56,24 @@
           </select>
         </div>
         <div class="form-control w-full mt-4">
-          <label class="label" for="Kedalaman">
-            <span class="label-text text-lg font-semibold">Kedalaman Bukti yang Akan Diperoleh</span>
+          <label class="label" for="status">
+            <span class="label-text text-lg font-semibold after:content-['*'] after:text-pink-500 after:ml-0.5">Status</span>
           </label>
-          <select class="select select-bordered" id="Kedalaman" name="bukti-kedalaman">
-            <option disabled selected>-- Pilih SKK/KKNI --</option>
-            <option value="SKKNI Industri Modifikasi Kendaraan Bermotor">SKKNI Industri Modifikasi Kendaraan Bermotor</option>
-            <option value="SKKNI Perakitan Telepon Seluler">SKKNI Perakitan Telepon Seluler</option>
-            <option value="SKKNI Peralatan Elektronika">SKKNI Peralatan Elektronika</option>
-            <option value="SKKNI Industri Cat">SKKNI Industri Cat</option>
-            <option value="SKKNI Teknis Ototronik">SKKNI Teknis Ototronik</option>
+          <select class="select select-bordered" id="status" name="status">
+            <option disabled selected>-- Pilih Status --</option>
+            <option value="Aktif">Aktif</option>
+            <option value="Nonaktif">Nonaktif</option>
+          </select>
+        </div>
+        <div class="form-control w-full mt-4">
+          <label class="label" for="asesor">
+            <span class="label-text text-lg font-semibold after:content-['*'] after:text-pink-500 after:ml-0.5">Asesor</span>
+          </label>
+          <select class="select select-bordered" id="asesor" name="asesor">
+            <option disabled selected>-- Pilih Asesor --</option>
+            <?php foreach ($data['asesor'] as $asesor) : ?>
+              <option value="<?= $asesor['nama']; ?>"><?= $asesor['nama']; ?></option>
+            <?php endforeach; ?>
           </select>
         </div>
       </div>
