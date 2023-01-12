@@ -10,15 +10,6 @@ class Login extends Controller {
         $this->view('templates/header');
     }
 
-    public function admin() {
-        $data['page-title'] = "Login Admin";
-
-        $this->view('templates/header', $data);
-        $this->view('templates/navbar/main-navbar');
-        $this->view('login/admin');
-        $this->view('templates/header');
-    }
-
     public function validate() {
         if ($this->model('Login_model')->validateLogin($_POST)) {
             header('Location: ' . BASEURL . '/dashboard');

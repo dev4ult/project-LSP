@@ -2,6 +2,7 @@
     <div class="bg-base-100 p-7 shadow-xl rounded-xl">
         <div>
             <h1 class="text-3xl font-bold">Registrasi Asesi</h1>
+
         </div>
         <div class="">
             <?= Flasher::flash() ?>
@@ -88,8 +89,6 @@
 
                     </div>
                 </div>
-
-
 
                 <div class="form-control flex-row gap-5">
                     <div>

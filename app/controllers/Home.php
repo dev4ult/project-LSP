@@ -10,4 +10,7 @@ class Home extends Controller {
         $this->view('home/index', $data);
         $this->view('templates/footer');
     }
+
+    public function about_us() {
+    }
 }
