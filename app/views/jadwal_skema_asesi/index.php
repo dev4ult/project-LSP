@@ -6,7 +6,7 @@
         <div class="head flex justify-between my-5">
             <h1 class="text-xl font-semibold my-3">Jadwal Asesmen Sertifikasi Profesi</h1>
             <div class="form-control">
-                <form action="<?= BASEURL; ?>/asesi/search_skema" method="post">  
+                <form action="<?= BASEURL; ?>/asesi/search_jadwal_asesmen" method="post">  
                     <div class="input-group rounded-lg">
                         <input type="text" placeholder="Search" class="input input-bordered" name="keyword" id="keyword" autocomplete="off"/>
                         <button class="btn btn-square" type="submit">
@@ -28,7 +28,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php $no = 1;
+                    <?php $no = ($data['page'] - 1) * 5 + 1;
                           foreach($data['jadwal'] as $jadwal):
                     ?>
                     <tr>
@@ -61,3 +61,12 @@
         </div>
     </div>
 </section>
+
+<!-- Pagination -->
+<div class="btn-group my-10">
+    <a href="<?= BASEURL ?>/asesi/list_skema/<?= ($data['page'] == 1) ? 1 : $data['page'] - 1 ?>"
+        class="btn">«</a>
+    <button class="btn">Page <?= $data["page"] ?></button>
+    <a href="<?= BASEURL ?>/asesi/list_skema/<?= $data['page'] + 1 ?>"
+        class="btn">»</a>
+</div>

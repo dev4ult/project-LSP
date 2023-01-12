@@ -61,11 +61,10 @@
             $this->view('templates/header', $data);
             $this->view('templates/navbar/main-navbar');
 
-            $data['list-skema'] = $this->model('Skema_model')->searchSkema();
-           
+            $data['list-skema'] = $this->model('Skema_model')->searchSkema($page);
             $data['page'] = $page;
 
-            if ($this->model('Skema_model')->searchSkema() == NULL){
+            if ($this->model('Skema_model')->searchSkema($page) == NULL){
                 Flasher::setFlash('Data Tidak Ada', 'shadow');
             }
 
@@ -74,17 +73,37 @@
 
         }
 
-        public function upload_document(){
+        public function upload_document($page = 1){
 
             $data['page-title'] = 'Upload Dokumen Skema';
 
             $this->view('templates/header', $data);
             $this->view('templates/navbar/main-navbar');
 
-            $data['skema-asesi'] = $this->model('Skema_model')->getSkemaAsesi();
+            $data['skema-asesi'] = $this->model('Skema_model')->getSkemaAsesi($page);
             $data['count'] = $this->model('Skema_model')->getTotalUpload();
+            $data['page'] = $page;
 
             $this->view('form_upload_dokumen/index', $data);
+            $this->view('templates/footer');
+
+        }
+
+        public function search_upload_document($page = 1){
+
+            $data['page-title'] = 'Upload Dokumen Skema';
+
+            $this->view('templates/header', $data);
+            $this->view('templates/navbar/main-navbar');
+
+            $data['list-skema'] = $this->model('Skema_model')->searchSkemaAsesi($page);
+            $data['page'] = $page;
+
+            if ($this->model('Skema_model')->searchSkemaAsesi($page) == NULL){
+                Flasher::setFlash('Data Tidak Ada', 'shadow');
+            }
+
+            $this->view('list_skema_asesi/index', $data);
             $this->view('templates/footer');
 
         }
@@ -100,21 +119,40 @@
             $data['dokumen-syarat'] = $this->model('Dokumen_model')->getPersyaratan();
 
             $this->view('form_upload_dokumen/form_upload', $data);
-
             $this->view('templates/footer');
 
         }
 
-        public function jadwal_asesmen(){
+        public function jadwal_asesmen($page = 1){
 
             $data['page-title'] = 'Jadwal Asesmen Sertifikasi Asesi';
 
             $this->view('templates/header', $data);
             $this->view('templates/navbar/main-navbar');
 
-            $data['jadwal'] = $this->model('Skema_model')->getScheduleSkema();
-            $this->view('jadwal_skema_asesi/index', $data);
+            $data['jadwal'] = $this->model('Skema_model')->getScheduleSkema($page);
+            $data['page'] = $page;
 
+            $this->view('jadwal_skema_asesi/index', $data);
+            $this->view('templates/footer');
+
+        }
+
+        public function search_jadwal_asesmen($page = 1){
+
+            $data['page-title'] = 'Upload Dokumen Skema';
+
+            $this->view('templates/header', $data);
+            $this->view('templates/navbar/main-navbar');
+
+            $data['list-skema'] = $this->model('Skema_model')->searchJadwal($page);
+            $data['page'] = $page;
+
+            if ($this->model('Skema_model')->searchJadwal($page) == NULL){
+                Flasher::setFlash('Data Tidak Ada', 'shadow');
+            }
+
+            $this->view('list_skema_asesi/index', $data);
             $this->view('templates/footer');
 
         }

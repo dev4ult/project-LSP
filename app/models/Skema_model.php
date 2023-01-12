@@ -48,22 +48,53 @@
             return count($this->db->resultSet());
         }
 
-        public function searchSkema(){
+        public function searchSkema($page){
             $keyword = $_POST['keyword'];
-            $query = "SELECT * FROM skema_sertifikasi WHERE nama_skema LIKE :keyword";
+            $query = "SELECT * FROM skema_sertifikasi WHERE nama_skema LIKE :keyword LIMIT :page, 5";
 
             $this->db->query($query);
             $this->db->bind('keyword', "%$keyword%");
+            $this->db->bind("page", 5 * ($page - 1));
 
             return $this->db->resultSet();
         }
 
-        public function getSkemaAsesi(){
-            
-            $query = "SELECT skema_sertifikasi.nama_skema FROM daftar_asesi_sertifikasi
-                      INNER JOIN skema_sertifikasi ON daftar_asesi_sertifikasi.id_skema_sertifikasi=skema_sertifikasi.id";
+        public function searchJadwal($page){
+            $keyword = $_POST['keyword'];
+            $query = "SELECT DiSTINCT unit_kompetensi.nama_kompetensi, skema_sertifikasi.nama_skema, biodata_asesor.nama, unit_kompetensi.tgl_ujian_kompetensi, unit_kompetensi.jam_mulai, 
+                        unit_kompetensi.jam_akhir, unit_kompetensi.tempat_unit_kompetensi FROM daftar_asesi_sertifikasi      
+                        JOIN skema_sertifikasi ON daftar_asesi_sertifikasi.id_skema_sertifikasi = skema_sertifikasi.id
+                        JOIN unit_kompetensi ON skema_sertifikasi.id = unit_kompetensi.id_skema
+                        JOIN biodata_asesor ON skema_sertifikasi.id_biodata_asesor = biodata_asesor.id 
+                        WHERE daftar_asesi_sertifikasi.id_biodata_asesi =:id_biodata_asesi LIKE :keyword LIMIT :page, 5";
 
             $this->db->query($query);
+            $this->db->bind('keyword', "%$keyword%");
+            $this->db->bind("page", 5 * ($page - 1));
+
+            return $this->db->resultSet();
+        }
+
+        public function searchSkemaAsesi($page){
+            $keyword = $_POST['keyword'];
+            $query = "SELECT skema_sertifikasi.nama_skema FROM daftar_asesi_sertifikasi
+                      INNER JOIN skema_sertifikasi ON daftar_asesi_sertifikasi.id_skema_sertifikasi=skema_sertifikasi.id 
+                      LIKE :keyword LIMIT :page, 5";
+
+            $this->db->query($query);
+            $this->db->bind('keyword', "%$keyword%");
+            $this->db->bind("page", 5 * ($page - 1));
+
+            return $this->db->resultSet();
+        }
+
+        public function getSkemaAsesi($page){
+            
+            $query = "SELECT skema_sertifikasi.nama_skema FROM daftar_asesi_sertifikasi
+                      INNER JOIN skema_sertifikasi ON daftar_asesi_sertifikasi.id_skema_sertifikasi=skema_sertifikasi.id LIMIT :page, 5";
+
+            $this->db->query($query);
+            $this->db->bind("page", 5 * ($page - 1));
 
             return $this->db->resultSet();
         }
@@ -106,28 +137,21 @@
             return $this->db->rowChangeCheck();
         }
 
-        public function getScheduleSkema(){
+        public function getScheduleSkema($page){
 
             $idBio = $this->getIdBiodata($_SESSION['username']);
 
-            $query = "SELECT DiSTINCT unit_kompetensi.nama_kompetensi, skema_sertifikasi.nama_skema, biodata_asesor.nama, unit_kompetensi.tgl_ujian_kompetensi, unit_kompetensi.jam_mulai, 
-            unit_kompetensi.jam_akhir, unit_kompetensi.tempat_unit_kompetensi FROM daftar_asesi_sertifikasi      
-                JOIN skema_sertifikasi ON daftar_asesi_sertifikasi.id_skema_sertifikasi = skema_sertifikasi.id
-                JOIN unit_kompetensi ON skema_sertifikasi.id = unit_kompetensi.id_skema
-                JOIN biodata_asesor ON skema_sertifikasi.id_biodata_asesor = biodata_asesor.id 
-                    WHERE daftar_asesi_sertifikasi.id_biodata_asesi =:id_biodata_asesi";
+            $query =   "SELECT DiSTINCT unit_kompetensi.nama_kompetensi, skema_sertifikasi.nama_skema, biodata_asesor.nama, unit_kompetensi.tgl_ujian_kompetensi, unit_kompetensi.jam_mulai, 
+                        unit_kompetensi.jam_akhir, unit_kompetensi.tempat_unit_kompetensi FROM daftar_asesi_sertifikasi      
+                        JOIN skema_sertifikasi ON daftar_asesi_sertifikasi.id_skema_sertifikasi = skema_sertifikasi.id
+                        JOIN unit_kompetensi ON skema_sertifikasi.id = unit_kompetensi.id_skema
+                        JOIN biodata_asesor ON skema_sertifikasi.id_biodata_asesor = biodata_asesor.id 
+                            WHERE daftar_asesi_sertifikasi.id_biodata_asesi =:id_biodata_asesi LIMIT :page, 5";
 
             $this->db->query($query);
             $this->db->bind('id_biodata_asesi', $idBio);
+            $this->db->bind("page", 5 * ($page - 1));
 
             return $this->db->resultSet();
         }
-
-        // public function getFileOpsional(){
-        //     $query = "";
-
-        //     $this->db->query();
-
-        //     return $this->db->resultSet();
-        // }
     }
