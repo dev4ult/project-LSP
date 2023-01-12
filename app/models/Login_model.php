@@ -41,7 +41,7 @@ class Login_model {
 
         // account check
         if ($this->accountCheck($umail, $password) == false) {
-            Flasher::setFlash('Username / Email or Password is wrong');
+            Flasher::setFlash('Username / Email or Password is wrong', 'error');
             return false;
         } else {
             $this->setLoginSession($umail);

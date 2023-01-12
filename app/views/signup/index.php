@@ -1,124 +1,122 @@
 <div class="hero min-h-screen">
+    <?= Flasher::flash() ?>
     <div class="bg-base-100 p-7 shadow-xl rounded-xl">
         <div>
             <h1 class="text-3xl font-bold">Registrasi Asesi</h1>
-
         </div>
-        <div class="">
-            <?= Flasher::flash() ?>
-            <form action="<?= BASEURL ?>/signup/add" method="post" class="">
+        <form action="<?= BASEURL ?>/signup/add" method="post" class="flex">
+            <div class="grid place-content-start grid-cols-2 gap-x-5 gap-y-3 pr-7 border-r-2 border-slate-200">
                 <!-- NAMA LENGKAP DAN NIM -->
-                <div class="form-control flex-row gap-5">
-                    <div>
-                        <label class="label">
-                            <span class="label-text">Nama Lengkap</span>
-                        </label>
-                        <input type="text" placeholder="nama" class="rounded-sm input input-bordered" name="nama"
-                            required />
-                    </div>
-                    <div>
-                        <label class="label">
-                            <span class="label-text">NIM</span>
-                        </label>
-                        <input type="number" placeholder="nim" class="rounded-sm input input-bordered" name="nim"
-                            required />
-                    </div>
+                <div class="h-fit ">
+                    <label class="label">
+                        <span class="label-text">Nama Lengkap</span>
+                    </label>
+                    <input type="text" placeholder="Ketikan nama lengkap" class="rounded-sm w-full input input-bordered"
+                        name="nama" required />
+                </div>
+                <div class="h-fit ">
+                    <label class="label">
+                        <span class="label-text">NIM</span>
+                    </label>
+                    <input type="number" placeholder="nim" class="rounded-sm w-full input input-bordered" name="nim"
+                        required />
                 </div>
 
                 <!-- JURUSAN DAN PRODI -->
-                <div class="form-control flex-row gap-5">
-                    <div>
-                        <label class="label">
-                            <span class="label-text">Jurusan</span>
-                        </label>
-                        <select class="select select-bordered w-full max-w-xs" name="jurusan" required>
-                            <option disabled selected>-- PILIH JURUSAN --</option>
-                            <option value="Teknik Informatika dan Komputer">Teknik Informatika dan Komputer</option>
-                            <option value="Teknik Sipil">Teknik Sipil</option>
-                            <option value="Teknik Mesin">Teknik Mesin</option>
-                            <option value="Teknik Elektro">Teknik Elektro</option>
-                            <option value="Teknik Grafika dan Penerbitan">Teknik Grafika dan Penerbitan</option>
-                            <option value="Akuntansi">Akuntansi</option>
-                            <option value="Administrasi Niaga">Administrasi Niaga</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="label">
-                            <span class="label-text">Prodi</span>
-                        </label>
-                        <select class="select select-bordered w-full max-w-xs" name="prodi" required>
-                            <option disabled selected>-- PILIH JURUSAN TERLEBIH DAHULU--</option>
-                        </select>
-                    </div>
-
-
+                <div class="h-fit ">
+                    <label class="label">
+                        <span class="label-text">Jurusan</span>
+                    </label>
+                    <select class="select select-bordered rounded-sm w-full max-w-xs" name="jurusan" required>
+                        <option disabled selected class="text-slate-300">-- PILIH JURUSAN --</option>
+                        <option value="Teknik Informatika dan Komputer">Teknik Informatika dan Komputer</option>
+                        <option value="Teknik Sipil">Teknik Sipil</option>
+                        <option value="Teknik Mesin">Teknik Mesin</option>
+                        <option value="Teknik Elektro">Teknik Elektro</option>
+                        <option value="Teknik Grafika dan Penerbitan">Teknik Grafika dan Penerbitan</option>
+                        <option value="Akuntansi">Akuntansi</option>
+                        <option value="Administrasi Niaga">Administrasi Niaga</option>
+                    </select>
+                </div>
+                <div class="h-fit ">
+                    <label class="label">
+                        <span class="label-text">Prodi</span>
+                    </label>
+                    <select class="select select-bordered rounded-sm w-full max-w-xs" name="prodi" required>
+                        <option disabled selected class="text-slate-300">-- PILIH JURUSAN TERLEBIH DAHULU--</option>
+                    </select>
                 </div>
 
-                <!-- NO TELEPON DAN ALAMAT -->
-                <div class="form-control flex-row gap-5">
-                    <div class="flex flex-col justify-between">
-                        <div>
-                            <label class="label">
-                                <span class="label-text">No Telepon</span>
+                <!-- NO TELEPON, JENIS KELAMIN DAN ALAMAT -->
+                <div class="flex flex-col gap-6 h-fit">
+                    <div>
+                        <label class="label">
+                            <span class="label-text">No Telepon</span>
+                        </label>
+                        <input type="text" placeholder="no telepon" class="rounded-sm w-full input input-bordered"
+                            name="no-telepon" required />
+                    </div>
+                    <div class="form-control">
+                        <label class="label-text mb-2">Jenis Kelamin</label>
+                        <div class="flex gap-2 justify-between">
+                            <label
+                                class="form-control flex-row items-center gap-3 border-2 rounded-sm border-slate-200 py-2 pl-3 pr-10">
+                                <input type="radio" class="radio-1 radio " name="jenis-kelamin" value="Laki-laki"
+                                    required />
+                                <span>Laki-laki</span>
                             </label>
-                            <input type="text" placeholder="no telepon" class="rounded-sm input input-bordered"
-                                name="no-telepon" required />
+                            <label
+                                class="form-control flex-row items-center gap-3 border-2 rounded-sm border-slate-200 py-2 pl-3 pr-10">
+                                <input type="radio" class="radio-1 radio" name="jenis-kelamin" value="Perempuan" />
+                                <span>Perempuan</span>
+                            </label>
                         </div>
-                        <div class="form-control self-center">
-                            <label class="label-text">Jenis Kelamin</label>
-                            <div class="flex gap-5">
-                                <label class="form-control flex-row items-center gap-3">
-                                    <input type="radio" class="radio-1" name="jenis-kelamin" value="Laki-laki"
-                                        required />
-                                    <span>Laki-laki</span>
-                                </label>
-                                <label class="form-control flex-row items-center gap-3">
-                                    <input type="radio" class="radio-1" name="jenis-kelamin" value="Perempuan" />
-                                    <span>Perempuan</span>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="label">
-                            <span class="label-text">Alamat</span>
-                        </label>
-                        <textarea name="alamat" class="rounded-sm input input-bordered h-32" id="" placeholder="alamat"
-                            required></textarea>
-
                     </div>
                 </div>
 
-                <div class="form-control flex-row gap-5">
-                    <div>
-                        <label class="label">
-                            <span class="label-text">Username</span>
-                        </label>
-                        <input type="text" placeholder="username" class="rounded-sm input input-bordered"
-                            name="username" required />
-                    </div>
-                    <div>
-                        <label class="label">
-                            <span class="label-text">Email</span>
-                        </label>
-                        <input type="email" placeholder="email" class="rounded-sm input input-bordered" name="email"
-                            required />
-                    </div>
-                    <div>
-                        <label class="label">
-                            <span class="label-text">Password</span>
-                        </label>
-                        <input type="password" placeholder="password" class="rounded-sm input input-bordered"
-                            name="password" required />
-                    </div>
-                    <div>
-                        <label class="label">
-                            <span class="label-text">Password Confirmation</span>
-                        </label>
-                        <input type="password" placeholder="password confirmation"
-                            class="rounded-sm input input-bordered" name="password-confirmation" required />
-                    </div>
+                <div class="h-fit">
+                    <label class="label">
+                        <span class="label-text">Alamat</span>
+                    </label>
+                    <textarea name="alamat" class="rounded-sm w-full input input-bordered h-36 resize-none" id=""
+                        placeholder="alamat" required></textarea>
+                </div>
+
+                <div class="col-span-2 pt-10">
+                    <p class="w-fit ml-auto ">Sudah punya akun? <a href="<?= BASEURL ?>/login"
+                            class="link-primary">Login</a></p>
+
+                </div>
+
+            </div>
+            <div class="pl-7 flex flex-col gap-3">
+                <div>
+                    <label class="label">
+                        <span class="label-text">Username</span>
+                    </label>
+                    <input type="text" placeholder="username" class="rounded-sm w-full input input-bordered"
+                        name="username" required />
+                </div>
+                <div>
+                    <label class="label">
+                        <span class="label-text">Email</span>
+                    </label>
+                    <input type="email" placeholder="email" class="rounded-sm w-full input input-bordered" name="email"
+                        required />
+                </div>
+                <div>
+                    <label class="label">
+                        <span class="label-text">Password</span>
+                    </label>
+                    <input type="password" placeholder="password" class="rounded-sm w-full input input-bordered"
+                        name="password" required />
+                </div>
+                <div>
+                    <label class="label">
+                        <span class="label-text">Password Confirmation</span>
+                    </label>
+                    <input type="password" placeholder="password confirmation"
+                        class="rounded-sm w-full input input-bordered" name="password-confirmation" required />
                 </div>
 
                 <?php $otp_code = strtoupper(substr(md5(rand()), 0, 7)); ?>
@@ -126,13 +124,9 @@
                 <div class="form-control mt-6">
                     <button type="submit" class="btn btn-secondary text-white rounded-sm"
                         name="sign-up-btn">register</button>
-                    <span>
-                        Already have an account?
-                        <a href="<?= BASEURL ?>/login" class="link link-info"> Login here</a>
-                    </span>
                 </div>
-            </form>
-        </div>
+            </div>
+        </form>
     </div>
 </div>
 <script src="<?= BASEURL ?>/js/prodi.js"></script>

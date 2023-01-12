@@ -1,11 +1,11 @@
 <div class="flex justify-center items-center flex-col gap-10 min-h-screen ">
+    <?= Flasher::flash() ?>
     <div class="bg-base-100 flex rounded-xl overflow-hidden shadow-xl">
         <div class="bg-[#20F89D] p-16">
             <img src="<?= BASEURL ?>/img/login-vector.png" class="w-56" alt="woman raise hand">
         </div>
         <form action="<?= BASEURL ?>/login/validate" method="post"
             class="p-8 my-auto w-full min-w-[24rem] max-w-sm text-center">
-            <?= Flasher::flash() ?>
             <h1 class="text-3xl font-bold mb-2">Login</h1>
             <p>Login untuk mengakses fitur dari aplikasi LSPPNJ</p>
             <div class="card-body">

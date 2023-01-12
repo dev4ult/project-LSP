@@ -1,4 +1,4 @@
-<div class="alert alert-success">
+<div class="alert alert-<?= $data['type'] ?> w-fit">
     <div>
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
             class="stroke-info flex-shrink-0 w-6 h-6">
