@@ -9,7 +9,7 @@ class Skema_model
 
   public function fetchAllSkema($page)
   {
-    $query = "SELECT skema_sertifikasi.id, nama_skema, skkni, status, level FROM skema_sertifikasi ORDER BY skema_sertifikasi.id ASC LIMIT :page, 5";
+    $query = "SELECT skema_sertifikasi.id, nama_skema, skkni, status, level, jurusan.nama as jurusan, biodata_asesor.nama as asesor FROM skema_sertifikasi JOIN jurusan ON skema_sertifikasi.id_jurusan = jurusan.id JOIN biodata_asesor ON skema_sertifikasi.id_biodata_asesor = biodata_asesor.id ORDER BY skema_sertifikasi.id ASC LIMIT :page, 5";
     $this->db->query($query);
     $this->db->bind("page", 5 * ($page - 1));
     return $this->db->resultSet();
@@ -136,7 +136,7 @@ class Skema_model
   {
     // $idSkkni = $this->getIdSKKNI($keyword)['id'];
 
-    $query = "SELECT skema_sertifikasi.id, nama_skema, skkni, status, level FROM skema_sertifikasi WHERE nama_skema LIKE :word OR skkni LIKE :word OR status LIKE :word ORDER BY skema_sertifikasi.id ASC";
+    $query = "SELECT skema_sertifikasi.id, nama_skema, skkni, status, level, jurusan.nama as jurusan, biodata_asesor.nama as asesor FROM skema_sertifikasi JOIN jurusan ON skema_sertifikasi.id_jurusan = jurusan.id JOIN biodata_asesor ON skema_sertifikasi.id_biodata_asesor = biodata_asesor.id WHERE nama_skema LIKE :word OR skkni LIKE :word OR status LIKE :word OR jurusan.nama LIKE :word OR biodata_asesor.nama LIKE :word ORDER BY skema_sertifikasi.id ASC";
     $this->db->query($query);
     $this->db->bind("word", "%" . $keyword . "%");
     // $this->db->bind("'%status%'", $keyword);
