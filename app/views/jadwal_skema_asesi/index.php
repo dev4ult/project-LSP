@@ -58,6 +58,7 @@
                     <?php endforeach; ?>
                 </tbody>
             </table>
+            <?= Flasher::flash() ?>
         </div>
     </div>
 </section>

@@ -62,11 +62,11 @@
         public function searchJadwal($page){
             $keyword = $_POST['keyword'];
             $query = "SELECT DiSTINCT unit_kompetensi.nama_kompetensi, skema_sertifikasi.nama_skema, biodata_asesor.nama, unit_kompetensi.tgl_ujian_kompetensi, unit_kompetensi.jam_mulai, 
-                        unit_kompetensi.jam_akhir, unit_kompetensi.tempat_unit_kompetensi FROM daftar_asesi_sertifikasi      
-                        JOIN skema_sertifikasi ON daftar_asesi_sertifikasi.id_skema_sertifikasi = skema_sertifikasi.id
-                        JOIN unit_kompetensi ON skema_sertifikasi.id = unit_kompetensi.id_skema
-                        JOIN biodata_asesor ON skema_sertifikasi.id_biodata_asesor = biodata_asesor.id 
-                        WHERE daftar_asesi_sertifikasi.id_biodata_asesi =:id_biodata_asesi LIKE :keyword LIMIT :page, 5";
+                      unit_kompetensi.jam_akhir, unit_kompetensi.tempat_unit_kompetensi FROM daftar_asesi_sertifikasi      
+                      JOIN skema_sertifikasi ON daftar_asesi_sertifikasi.id_skema_sertifikasi = skema_sertifikasi.id
+                      JOIN unit_kompetensi ON skema_sertifikasi.id = unit_kompetensi.id_skema
+                      JOIN biodata_asesor ON skema_sertifikasi.id_biodata_asesor = biodata_asesor.id 
+                      WHERE nama_kompetensi LIKE :keyword LIMIT :page, 5";
 
             $this->db->query($query);
             $this->db->bind('keyword', "%$keyword%");
@@ -79,7 +79,7 @@
             $keyword = $_POST['keyword'];
             $query = "SELECT skema_sertifikasi.nama_skema FROM daftar_asesi_sertifikasi
                       INNER JOIN skema_sertifikasi ON daftar_asesi_sertifikasi.id_skema_sertifikasi=skema_sertifikasi.id 
-                      LIKE :keyword LIMIT :page, 5";
+                      WHERE nama_skema LIKE :keyword LIMIT :page, 5";
 
             $this->db->query($query);
             $this->db->bind('keyword', "%$keyword%");
@@ -146,7 +146,7 @@
                         JOIN skema_sertifikasi ON daftar_asesi_sertifikasi.id_skema_sertifikasi = skema_sertifikasi.id
                         JOIN unit_kompetensi ON skema_sertifikasi.id = unit_kompetensi.id_skema
                         JOIN biodata_asesor ON skema_sertifikasi.id_biodata_asesor = biodata_asesor.id 
-                            WHERE daftar_asesi_sertifikasi.id_biodata_asesi =:id_biodata_asesi LIMIT :page, 5";
+                        WHERE daftar_asesi_sertifikasi.id_biodata_asesi =:id_biodata_asesi LIMIT :page, 5";
 
             $this->db->query($query);
             $this->db->bind('id_biodata_asesi', $idBio);

@@ -96,14 +96,15 @@
             $this->view('templates/header', $data);
             $this->view('templates/navbar/main-navbar');
 
-            $data['list-skema'] = $this->model('Skema_model')->searchSkemaAsesi($page);
+            $data['skema-asesi'] = $this->model('Skema_model')->searchSkemaAsesi($page);
+            $data['count'] = $this->model('Skema_model')->getTotalUpload();
             $data['page'] = $page;
 
             if ($this->model('Skema_model')->searchSkemaAsesi($page) == NULL){
                 Flasher::setFlash('Data Tidak Ada', 'shadow');
             }
 
-            $this->view('list_skema_asesi/index', $data);
+            $this->view('form_upload_dokumen/index', $data);
             $this->view('templates/footer');
 
         }
@@ -145,14 +146,14 @@
             $this->view('templates/header', $data);
             $this->view('templates/navbar/main-navbar');
 
-            $data['list-skema'] = $this->model('Skema_model')->searchJadwal($page);
+            $data['jadwal'] = $this->model('Skema_model')->searchJadwal($page);
             $data['page'] = $page;
 
             if ($this->model('Skema_model')->searchJadwal($page) == NULL){
                 Flasher::setFlash('Data Tidak Ada', 'shadow');
             }
 
-            $this->view('list_skema_asesi/index', $data);
+            $this->view('jadwal_skema_asesi/index', $data);
             $this->view('templates/footer');
 
         }
