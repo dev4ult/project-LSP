@@ -34,7 +34,7 @@
             <div class="text-white px-4 py-3">
                 <h1 class="text-3xl font-semibold">4</h1> 
                 <h3 class="py-1">Terbit Sertifikat</h3>
-                <a class="link link-hover py-1" href="<?= BASEURL ?>/dashboard/asesi/#"> -> Selengkapnya</a> 
+                <a class="link link-hover py-1" href="<?= BASEURL ?>/asesi/sertifikat_asesi"> -> Selengkapnya</a> 
             </div>
         </div>
     </section>

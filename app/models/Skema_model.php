@@ -90,8 +90,8 @@
 
         public function getSkemaAsesi($page){
             
-            $query = "SELECT skema_sertifikasi.nama_skema FROM daftar_asesi_sertifikasi
-                      INNER JOIN skema_sertifikasi ON daftar_asesi_sertifikasi.id_skema_sertifikasi=skema_sertifikasi.id LIMIT :page, 5";
+            $query = "SELECT skema_sertifikasi.id, skema_sertifikasi.nama_skema FROM daftar_asesi_sertifikasi
+                      JOIN skema_sertifikasi ON daftar_asesi_sertifikasi.id_skema_sertifikasi=skema_sertifikasi.id LIMIT :page, 5";
 
             $this->db->query($query);
             $this->db->bind("page", 5 * ($page - 1));

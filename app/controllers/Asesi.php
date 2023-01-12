@@ -158,6 +158,19 @@
 
         }
 
+        public function sertifikat_asesi($page = 1){
+            $data['page-title'] = 'Sertifikasi Skema';
+
+            $this->view('templates/header', $data);
+            $this->view('templates/navbar/main-navbar');
+
+            $data['skema-asesi'] = $this->model('Skema_model')->getSkemaAsesi($page);
+            $data['page'] = $page;
+
+            $this->view('Sertifikasi/index', $data);
+            $this->view('templates/footer');
+        }
+
         public function tambah(){
 
             if($this->model('Dokumen_model')->uploadFile($_POST) > 0){
