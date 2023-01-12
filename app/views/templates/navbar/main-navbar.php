@@ -1,4 +1,4 @@
-<div class="navbar bg-base-100">
+<div class="navbar text-primary max-w-5xl mx-auto">
     <div class="navbar-start">
         <div class="dropdown">
             <label tabindex="0" class="btn btn-ghost lg:hidden">
@@ -8,35 +8,24 @@
                 </svg>
             </label>
             <ul tabindex="0" class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
-                <li><a href="<?= BASEURL ?>/login">Login</a></li>
-                <li tabindex="0">
-                    <a class="justify-between">
-                        test
-                        <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                            viewBox="0 0 24 24">
-                            <path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z" />
-                        </svg>
-                    </a>
-                    <ul class="p-2">
-                        <li><a>Submenu 1</a></li>
-                        <li><a>Submenu 2</a></li>
-                    </ul>
-                </li>
-                <li><a>Item 3</a></li>
+                <li><a href="<?= BASEURL ?>/login">DASHBOARD</a></li>
+                <li><a>PROFIL </a></li>
+                <li><a>HUBUNGI KAMI</a></li>
             </ul>
         </div>
-        <a href="<?= BASEURL ?>" class="btn btn-sm btn-ghost normal-case text-xl">Home</a>
+        <a href="<?= BASEURL ?>" class="btn btn-ghost hover:bg-primary hover:text-white ormal-case text-xl">LSPPNJ</a>
     </div>
     <div class="navbar-center hidden lg:flex">
-        <ul class="menu menu-horizontal p-0">
-            <li><a href="<?= BASEURL ?>/dashboard">dashboard</a></li>
-            <li tabindex="0">
-                <a href="<?= BASEURL ?>/login">Login</a>
+        <ul class="menu menu-horizontal p-0 gap-2 font-semibold">
+            <li><a class="hover:bg-primary hover:text-white rounded-lg" href="<?= BASEURL ?>/dashboard">DASHBOARD</a>
             </li>
-            <li><a>Item 3</a></li>
+            <li><a class="hover:bg-primary hover:text-white rounded-lg" href="<?= BASEURL ?>/login">PROFIL</a></li>
+            <li><a class="hover:bg-primary hover:text-white rounded-lg" href="<?= BASEURL ?>">HUBUNGI KAMI</a></li>
         </ul>
     </div>
     <div class="navbar-end">
-        <a href="<?= BASEURL ?>/signup" class="btn btn-sm">Sign up</a>
+        <a href="<?= BASEURL ?>/signup"
+            class="btn btn-outline rounded-full text-[#2882EB] hover:text-white hover:bg-[#2882EB] hover:border-[#2882EB]">registrasi
+            asesi</a>
     </div>
 </div>
