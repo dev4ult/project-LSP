@@ -152,19 +152,6 @@
 
         }
 
-        public function sertifikat_asesi($page = 1){
-            $data['page-title'] = 'Sertifikasi Skema';
-
-            $this->view('templates/header', $data);
-            $this->view('templates/navbar/main-navbar');
-
-            $data['skema-asesi'] = $this->model('Skema_model')->getSkemaAsesi($page);
-            $data['page'] = $page;
-
-            $this->view('Sertifikasi/index', $data);
-            $this->view('templates/footer');
-        }
-
         public function tambah(){
 
             if($this->model('Dokumen_model')->uploadFile($_POST) > 0){
@@ -206,6 +193,42 @@
                 Flasher::setFlash("Berhasil Upload");
             }
             header('Location: '.BASEURL.'/asesi/form_upload_ujian/'.$id);
+            exit;
+        }
+
+        public function sertifikat_asesi($page = 1){
+            $data['page-title'] = 'Sertifikasi Skema';
+
+            $this->view('templates/header', $data);
+            $this->view('templates/navbar/main-navbar');
+
+            $data['skema-asesi'] = $this->model('Skema_model')->getSkemaAsesi($page);
+            $data['page'] = $page;
+
+            $this->view('Sertifikasi/index', $data);
+            $this->view('templates/footer');
+        }
+
+        public function DownloadSertif($id){
+
+            // $UnitKom = $this->model('Sertifikat_model')->checkUnitKom($id);
+            // $TotalUnitKom = $this->model('Sertifikat_model')->getTotalData($id, "unit_kompetensi");
+            // if($UnitKom == $TotalUnitKom){
+            //     Flasher::setFlash("Berhasil Mendapat sertifikat");
+            // } else {
+            //     Flasher::setFlash("Kerjakan Semua Unit untuk mendapatkan sertifikat");
+            // }
+
+            $statusLulus = $this->model('Sertifikat_model')->checkLulus();
+
+            if ($statusLulus == "Lulus"){
+                $data['data-sertif'] = $this->model('Sertifikat_model')->getDataSertifikat($id);
+                $this->model('Sertifikat_model')->buildSertifikat($data['data-sertif']);
+            } else {
+                Flasher::setFlash("Selesaikan Semua Unit Kompetensi untuk mendapatkan sertifikat profesi");
+            }
+
+            header('Location: '.BASEURL.'/asesi/sertifikat_asesi');
             exit;
         }
     }

@@ -65,8 +65,11 @@
                         <td>
                             <ul>
                                 <li class="font-bold">
-                                    <a href="" class="btn btn-success">Unduh Sertifikat</a>
+                                    <a href="<?= BASEURL ?>/asesi/DownloadSertif/<?= $skema['id']?>" class="btn btn-sm btn-success mb-4">
+                                        Unduh Sertifikat
+                                    </a>
                                 </li>
+                                <li><span class="font-semibold">Tahun Terbit : </span><?= date('Y', strtotime($skema['tgl_Kadaluarsa_sertifikasi'])) ?></li>
                             </ul>
                         </td>
                     </tr>
