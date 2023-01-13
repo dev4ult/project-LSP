@@ -174,7 +174,7 @@ class Skema_model
 
   public function fetchAllUnitKompetensi($page)
   {
-    $query = "SELECT unit_kompetensi.id, nama_kompetensi, jenis_pelaksanaan, skema_sertifikasi.nama_skema, skema_sertifikasi.level, skema_sertifikasi.id FROM unit_kompetensi JOIN skema_sertifikasi ON unit_kompetensi.id_skema = skema_sertifikasi.id ORDER BY skema_sertifikasi.id ASC LIMIT :page, 5";
+    $query = "SELECT unit_kompetensi.id as id_kompetensi, nama_kompetensi, jenis_pelaksanaan, date_format(tgl_ujian_kompetensi, '%d %M %Y') as tanggal, tempat_unit_kompetensi as tempat, jam_mulai, jam_akhir,skema_sertifikasi.nama_skema, skema_sertifikasi.level, skema_sertifikasi.id as id_skema FROM unit_kompetensi JOIN skema_sertifikasi ON unit_kompetensi.id_skema = skema_sertifikasi.id ORDER BY skema_sertifikasi.id ASC LIMIT :page, 5";
     $this->db->query($query);
     $this->db->bind("page", 5 * ($page - 1));
     return $this->db->resultSet();

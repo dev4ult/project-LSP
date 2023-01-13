@@ -58,13 +58,30 @@ function makeCode($arr, $delimiter)
             <td class="text-center"><?= $no++; ?></td>
             <td class="text-center"><?= $ds['nama_kompetensi'] ?></td>
             <?php $level = explode(" ", $ds['level']); ?>
-            <td class="text-center"><?= makeCode(["KKNI " . end($level), $ds['id'], $ds['nama_skema']], "/"); ?></td>
+            <td class="text-center"><?= makeCode(["KKNI " . end($level), $ds['id_skema'], $ds['nama_skema']], "/"); ?></td>
             <td class="text-center"><?= $ds['nama_skema'] ?></td>
-            <td class="text-center"><?= $ds['jenis_pelaksanaan'] ?></td>
+            <td class="text-center"><span class=" bg-green-400 text-blue-700 font-semibold px-3 py-2 rounded-md uppercase"><?= $ds['jenis_pelaksanaan'] ?></span></td>
             <td class="text-center flex items-center justify-around">
-              <a href="<?= BASEURL ?>/skema/edit_kompetensi/<?= $ds['id'] ?>/<?= $ds['nama_skema'] ?>/<?= $ds['level'] ?>" class="btn btn-outline btn-info rounded-md mt-5">Info</a>
+              <label for="my-modal-<?= $ds['id_kompetensi'] ?>" class="btn btn-outline btn-info rounded-md mt-5">Info</label>
             </td>
           </tr>
+          <!-- Put this part before </body> tag -->
+          <input type="checkbox" id="my-modal-<?= $ds['id_kompetensi'] ?>" class="modal-toggle" />
+          <div class="modal">
+            <div class="modal-box w-[800px] max-w-[800px]">
+              <div class="pelaksanaan-waktu w-fit flex justify-between items-center">
+                <span class="text-base p-1 px-2 bg-blue-500 rounded-md text-white"><?= $ds['jenis_pelaksanaan'] ?></span>
+                <span class="text-base p-1 px-2 bg-blue-500 rounded-md text-white ml-3"><?= $ds['tanggal'] ?></span>
+              </div>
+              <h3 class="font-semibold text-2xl mt-4 mb-1"><?= $ds['nama_kompetensi'] ?></h3>
+              <span class="font-normal text-sm"><?= makeCode(["KKNI " . end($level), $ds['id_skema'], $ds['nama_skema']], "/"); ?></span>
+              <p class="text-sm my-2">Asesmen dilaksanakan di <?= $ds['tempat']; ?>, <br>pada jam <?= $ds['jam_mulai']; ?> - <?= $ds['jam_akhir']; ?></p>
+              <a href="<?= BASEURL ?>/skema/detail/<?= $ds['id_skema']; ?>" class="btn btn-info rounded-md mt-5 ">Lihat Skema Sertifikasi</a>
+              <div class="modal-action">
+                <label for="my-modal-<?= $ds['id_kompetensi'] ?>" class="btn">Tutup</label>
+              </div>
+            </div>
+          </div>
         <?php endforeach; ?>
       <?php else : ?>
         <tr>
@@ -83,27 +100,4 @@ function makeCode($arr, $delimiter)
   <a href="<?= BASEURL ?>/skema/asesmen/<?= ($data['page'] == 1) ? 1 : $data['page'] - 1 ?>" class="btn">«</a>
   <button class="btn">Page <?= $data["page"] ?></button>
   <a href="<?= BASEURL ?>/skema/asesmen/<?= $data['page'] + 1 ?>" class="btn">»</a>
-</div>
-
-<!-- Put this part before </body> tag -->
-<input type="checkbox" id="my-modal-6" class="modal-toggle" />
-<div class="modal">
-  <div class="modal-box w-[800px] max-w-[800px]">
-    <h3 class="font-bold text-lg">Persyaratan Skema Sertifikasi</h3>
-    <div class="group-input-persyaratan w-full flex justify-between">
-      <div class="list-umum w-1/2">
-        <h1 class="text-lg font-semibold mt-5 mb-3">Kategori Umum</h1>
-        <ul class="list-inside input-umum w-full list-disc relative translate-x-4">
-        </ul>
-      </div>
-      <div class="list-teknis w-1/2">
-        <h1 class="text-lg font-semibold mt-5 mb-3">Kategori Teknis</h1>
-        <ul class="list-inside input-teknis w-full list-disc relative translate-x-4">
-        </ul>
-      </div>
-    </div>
-    <div class="modal-action">
-      <label for="my-modal-6" class="btn">Tutup</label>
-    </div>
-  </div>
 </div>
