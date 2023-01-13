@@ -32,39 +32,44 @@
 
             $idBio = $this->getIdBiodata($_SESSION['username']);
 
-            $file_name = $_FILES['document']['name'];
-            $file_size = $_FILES['document']['size'];
-            $file_tmp = $_FILES['document']['tmp_name'];
-            $extensions = ['jpg', 'jpeg', 'png', 'pdf'];
-            $file_ext = explode('.',$file_name);
-            $file_type = $file_ext[1];
+            if (!empty($_FILES['document']['name'])){
+                $file_name = $_FILES['document']['name'];
+                $file_size = $_FILES['document']['size'];
+                $file_tmp = $_FILES['document']['tmp_name'];
+                $extensions = ['jpg', 'jpeg', 'png', 'pdf'];
+                $file_ext = explode('.',$file_name);
+                $file_type = $file_ext[1];
 
-            if(!in_array($file_type, $extensions)){
+                if(!in_array($file_type, $extensions)){
 
-                Flasher::setFlash('Extensi file salah !');
+                    Flasher::setFlash('Extensi file salah !');
+                    return false;
+                    
+                } else if($file_size > 26214400){
+
+                    Flasher::setFlash('Ukuran file tidak boleh melebihi 25 MB');
+                    return false;
+
+                } else {                
+        
+                    $query = "INSERT INTO dokumen_asesmen VALUES('', :id_unit_kompetensi, :id_biodata_asesi, :file_asesmen)";
+
+                    $this->db->query($query);
+
+                    $this->db->bind('file_asesmen', $file_name);
+                    $this->db->bind('id_unit_kompetensi', $id);
+                    $this->db->bind('id_biodata_asesi', $idBio);
+
+                    $this->db->execute();
+
+                    return $this->db->rowChangeCheck();
+
+                    move_uploaded_file($file_tmp, 'public/img/'.$file_name);
+                } 
+            } else {
+                Flasher::setFlash('File tidak ada');
                 return false;
-                
-            } else if($file_size > 26214400){
-
-                Flasher::setFlash('Ukuran file tidak boleh melebihi 25 MB');
-                return false;
-
-            } else {                
-    
-                $query = "INSERT INTO dokumen_asesmen VALUES('', :id_unit_kompetensi, :id_biodata_asesi, :file_asesmen)";
-
-                $this->db->query($query);
-
-                $this->db->bind('file_asesmen', $file_name);
-                $this->db->bind('id_unit_kompetensi', $id);
-                $this->db->bind('id_biodata_asesi', $idBio);
-
-                $this->db->execute();
-
-                return $this->db->rowChangeCheck();
-
-                move_uploaded_file($file_tmp, 'public/img/'.$file_name);
-            } 
+            }
         }
 
         public function checkUnitUpload($id){

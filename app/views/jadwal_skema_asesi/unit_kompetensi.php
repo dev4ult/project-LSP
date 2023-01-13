@@ -39,7 +39,7 @@
                 <button type="submit" class="btn btn-sm btn-info <?= $submit ?>"> Submit </button>
                 <a href="<?= BASEURL ?>/asesi/jadwal_asesmen" class="btn btn-sm btn-outline btn-info"> Kembali </a>
             </div>
-            <p class="text-xs text-red-600">*jika tombol submit tidak tersedia, artinya anda telah mengirim jawaban unit kompetensi anda kepada asesor</p>
+            <p class="text-sm text-red-600 mb-6">* Jika tombol submit tidak tersedia, Maka anda dinyatakan telah mengirim jawaban unit kompetensi anda kepada asesor</p>
         </form>   
     </div>
 </section>
