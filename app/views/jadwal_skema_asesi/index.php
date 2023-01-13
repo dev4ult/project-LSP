@@ -59,7 +59,7 @@
                                         $btn_name = 'Jawaban telah terkirim';
                                     }else{
                                         $btn_style = '';
-                                        $btn_name = 'Input Unit Kompetensi';
+                                        $btn_name = 'Upload Jawaban Kompetensi';
                                     }
 
                                     if($jadwal['jenis_pelaksanaan'] == "Online"){

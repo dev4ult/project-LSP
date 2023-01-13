@@ -82,7 +82,8 @@
 
             $html2pdf = new Html2Pdf();
 
-            $html2pdf->writeHTML('<div class="container" style="border: solid 2px black;">
+            $html2pdf->writeHTML('
+                                  <div class="container" style="border: solid 2px black;">
                                     <div class="width-text" style="max-width: 50%; margin: 0 20px; padding: 20px 0">
                                         <h1 align="center">Sertifikat Kompetensi Profesi Bidang '.$data['nama_skema'].'</h1>
                                         <p align="center"> Diberikan Kepada : </p>
