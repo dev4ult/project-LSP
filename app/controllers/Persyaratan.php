@@ -13,7 +13,7 @@ class Persyaratan extends Controller
 
   public function add()
   {
-    if ($this->model("Skema_model")->addData($_POST) > 0) {
+    if ($this->model("Persyaratan_model")->addData($_POST) > 0) {
       header('Location: ' . BASEURL . '/persyaratan');
     } else {
       header('Location: ' . BASEURL . '/persyaratan');

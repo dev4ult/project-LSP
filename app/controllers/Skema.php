@@ -9,7 +9,7 @@ class Skema extends Controller
     if (isset($_POST['keyword'])) {
       $data["list-skema"] = $this->model("Skema_model")->searchDataSkema($page, $_POST['keyword']);
     } else {
-      $data["list-skema"] = $this->model("Skema_model")->fetchAllSkema($page);
+      $data["list-skema"] = $this->model("Skema_model")->fetchAllSkemaPagination($page);
       // var_dump($data['list-skema']);
       // die;
     }
@@ -142,6 +142,8 @@ class Skema extends Controller
     } else {
       $data["list-kompetensi"] = $this->model("Skema_model")->fetchAllUnitKompetensi($page);
     }
+    // var_dump($data['list-kompetensi']);
+    // die;
     $this->view('templates/header', $data);
     $this->view('templates/navbar/main-navbar');
     $this->view('skema/asesmen', $data);
@@ -159,7 +161,12 @@ class Skema extends Controller
       $nama_skema = $this->model("Skema_model")->getSingleSkema($idSkema)['nama_skema'];
       $level = $this->model("Skema_model")->getSingleSkema($idSkema)['level'];
       if ($_FILES['soal-kompetensi']['error'] !== 4) {
-        $_POST['soal-kompetensi'] = $this->checkExtensionOfFile($nama_skema, $level);
+        $_POST['soal-kompetensi'] = $this->checkExtensionOfFile($nama_skema, $level, BASEURL . '/skema/tambah_kompetensi/' . $data['id-skema']);
+        if (!$_POST['soal-kompetensi']) {
+          $_POST['soal-kompetensi'] = $data['list-kompetensi']['file_opsional'];
+          header('Location: ' . BASEURL . '/skema/tambah_kompetensi/' . $data['id-skema']);
+          return;
+        }
       }
       if ($this->model("Skema_model")->addKompetensi($idSkema, $_POST) > 0) {
         header('Location: ' . BASEURL . '/skema/detail/' . $data['id-skema']);
@@ -187,7 +194,14 @@ class Skema extends Controller
       $nama_skema = $this->model("Skema_model")->getSingleSkema($idSkema)['nama_skema'];
       $level = $this->model("Skema_model")->getSingleSkema($idSkema)['level'];
       if ($_FILES['soal-kompetensi']['error'] !== 4) {
-        $_POST['soal-kompetensi'] = $this->checkExtensionOfFile($nama_skema, $level);
+        $_POST['soal-kompetensi'] = $this->checkExtensionOfFile($nama_skema, $level, BASEURL . '/skema/edit_kompetensi/' . $id . '/' . $data['id-skema']);
+        // var_dump($_POST['soal-kompetensi']);
+        // die;
+        if (!$_POST['soal-kompetensi']) {
+          $_POST['soal-kompetensi'] = $data['list-kompetensi']['file_opsional'];
+          header('Location: ' . BASEURL . '/skema/edit_kompetensi/' . $id . '/' . $data['id-skema']);
+          return;
+        }
       } else {
         $_POST['soal-kompetensi'] = $data['list-kompetensi']['file_opsional'];
       }
@@ -207,23 +221,12 @@ class Skema extends Controller
     }
   }
 
-  private function checkExtensionOfFile($nama, $level)
+  private function checkExtensionOfFile($nama, $level, $url)
   {
     $namaFile = $_FILES['soal-kompetensi']['name'];
     $ukuranFile = $_FILES['soal-kompetensi']['size'];
     $error = $_FILES['soal-kompetensi']['error'];
     $tmpName = $_FILES['soal-kompetensi']['tmp_name'];
-
-    // Cek apakah ada file yang di upload
-    // if ($error === 4) {
-    //   echo "
-    //   <script>
-    //      alert('Tolong Upload File Kamu!');
-    //      document.location.href = 'index.php';
-    //   </script> 
-    //   ";
-    //   return false;
-    // }
 
     // Cek ekstensi file yang dikirimkan
     $ekstensiGambarValid = ['pdf'];
@@ -231,23 +234,13 @@ class Skema extends Controller
     $ekstensiGambar = strtolower(end($ekstensiGambar));
 
     if (!in_array($ekstensiGambar, $ekstensiGambarValid)) {
-      echo "
-      <script>
-         alert('HMM, Kamu salah upload file');
-         document.location.href = 'index.php';
-      </script> 
-      ";
+      Flasher::setFlash("HMM, Kamu salah upload file", 'warning');
       return false;
     }
 
     // Cek ukuran file
     if ($ukuranFile > 3000000) {
-      echo "
-      <script>
-         alert('Ukuran File Tidak Boleh Lebih dari 3 MB');
-         document.location.href = 'index.php';
-      </script> 
-      ";
+      Flasher::setFlash("Ukuran File Tidak Boleh Lebih dari 3 MB", 'warning');
       return false;
     }
 
@@ -262,6 +255,8 @@ class Skema extends Controller
     $dirpath .= '\/soal-asesmen\/';
     // move_uploaded_file($tmpName, $dirpath . $namaFileBaru);
 
+    // var_dump($namaFileBaru);
+    // die;
     return $namaFileBaru;
   }
 
@@ -295,5 +290,18 @@ class Skema extends Controller
   public function countKompetensi($id)
   {
     return $this->model("Skema_model")->countKompetensiByID($id);
+  }
+
+
+  public function lastCreated()
+  {
+    $data['page-title'] = "Skema";
+    $data['username'] = 'test';
+    // $data['page'] = $page;
+    $data["list-skema"] = $this->model("Skema_model")->lastCreated5();
+    $this->view('templates/header', $data);
+    $this->view('templates/navbar/main-navbar');
+    $this->view('skema/last', $data);
+    $this->view('templates/footer');
   }
 }

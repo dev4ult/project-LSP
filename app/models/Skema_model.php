@@ -7,7 +7,15 @@ class Skema_model
     $this->db = new Database;
   }
 
-  public function fetchAllSkema($page)
+  public function fetchAllSkema()
+  {
+    $query = "SELECT skema_sertifikasi.id, nama_skema, skkni, status, level, jurusan.nama as jurusan, biodata_asesor.nama as asesor FROM skema_sertifikasi JOIN jurusan ON skema_sertifikasi.id_jurusan = jurusan.id JOIN biodata_asesor ON skema_sertifikasi.id_biodata_asesor = biodata_asesor.id ORDER BY skema_sertifikasi.id ASC";
+    $this->db->query($query);
+    // $this->db->bind("page", 5 * ($page - 1));
+    return $this->db->resultSet();
+  }
+
+  public function fetchAllSkemaPagination($page)
   {
     $query = "SELECT skema_sertifikasi.id, nama_skema, skkni, status, level, jurusan.nama as jurusan, biodata_asesor.nama as asesor FROM skema_sertifikasi JOIN jurusan ON skema_sertifikasi.id_jurusan = jurusan.id JOIN biodata_asesor ON skema_sertifikasi.id_biodata_asesor = biodata_asesor.id ORDER BY skema_sertifikasi.id ASC LIMIT :page, 5";
     $this->db->query($query);
@@ -184,7 +192,7 @@ class Skema_model
   {
     // $idSkkni = $this->getIdSKKNI($keyword)['id'];
 
-    $query = "SELECT unit_kompetensi.id, nama_kompetensi, jenis_pelaksanaan, skema_sertifikasi.nama_skema, skema_sertifikasi.level, skema_sertifikasi.id FROM unit_kompetensi JOIN skema_sertifikasi ON unit_kompetensi.id_skema = skema_sertifikasi.id WHERE nama_kompetensi LIKE :word OR skema_sertifikasi.nama_skema LIKE :word ORDER BY skema_sertifikasi.id ASC";
+    $query = "SELECT unit_kompetensi.id as id_kompetensi, nama_kompetensi, jenis_pelaksanaan, date_format(tgl_ujian_kompetensi, '%d %M %Y') as tanggal, tempat_unit_kompetensi as tempat, jam_mulai, jam_akhir, skema_sertifikasi.nama_skema, skema_sertifikasi.level, skema_sertifikasi.id as id_skema FROM unit_kompetensi JOIN skema_sertifikasi ON unit_kompetensi.id_skema = skema_sertifikasi.id WHERE nama_kompetensi LIKE :word OR skema_sertifikasi.nama_skema LIKE :word ORDER BY skema_sertifikasi.id ASC";
     $this->db->query($query);
     $this->db->bind("word", "%" . $keyword . "%");
     // $this->db->bind("'%status%'", $keyword);
@@ -259,5 +267,13 @@ class Skema_model
     } catch (\Throwable $th) {
       // Flasher::setFlash("Harap ganti level dari skemanya", 'warning');
     }
+  }
+
+  public function lastCreated5()
+  {
+    $last5 = count($this->fetchAllSkema()) - 4;
+    $query = "SELECT * FROM skema_sertifikasi LIMIT $last5, 5";
+    $this->db->query($query);
+    return $this->db->resultSet();
   }
 }
