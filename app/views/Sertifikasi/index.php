@@ -64,8 +64,9 @@
                         </td>
                         <td>
                             <ul>
-                                <li class="font-bold">Belum ada Data</li>
-                                <li>Tanggal Terbit : </li>
+                                <li class="font-bold">
+                                    <a href="" class="btn btn-success">Unduh Sertifikat</a>
+                                </li>
                             </ul>
                         </td>
                     </tr>
@@ -79,9 +80,19 @@
 
 <!-- Pagination -->
 <div class="btn-group my-10">
-    <a href="<?= BASEURL ?>/asesi/list_skema/<?= ($data['page'] == 1) ? 1 : $data['page'] - 1 ?>"
+    <a href="<?= BASEURL ?>/asesi/sertifikat_asesi/<?= ($data['page'] == 1) ? 1 : $data['page'] - 1 ?>"
         class="btn">«</a>
     <button class="btn">Page <?= $data["page"] ?></button>
-    <a href="<?= BASEURL ?>/asesi/list_skema/<?= $data['page'] + 1 ?>"
+    <a href="<?= BASEURL ?>/asesi/sertifikat_asesi/<?= $data['page'] + 1 ?>"
         class="btn">»</a>
 </div>
+
+<section class="info mb-8">
+    <div class="title py-6">
+        <h1 class="text-2xl font-semibold my-3">Informasi Sertifikat Kompetensi Profesi</h1>
+    </div>
+    <div class="info-desc">
+        <p class="leading-8 text-xl"> Sertifikat Kompetensi dikeluarkan oleh Badan Nasional Sertifikasi Profesi (BNSP), dimana proses dilakukan oleh BNSP Pusat. 
+            Data Sertifikat di atas adalah data permohonan sertifikat yang telah dikirimkan oleh BNSP Pusat</p>
+    </div>
+</section>

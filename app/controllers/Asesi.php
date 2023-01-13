@@ -23,9 +23,6 @@
             $this->view('templates/header', $data);
             $this->view('templates/navbar/main-navbar');
 
-            // $data['page'] = $this->breadcrumbs;
-            // $this->view('templates/breadcrumbs', $data);
-
             $data['list-skema'] = $this->model('Skema_model')->fetchAllSchema("aktif", $page);
            
             $data['page'] = $page;
@@ -40,9 +37,6 @@
 
             $this->view('templates/header', $data);
             $this->view('templates/navbar/main-navbar');
-
-            // $data['page'] = $this->breadcrumbs;    
-            // $this->view('templates/breadcrumbs', $data);
 
             $data['skema'] = $this->model('Skema_model')->getSkemaById($id);
             $data['list-persyaratan'] = $this->model('Skema_model')->getDataSkemaById($id, "persyaratan_skema");
@@ -193,5 +187,25 @@
                 header('Location: '.BASEURL.'/asesi/upload_document');
                 exit;
             }
+        }
+
+        public function form_upload_ujian($idUnit){
+            $data['page-title'] = 'Input Unit Kompetensi';
+
+            $this->view('templates/header', $data);
+            $this->view('templates/navbar/main-navbar');
+
+            $data['unit-kompetensi'] = $this->model('Unit_kompetensi_model')->getUnitKompetensiByid($idUnit);
+
+            $this->view('jadwal_skema_asesi/unit_kompetensi', $data);
+            $this->view('templates/footer');
+        }
+
+        public function input_ujian($id){
+            if($this->model('Unit_kompetensi_model')->uploadUnitKom($_POST, $id) > 0){
+                Flasher::setFlash("Berhasil Upload");
+            }
+            header('Location: '.BASEURL.'/asesi/form_upload_ujian/'.$id);
+            exit;
         }
     }

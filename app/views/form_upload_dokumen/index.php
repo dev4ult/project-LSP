@@ -52,9 +52,9 @@
 
 <!-- Pagination -->
 <div class="btn-group my-10">
-    <a href="<?= BASEURL ?>/asesi/list_skema/<?= ($data['page'] == 1) ? 1 : $data['page'] - 1 ?>"
+    <a href="<?= BASEURL ?>/asesi/upload_document/<?= ($data['page'] == 1) ? 1 : $data['page'] - 1 ?>"
         class="btn">«</a>
     <button class="btn">Page <?= $data["page"] ?></button>
-    <a href="<?= BASEURL ?>/asesi/list_skema/<?= $data['page'] + 1 ?>"
+    <a href="<?= BASEURL ?>/asesi/upload_document/<?= $data['page'] + 1 ?>"
         class="btn">»</a>
 </div>

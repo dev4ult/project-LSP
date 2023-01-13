@@ -9,32 +9,32 @@
         </p>
     </section>
     <section class="menu-selection flex mx-4 my-8 justify-center align-middle flex-wrap">
-        <div class="schema-sertification m-3 bg-slate-900 rounded-xl">
+        <div class="schema-sertification container max-w-sm m-3 bg-slate-900 rounded-xl">
             <div class="text-white px-4 py-3">
                 <h1 class="text-3xl font-semibold">1</h1>
-                <h3 class="py-1">Pilih Skema</h3>
+                <h3 class="py-1 text-xl">Pilih Skema</h3>
                 <a class="link link-hover py-1" href="<?= BASEURL ?>/asesi/list_skema"> -> Selengkapnya</a>
             </div>
         </div>
-        <div class="upload-document-menu m-3 bg-slate-900 rounded-xl">
+        <div class="upload-document-menu container max-w-sm m-3 bg-slate-900 rounded-xl">
             <div class="text-white px-4 py-3">
                 <h1 class="text-3xl font-semibold">2</h1>
-                <h3 class="py-1">Upload Dokumen</h3>
+                <h3 class="py-1 text-xl">Upload Dokumen</h3>
                 <a class="link link-hover py-1" href="<?= BASEURL ?>/asesi/upload_document"> -> Selengkapnya</a>
             </div>
         </div>
-        <div class="schedule-view-menu m-3 bg-slate-900 rounded-xl">
+        <div class="schedule-view-menu container max-w-sm m-3 bg-slate-900 rounded-xl">
             <div class="text-white px-4 py-3">
                 <h1 class="text-3xl font-semibold">3</h1>
-                <h3 class="py-1">Lihat Jadwal</h3>
+                <h3 class="py-1 text-xl">Lihat Jadwal</h3>
                 <a class="link link-hover py-1" href="<?= BASEURL ?>/asesi/jadwal_asesmen"> -> Selengkapnya</a>
             </div>   
         </div>
-        <div class="sertification-menu m-3 bg-slate-900 rounded-xl">
+        <div class="sertification-menu container max-w-sm m-3 bg-slate-900 rounded-xl">
             <div class="text-white px-4 py-3">
                 <h1 class="text-3xl font-semibold">4</h1> 
-                <h3 class="py-1">Terbit Sertifikat</h3>
-                <a class="link link-hover py-1" href="<?= BASEURL ?>/asesi/sertifikat_asesi"> -> Selengkapnya</a> 
+                <h3 class="py-1 text-xl">Terbit Sertifikat</h3>
+                <a class="link link-hover py-1 text-center" href="<?= BASEURL ?>/asesi/sertifikat_asesi"> -> Selengkapnya</a> 
             </div>
         </div>
     </section>

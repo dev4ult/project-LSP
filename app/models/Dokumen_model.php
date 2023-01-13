@@ -74,8 +74,6 @@
                 return false;
 
             } else {
-
-                move_uploaded_file($file_tmp, 'public/img/'.$file_name);
     
                 $query = "INSERT INTO dokumen_persyaratan VALUES('', :id_biodata_asesi, :id_persyaratan, :file_dokumen)";
 
@@ -87,6 +85,8 @@
                 $this->db->execute();
 
                 return $this->db->rowChangeCheck();
+
+                move_uploaded_file($file_tmp, 'public/img/'.$file_name);
 
             } 
         }

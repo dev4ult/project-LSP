@@ -46,12 +46,33 @@
                                     <span class="font-semibold"><?= $jadwal['jam_mulai'] ?> - <?= $jadwal['jam_akhir'] ?></span></li>
                                 <li class="pl-4">Tempat  : 
                                     <span class="font-semibold"><?= $jadwal['tempat_unit_kompetensi'] ?></span></li>
+                                <li class="pl-4">Jenis Pelaksanaan  : 
+                                    <span class="font-semibold"><?= $jadwal['jenis_pelaksanaan'] ?></span></li>
                             </ul>
                         </td>
                         <td>
                             <ul>
                                 <li class="mb-4"><button class="btn btn-sm btn-success">Unduh Form Unit Kompetensi</button></li>
-                                <li><button class="btn btn-sm btn-success">Input Asesmen Mandiri</button></li>
+                                <?php
+                                    if($this->model('Unit_kompetensi_model')->checkUnitUpload($jadwal['id']) > 0){
+                                        $btn_style = 'btn-disabled';
+                                        $btn_name = 'Jawaban telah terkirim';
+                                    }else{
+                                        $btn_style = '';
+                                        $btn_name = 'Input Unit Kompetensi';
+                                    }
+
+                                    if($jadwal['jenis_pelaksanaan'] == "Online"){
+                                ?>
+                                    <li>
+                                        <a href="<?= BASEURL; ?>/asesi/form_upload_ujian/<?= $jadwal['id']; ?>" class="btn btn-sm btn-success <?= $btn_style ?>">
+                                            <?= $btn_name ?>
+                                        </a>
+                                    </li>
+                                <?php
+                                    }
+                                ?>
+                                
                             </ul>
                         </td>
                     </tr>
@@ -65,9 +86,9 @@
 
 <!-- Pagination -->
 <div class="btn-group my-10">
-    <a href="<?= BASEURL ?>/asesi/list_skema/<?= ($data['page'] == 1) ? 1 : $data['page'] - 1 ?>"
+    <a href="<?= BASEURL ?>/asesi/jadwal_asesmen/<?= ($data['page'] == 1) ? 1 : $data['page'] - 1 ?>"
         class="btn">«</a>
     <button class="btn">Page <?= $data["page"] ?></button>
-    <a href="<?= BASEURL ?>/asesi/list_skema/<?= $data['page'] + 1 ?>"
+    <a href="<?= BASEURL ?>/asesi/jadwal_asesmen/<?= $data['page'] + 1 ?>"
         class="btn">»</a>
 </div>
