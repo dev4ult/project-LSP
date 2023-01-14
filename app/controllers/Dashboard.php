@@ -1,10 +1,12 @@
 <?php
 
-class Dashboard extends Controller {
+class Dashboard extends Controller
+{
 
     private $breadcrumbs;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->breadcrumbs = [
             "name" => [
                 "home",
@@ -17,11 +19,13 @@ class Dashboard extends Controller {
         ];
     }
 
-    public function index() {
+    public function index()
+    {
         $this->model('User_model')->checkUserLogin();
     }
 
-    public function admin() {
+    public function admin()
+    {
         $this->model('User_model')->checkUserLogin("admin");
 
         $data['page-title'] = 'dashboard';
@@ -40,7 +44,8 @@ class Dashboard extends Controller {
         $this->view('templates/footer');
     }
 
-    public function asesi() {
+    public function asesi()
+    {
         $this->model('User_model')->checkUserLogin("asesi");
 
         $data['page-title'] = 'Dashboard Asesi LSP';
@@ -54,19 +59,25 @@ class Dashboard extends Controller {
         $this->view('templates/footer');
     }
 
-    public function asesor() {
+    public function asesor($page = 1)
+    {
         $this->model('User_model')->checkUserLogin("asesor");
         $data['page-title'] = 'Dashboard page';
+        $data['page'] = $page;
+        require_once '../app/controllers/Asesor.php';
+        require_once '../app/controllers/Skema.php';
+        $data['list-skema-asesor'] = $this->model("Asesor_model")->getSkemaByAsesor($page);
         $this->view('templates/header', $data);
 
         $this->view('templates/navbar/dashboard-navbar');
 
-        $this->view('dashboard/asesor/index');
+        $this->view('dashboard/asesor/index', $data);
 
         $this->view('templates/footer');
     }
 
-    public function user_list($user_type = null, $index = 1) {
+    public function user_list($user_type = null, $index = 1)
+    {
         $this->model('User_model')->checkUserLogin("admin");
 
         if ($user_type == "asesor" || $user_type == "asesi") {
@@ -113,7 +124,8 @@ class Dashboard extends Controller {
         }
     }
 
-    public function user_detail($user_type, $user_id) {
+    public function user_detail($user_type, $user_id)
+    {
         $this->model('User_model')->checkUserLogin("admin");
 
         if ($user_type == "asesor" || $user_type == "asesi") {
@@ -140,7 +152,8 @@ class Dashboard extends Controller {
         }
     }
 
-    public function bio_update($user_type = null) {
+    public function bio_update($user_type = null)
+    {
         $this->model('User_model')->checkUserLogin("admin");
 
         if ($user_type == "asesor" || $user_type == "asesi") {
@@ -154,7 +167,8 @@ class Dashboard extends Controller {
         exit;
     }
 
-    public function account_update($user_type = null) {
+    public function account_update($user_type = null)
+    {
         $this->model('User_model')->checkUserLogin("admin");
 
         if ($user_type == "asesor" || $user_type == "asesi") {
@@ -168,7 +182,8 @@ class Dashboard extends Controller {
         exit;
     }
 
-    public function add_user($user_type = null) {
+    public function add_user($user_type = null)
+    {
         $this->model('User_model')->checkUserLogin("admin");
 
         if ($user_type == "asesor" || $user_type == "asesi") {
@@ -182,7 +197,8 @@ class Dashboard extends Controller {
         exit;
     }
 
-    public function delete_user($user_type = null, $bio_id) {
+    public function delete_user($user_type = null, $bio_id)
+    {
         $this->model('User_model')->checkUserLogin("admin");
 
         if ($user_type == "asesor" || $user_type == "asesi") {
@@ -196,7 +212,8 @@ class Dashboard extends Controller {
         exit;
     }
 
-    public function search_user($user_type = null, $index = 1) {
+    public function search_user($user_type = null, $index = 1)
+    {
         $this->model('User_model')->checkUserLogin("admin");
 
         if ($user_type == "asesor" || $user_type == "asesi") {

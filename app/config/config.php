@@ -1,6 +1,6 @@
 <?php
 
-const BASEURL = "http://localhost/FILE_PROJECT/project-lsp/public";
+const BASEURL = "http://localhost:8000/project-lsp/public";
 
 const HOST = 'localhost';
 const USER = 'root';
