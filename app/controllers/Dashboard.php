@@ -41,6 +41,7 @@ class Dashboard extends Controller {
 
 
     public function asesi() {
+
         $this->model('User_model')->checkUserLogin("asesi");
 
         $data['page-title'] = 'Dashboard Asesi LSP';
@@ -51,13 +52,19 @@ class Dashboard extends Controller {
         $this->view('dashboard/asesi/index', $data);
     }
 
-    public function asesor() {
+    public function asesor($page = 1) {
         $this->model('User_model')->checkUserLogin("asesor");
 
         $data['page-title'] = 'Dashboard page';
+        $data['page'] = $page;
+        require_once '../app/controllers/Asesor.php';
+        require_once '../app/controllers/Skema.php';
+        $data['list-skema-asesor'] = $this->model("Asesor_model")->getSkemaByAsesor($page);
         $this->view('templates/header', $data);
 
-        $this->view('dashboard/asesor/index');
+
+
+        $this->view('dashboard/asesor/index', $data);
 
         $this->view('templates/footer');
     }
@@ -78,6 +85,7 @@ class Dashboard extends Controller {
             exit;
         }
     }
+
 
     public function user_list($user_type = null, $index = 1) {
         $this->model('User_model')->checkUserLogin("admin");
