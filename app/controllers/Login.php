@@ -2,7 +2,7 @@
 
 class Login extends Controller {
     public function index() {
-        $data['page-title'] = "Login Page";
+        $data['page-title'] = "Login";
 
         $this->view('templates/header', $data);
         $this->view('templates/navbar/main-navbar');

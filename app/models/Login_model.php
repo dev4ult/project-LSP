@@ -1,6 +1,8 @@
 <?php
 
 class Login_model {
+    public static $username;
+    public static $user_table;
     private $db;
 
     public function __construct() {
@@ -8,11 +10,21 @@ class Login_model {
     }
 
     public function accountCheck($umail, $password) {
-        $this->db->query("SELECT password FROM users WHERE username=:umail OR email=:umail AND password=:password");
+        $tables = ["admin", "asesi", "asesor"];
+        for ($i = 0; $i < 3; $i++) {
+            $this->db->query("SELECT password FROM " . $tables[$i] . " WHERE username=:umail OR email=:umail");
 
-        $this->db->bind("umail", $umail);
-        $this->db->bind("password", hash('sha256', $password));
-        return $this->db->single();
+            $this->db->bind("umail", $umail);
+
+            $hashed_password = $this->db->single()['password'];
+            if (hash("sha256", $password) == $hashed_password) {
+                self::$username = $password;
+                self::$user_table = $tables[$i];
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function validateLogin($data) {
@@ -28,7 +40,7 @@ class Login_model {
         }
 
         // account check
-        if (!$this->accountCheck($umail, $password)) {
+        if ($this->accountCheck($umail, $password) == false) {
             Flasher::setFlash('Username / Email or Password is wrong');
             return false;
         } else {
@@ -38,10 +50,11 @@ class Login_model {
     }
 
     public function setLoginSession($umail) {
-        $this->db->query('SELECT username FROM users WHERE username=:umail OR email=:umail');
+        $this->db->query("SELECT username FROM " . self::$user_table . " WHERE username=:umail OR email=:umail");
         $this->db->bind('umail', $umail);
 
         $_SESSION['login'] = true;
-        $_SESSION['username'] = $umail;
+        $_SESSION['username'] = $this->db->single()['username'];
+        $_SESSION['user-type'] = self::$user_table;
     }
 }

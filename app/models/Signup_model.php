@@ -19,8 +19,9 @@ class Signup_model {
         $this->db = new Database();
     }
 
+
     public function isEmailRegistered($email) {
-        $this->db->query("SELECT * FROM users WHERE email=:email");
+        $this->db->query("SELECT * FROM asesi WHERE email=:email");
         $this->db->bind('email', $email);
         return $this->db->single();
     }
@@ -55,52 +56,86 @@ class Signup_model {
         }
     }
 
+
     public function getOTPCode($email) {
-        $this->db->query("SELECT otp_code FROM unreg_users WHERE email=:email");
+        $this->db->query("SELECT otp_code FROM unreg_asesi WHERE email=:email");
         $this->db->bind('email', $email);
         return $this->db->single();
     }
 
+
     public function delAfterReq($email) {
-        $this->db->query("SELECT id FROM unreg_users WHERE email=:email");
+        $this->db->query("SELECT id FROM unreg_asesi WHERE email=:email");
         $this->db->bind('email', $email);
         $id = $this->db->single()['id'];
 
         $this->db->query("CREATE EVENT delete_row_:id 
                         ON SCHEDULE AT CURRENT_TIMESTAMP + INTERVAL 2 Minute
-                        DO DELETE FROM unreg_users WHERE email=:email");
+                        DO DELETE FROM unreg_asesi WHERE email=:email");
         $this->db->bind('email', $email);
         $this->db->bind('id', $id);
         $this->db->execute();
     }
 
     public function getUnregUser($email) {
-        $this->db->query("SELECT username, email, password FROM unreg_users WHERE email=:email");
+        $this->db->query("SELECT * FROM unreg_asesi WHERE email=:email");
         $this->db->bind('email', $email);
         return $this->db->single();
     }
 
+
     public function deleteTempUser($email) {
-        $this->db->query("DELETE FROM unreg_users WHERE email=:email");
+        $this->db->query("DELETE FROM unreg_asesi WHERE email=:email");
         $this->db->bind('email', $email);
         $this->db->execute();
     }
 
     public function insertNewUser($email) {
         $user = $this->getUnregUser($email);
-        $this->db->query("INSERT INTO users(username, email, password) VALUES (:username, :email, :password)");
 
+        $this->db->query("INSERT INTO biodata_asesi(nama, nim, no_telepon, alamat, jurusan, prodi, jenis_kelamin) VALUES (:nama, :nim, :no_telepon, :alamat, :jurusan, :prodi, :jenis_kelamin)");
+
+        $this->db->bind('nama', $user['nama']);
+        $this->db->bind('nim', $user['nim']);
+        $this->db->bind('no_telepon', $user['no_telepon']);
+        $this->db->bind('alamat', $user['alamat']);
+        $this->db->bind('jurusan', $user['jurusan']);
+        $this->db->bind('prodi', $user['prodi']);
+        $this->db->bind('jenis_kelamin', $user['jenis_kelamin']);
+
+        $this->db->execute();
+
+        if ($this->db->rowChangeCheck() <= 0) {
+            Flasher::setFlash("Something wrong happened, please try again");
+            return false;
+        }
+
+        $this->db->query("SELECT LAST_INSERT_ID()");
+        $id_bio = $this->db->single()["LAST_INSERT_ID()"];
+
+
+        $this->db->query("INSERT INTO asesi(username, email, password, id_biodata_asesi) VALUES (:username, :email, :password, :id_bio)");
         $this->db->bind('username', $user['username']);
         $this->db->bind('email', $user['email']);
         $this->db->bind('password', $user['password']);
+        $this->db->bind('id_bio', $id_bio);
 
         $this->db->execute();
     }
 
-    public function saveTempUser($username, $email, $password, $otp_code) {
-        $this->db->query("INSERT INTO unreg_users(username, email, password, otp_code) VALUES (:username, :email, :password, :otp_code)");
+    public function saveTempUser($nama, $nim, $no_telepon, $alamat, $jurusan, $prodi, $jenis_kelamin, $username, $email, $password, $otp_code) {
+        $this->db->query("INSERT INTO unreg_asesi(nama, nim, no_telepon, alamat, jurusan, prodi, jenis_kelamin, username, email, password, otp_code) VALUES (:nama, :nim, :no_telepon, :alamat, :jurusan, :prodi, :jenis_kelamin,:username, :email, :password, :otp_code)");
+
 
         // binding value
+        $this->db->bind('nama', $nama);
+        $this->db->bind('nim', $nim);
+        $this->db->bind('no_telepon', $no_telepon);
+        $this->db->bind('alamat', $alamat);
+        $this->db->bind('jurusan', $jurusan);
+        $this->db->bind('prodi', $prodi);
+        $this->db->bind('jenis_kelamin', $jenis_kelamin);
+
         $this->db->bind('username', $username);
         $this->db->bind('email', $email);
         $this->db->bind('password', hash('sha256', $password));
@@ -118,6 +153,14 @@ class Signup_model {
         $email = htmlspecialchars($data['email']);
         $password = htmlspecialchars($data['password']);
         $passConf = htmlspecialchars($data['password-confirmation']);
+
+        $nama = htmlspecialchars($data['nama']);
+        $nim = htmlspecialchars($data['nim']);
+        $no_telepon = htmlspecialchars($data['no-telepon']);
+        $alamat = htmlspecialchars($data['alamat']);
+        $jurusan = htmlspecialchars($data['jurusan']);
+        $prodi = htmlspecialchars($data['prodi']);
+        $jenis_kelamin = htmlspecialchars($data['jenis-kelamin']);
 
         $otp_code = $data['otp-code'];
 
@@ -150,7 +193,7 @@ class Signup_model {
             return -1;
         }
 
-        $this->saveTempUser($username, $email, $password, $otp_code);
+        $this->saveTempUser($nama, $nim, $no_telepon, $alamat, $jurusan, $prodi, $jenis_kelamin, $username, $email, $password, $otp_code);
 
         return $this->db->rowChangeCheck();
     }
