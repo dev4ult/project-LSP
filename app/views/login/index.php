@@ -26,7 +26,7 @@
                 <div class="form-control mt-5">
                     <label class="cursor-pointer label">
                         <span class="label-text">Ingat username / email</span>
-                        <input type="checkbox" checked="checked" class="checkbox checkbox-success" />
+                        <input type="checkbox" checked="checked" class="checkbox rounded-sm" />
                     </label>
                 </div>
                 <label for="captcha-modal" class="btn btn-secondary rounded-sm text-white">Login</label>
@@ -61,3 +61,4 @@
         </form>
     </div>
 </div>
+<script src="<?= BASEURL ?>/js/main.js"></script>

@@ -13,9 +13,8 @@ class Flasher {
             $flash = $_SESSION['flash'];
 
             $data['msg'] = $flash['msg'];
-            $data['type'] = $flash['type'];
 
-            require '../app/views/templates/alert.php';
+            require '../app/views/templates/alert/' . $flash['type'] . '.php';
             unset($_SESSION['flash']);
         }
     }

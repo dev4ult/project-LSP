@@ -18,4 +18,4 @@
 </head>
 
 <body class="font-inter bg-[#EDF4F8]">
-    <div class="max-w-7xl p-3 mx-auto ">
+    <div class="mx-auto">

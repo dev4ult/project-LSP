@@ -24,20 +24,18 @@ class Dashboard extends Controller {
     public function admin() {
         $this->model('User_model')->checkUserLogin("admin");
 
-        $data['page-title'] = 'dashboard';
+        $data['page-title'] = 'Dashboard Admin';
         $this->view('templates/header', $data);
 
-        $this->view('templates/navbar/dashboard-navbar');
-
-        $data['page'] = $this->breadcrumbs;
-        array_pop($data['page']['name']);
-        array_pop($data['page']['link']);
-        $this->view('templates/breadcrumbs', $data);
-
         $data['username'] = $_SESSION['username'];
+        $data['total-asesor'] = $this->model("User_model")->getUserTotal('asesor');
+        $data['total-asesi'] = $this->model("User_model")->getUserTotal('asesi');
+
+        $data['nomor-induk'] = $this->model("User_model")->getUserRegNumber($_SESSION['username'], "admin", "nip");
+        $this->view('templates/sidebar');
         $this->view('dashboard/admin/index', $data);
 
-        $this->view('templates/footer');
+        // $this->view('templates/footer');
     }
 
     public function asesi() {
@@ -94,7 +92,7 @@ class Dashboard extends Controller {
                 $limit = $_SESSION['table-limit'];
             }
 
-            $data['list-user'] = $this->model('User_model')->fetchAllUser($user_type, $keyword, $index - 1, $limit);
+            $data['list-user'] = $this->model('User_model')->fetchAllUserConditional($user_type, $keyword, $index - 1, $limit);
             $data["page"] = $index;
             $data['limit'] = $limit;
 

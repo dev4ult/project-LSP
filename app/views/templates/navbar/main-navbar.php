@@ -13,7 +13,7 @@
                 <li><a>HUBUNGI KAMI</a></li>
             </ul>
         </div>
-        <a href="<?= BASEURL ?>" class="btn btn-ghost hover:bg-primary hover:text-white ormal-case text-xl">LSPPNJ</a>
+        <a href="<?= BASEURL ?>" class="btn btn-ghost hover:bg-primary hover:text-white normal-case text-xl">LSPPNJ</a>
     </div>
     <div class="navbar-center hidden lg:flex">
         <ul class="menu menu-horizontal p-0 gap-2 font-semibold">
@@ -25,7 +25,7 @@
     </div>
     <div class="navbar-end">
         <a href="<?= BASEURL ?>/signup"
-            class="btn btn-outline rounded-full text-[#2882EB] hover:text-white hover:bg-[#2882EB] hover:border-[#2882EB]">registrasi
+            class="btn btn-outline rounded-full text-primary hover:text-white hover:bg-[#2882EB] hover:border-[#2882EB]">registrasi
             asesi</a>
     </div>
 </div>

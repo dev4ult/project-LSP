@@ -12,3 +12,7 @@ $('select[name="jurusan"]').on('change', function () {
     $('select[name="prodi"]').append("<option value='" + prodi[selectValue][i] + "'>" + prodi[selectValue][i] + '</option>');
   }
 });
+
+$('#close-alert').click(function () {
+  $('.alert').addClass('hidden');
+});

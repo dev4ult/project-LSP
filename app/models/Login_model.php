@@ -35,7 +35,7 @@ class Login_model {
 
         // captcha check
         if ($captCode != $captConf) {
-            Flasher::setFlash('Captcha is wrong');
+            Flasher::setFlash('Captcha is wrong', "error");
             return false;
         }
 

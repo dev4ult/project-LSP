@@ -27,7 +27,7 @@
                     <label class="label">
                         <span class="label-text">Jurusan</span>
                     </label>
-                    <select class="select select-bordered rounded-sm w-full max-w-xs" name="jurusan" required>
+                    <select class="select select-bordered rounded-sm w-full" name="jurusan" required>
                         <option disabled selected class="text-slate-300">-- PILIH JURUSAN --</option>
                         <option value="Teknik Informatika dan Komputer">Teknik Informatika dan Komputer</option>
                         <option value="Teknik Sipil">Teknik Sipil</option>
@@ -42,7 +42,7 @@
                     <label class="label">
                         <span class="label-text">Prodi</span>
                     </label>
-                    <select class="select select-bordered rounded-sm w-full max-w-xs" name="prodi" required>
+                    <select class="select select-bordered rounded-sm w-full" name="prodi" required>
                         <option disabled selected class="text-slate-300">-- PILIH JURUSAN TERLEBIH DAHULU--</option>
                     </select>
                 </div>

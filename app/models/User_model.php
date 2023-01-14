@@ -26,7 +26,20 @@ class User_model {
         return "SELECT * FROM " . $table . " JOIN biodata_" . $table . " ON " . $table . ".id_biodata_" . $table . " = biodata_" . $table . ".id";
     }
 
-    public function fetchAllUser($user_type, $keyword, $page, $limit) {
+    public function getUserTotal($user_type) {
+        $this->db->query("SELECT * FROM " . $user_type);
+
+        return count($this->db->resultSet());
+    }
+
+    public function getUserRegNumber($username, $user_type, $field) {
+        $this->db->query($this->account_join_biodata($user_type) . " WHERE " . $user_type . ".username=:username");
+        $this->db->bind("username", $username);
+
+        return $this->db->single()[$field];
+    }
+
+    public function fetchAllUserConditional($user_type, $keyword, $page, $limit) {
         $query_select = $this->account_join_biodata($user_type);
         $search_key = htmlspecialchars($keyword);
         if ($keyword != "") {
