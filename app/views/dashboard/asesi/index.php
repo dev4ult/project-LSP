@@ -4,7 +4,7 @@
             <span class="text-sm text-slate-500 font-semibold">Sistem informasi Lembaga Sertifikasi Profesi</span>
         </h1>
         <h2 class="text-2xl py-4 font-semibold">Selamat Datang, <?= $data['username'] ?></h2>
-        <p> Terima kasih telah bergabung menjadi Asesi dengan Lembaga Sertifikasi Profesi. 
+        <p> Terima kasih telah bergabung menjadi Asesi dengan Lembaga Sertifikasi Profesi.
             Untuk mengikuti ujian sertifikasi profesi keahlian, Prosedur yang harus dilalui sebagai berikut.
         </p>
     </section>
@@ -28,13 +28,14 @@
                 <h1 class="text-3xl font-semibold">3</h1>
                 <h3 class="py-1 text-xl">Lihat Jadwal</h3>
                 <a class="link link-hover py-1" href="<?= BASEURL ?>/asesi/jadwal_asesmen"> -> Selengkapnya</a>
-            </div>   
+            </div>
         </div>
         <div class="sertification-menu container max-w-sm m-3 bg-slate-900 rounded-xl">
             <div class="text-white px-4 py-3">
-                <h1 class="text-3xl font-semibold">4</h1> 
+                <h1 class="text-3xl font-semibold">4</h1>
                 <h3 class="py-1 text-xl">Terbit Sertifikat</h3>
-                <a class="link link-hover py-1 text-center" href="<?= BASEURL ?>/asesi/sertifikat_asesi"> -> Selengkapnya</a> 
+                <a class="link link-hover py-1 text-center" href="<?= BASEURL ?>/asesi/sertifikat_asesi"> ->
+                    Selengkapnya</a>
             </div>
         </div>
     </section>

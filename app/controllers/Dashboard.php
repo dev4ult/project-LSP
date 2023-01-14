@@ -42,6 +42,7 @@ class Dashboard extends Controller {
 
     public function asesi() {
         $this->model('User_model')->checkUserLogin("asesi");
+
         $data['page-title'] = 'Dashboard Asesi LSP';
 
         $this->view('templates/header', $data);

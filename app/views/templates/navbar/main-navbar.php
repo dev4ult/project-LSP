@@ -33,7 +33,7 @@
             <li tabindex="0">
                 <a href="<?= BASEURL ?>/login">Login</a>
             </li>
-            <li><a>Item 3</a></li>
+            <li><a href="<?= BASEURL ?>/home/profile">Profile</a></li>
         </ul>
     </div>
     <div class="navbar-end">

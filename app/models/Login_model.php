@@ -54,7 +54,7 @@ class Login_model {
         $this->db->bind('umail', $umail);
 
         $_SESSION['login'] = true;
-        $_SESSION['username'] = $umail;
+        $_SESSION['username'] = $this->db->single()['username'];
         $_SESSION['user-type'] = self::$user_table;
     }
 }
