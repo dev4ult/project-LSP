@@ -19,6 +19,7 @@ class Signup_model {
         $this->db = new Database();
     }
 
+
     public function isEmailRegistered($email) {
         $this->db->query("SELECT * FROM asesi WHERE email=:email");
         $this->db->bind('email', $email);
@@ -55,11 +56,13 @@ class Signup_model {
         }
     }
 
+
     public function getOTPCode($email) {
         $this->db->query("SELECT otp_code FROM unreg_asesi WHERE email=:email");
         $this->db->bind('email', $email);
         return $this->db->single();
     }
+
 
     public function delAfterReq($email) {
         $this->db->query("SELECT id FROM unreg_asesi WHERE email=:email");
@@ -79,6 +82,7 @@ class Signup_model {
         $this->db->bind('email', $email);
         return $this->db->single();
     }
+
 
     public function deleteTempUser($email) {
         $this->db->query("DELETE FROM unreg_asesi WHERE email=:email");
@@ -121,6 +125,7 @@ class Signup_model {
 
     public function saveTempUser($nama, $nim, $no_telepon, $alamat, $jurusan, $prodi, $jenis_kelamin, $username, $email, $password, $otp_code) {
         $this->db->query("INSERT INTO unreg_asesi(nama, nim, no_telepon, alamat, jurusan, prodi, jenis_kelamin, username, email, password, otp_code) VALUES (:nama, :nim, :no_telepon, :alamat, :jurusan, :prodi, :jenis_kelamin,:username, :email, :password, :otp_code)");
+
 
         // binding value
         $this->db->bind('nama', $nama);

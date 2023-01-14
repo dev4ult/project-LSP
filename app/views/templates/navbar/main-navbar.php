@@ -21,6 +21,7 @@
             </li>
             <li><a class="hover:bg-primary hover:text-white rounded-lg" href="<?= BASEURL ?>/login">PROFIL</a></li>
             <li><a class="hover:bg-primary hover:text-white rounded-lg" href="<?= BASEURL ?>">HUBUNGI KAMI</a></li>
+
         </ul>
     </div>
     <div class="navbar-end">
