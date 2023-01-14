@@ -1,7 +1,7 @@
 <?php
 
 // Convert HTML to PDF
-use Spipu\Html2Pdf\Html2Pdf;
+use Dompdf\Dompdf; 
 
 require '../vendor/autoload.php';
 
@@ -52,7 +52,6 @@ class Sertifikat_model {
         $query = "SELECT status_kelulusan FROM daftar_asesi_sertifikasi WHERE id_biodata_asesi = :id_biodata_asesi";
 
         $this->db->query($query);
-
         $this->db->bind("id_biodata_asesi", $idBio);
 
         return $this->db->single();
@@ -78,24 +77,43 @@ class Sertifikat_model {
 
     public function buildSertifikat($data) {
 
-        $html2pdf = new Html2Pdf();
+        $dompdf = new Dompdf();
 
-        $html2pdf->writeHTML('
-                                  <div class="container" style="border: solid 2px black;">
-                                    <div class="width-text" style="max-width: 50%; margin: 0 20px; padding: 20px 0">
-                                        <h1 align="center">Sertifikat Kompetensi Profesi Bidang ' . $data['nama_skema'] . '</h1>
-                                        <p align="center"> Diberikan Kepada : </p>
-                                        <h1 align="center">' . $data['nama_asesi'] . '</h1>
-                                        <h3 align="center">(' . $data['nim'] . ')</h3>
-                                        <p align="center"> 
-                                            Sebagai Peserta Program Sertifikasi Profesi Untuk Sertifikasi ' . $data['nama_skema'] . ' yang diselenggarakan oleh 
-                                            Politeknik Negeri Jakarta yang bekerja sama dengan Badan Nasional Sertifikasi Profesi (BNSP) di 
-                                            Lingkungan Politeknik Negeri Jakarta pada tanggal 20 November 2022. 
-                                        </p>
-                                    </div>
-                                  </div>
-                                ');
+        // Load content from html file
+        $dompdf->loadHtml('
+                            <div class="container" style="border: solid 2px black;">
+                                <div class="width-text" style="margin: 0 20px; padding: 20px 0">
+                                    <h1 align="center">Sertifikat Kompetensi Profesi Bidang ' . $data['nama_skema'] . '</h1>
+                                    <p align="center"> Diberikan Kepada : </p>
+                                    <h1 align="center">' . $data['nama_asesi'] . '</h1>
+                                    <h3 align="center">(' . $data['nim'] . ')</h3>
+                                    <p align="center"> 
+                                        Sebagai Peserta Program Sertifikasi Profesi Untuk Sertifikasi ' . $data['nama_skema'] . ' yang diselenggarakan oleh 
+                                        Politeknik Negeri Jakarta yang bekerja sama dengan Badan Nasional Sertifikasi Profesi (BNSP) di 
+                                        Lingkungan Politeknik Negeri Jakarta pada tanggal 20 November 2022. 
+                                    </p>
+                                </div>
+                                </div>
+                        ');
 
-        $html2pdf->output('Sertifikat.pdf');
+        $dompdf->setPaper('A5', 'landscape');
+
+        // Render the HTML as PDF 
+        $dompdf->render(); 
+ 
+        // Output the generated PDF to Browser 
+        $dompdf->stream("Sertifikat", array("Attachment" => 0));
+    }
+
+    public function searchSertifikat($page){
+        $keyword = $_POST['keyword'];
+        $query = $query = "SELECT skema_sertifikasi.id, skema_sertifikasi.nama_skema, skema_sertifikasi.tgl_Kadaluarsa_sertifikasi FROM daftar_asesi_sertifikasi
+                                JOIN skema_sertifikasi ON daftar_asesi_sertifikasi.id_skema_sertifikasi=skema_sertifikasi.id WHERE nama_skema LIKE :keyword LIMIT :page, 5";
+
+        $this->db->query($query);
+        $this->db->bind('keyword', "%$keyword%");
+        $this->db->bind("page", 5 * ($page - 1));
+
+        return $this->db->resultSet();
     }
 }
