@@ -163,10 +163,16 @@ class Asesi extends Controller {
     }
 
     public function daftar($idSkema) {
-        if ($this->model('Skema_model')->registSkema($idSkema) > 0) {
+        if($this->model('Skema_model')->checkRegistSkema($idSkema) == 0){
+            if ($this->model('Skema_model')->registSkema($idSkema) > 0) {
+                header('Location: ' . BASEURL . '/asesi/upload_document');
+                exit;
+            }
+        } else {
+            Flasher::setFlash("Anda telah terdaftar pada skema ini.");
             header('Location: ' . BASEURL . '/asesi/upload_document');
             exit;
-        }
+        } 
     }
 
     public function form_upload_ujian($idUnit) {
@@ -202,24 +208,34 @@ class Asesi extends Controller {
         $this->view('templates/footer');
     }
 
+    public function search_sertif_skema($page = 1) {
+
+        $data['page-title'] = 'Sertifikasi Skema';
+
+        $this->view('templates/header', $data);
+        $this->view('templates/navbar/main-navbar');
+
+        $data['skema-asesi'] = $this->model('Sertifikat_model')->searchSertifikat($page);
+        $data['page'] = $page;
+
+        if ($this->model('Sertifikat_model')->searchSertifikat($page) == NULL) {
+            Flasher::setFlash('Data Tidak Ada', 'shadow');
+        }
+
+        $this->view('Sertifikasi/index', $data);
+        $this->view('templates/footer');
+    }
+
     public function DownloadSertif($id) {
 
-        // $UnitKom = $this->model('Sertifikat_model')->checkUnitKom($id);
-        // $TotalUnitKom = $this->model('Sertifikat_model')->getTotalData($id, "unit_kompetensi");
-        // if($UnitKom == $TotalUnitKom){
-        //     Flasher::setFlash("Berhasil Mendapat sertifikat");
-        // } else {
-        //     Flasher::setFlash("Kerjakan Semua Unit untuk mendapatkan sertifikat");
-        // }
+         $statusLulus = $this->model('Sertifikat_model')->checkLulus();
 
-        $statusLulus = $this->model('Sertifikat_model')->checkLulus();
-
-        if ($statusLulus == "Lulus") {
+         if ($statusLulus == "Lulus") {
             $data['data-sertif'] = $this->model('Sertifikat_model')->getDataSertifikat($id);
             $this->model('Sertifikat_model')->buildSertifikat($data['data-sertif']);
-        } else {
+         } else {
             Flasher::setFlash("Selesaikan Semua Unit Kompetensi untuk mendapatkan sertifikat profesi");
-        }
+         }
 
         header('Location: ' . BASEURL . '/asesi/sertifikat_asesi');
         exit;

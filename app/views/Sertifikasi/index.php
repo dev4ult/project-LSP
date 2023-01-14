@@ -29,7 +29,7 @@
         <div class="head flex justify-between my-5">
             <h1 class="text-xl font-semibold my-3">Data Sertifikat Profesi Anda</h1>
             <div class="form-control">
-                <form action="<?= BASEURL; ?>/asesi/#" method="post">  
+                <form action="<?= BASEURL; ?>/asesi/search_sertif_skema" method="post">  
                     <div class="input-group rounded-lg">
                         <input type="text" placeholder="Search Skema" class="input input-bordered" name="keyword" id="keyword" autocomplete="off"/>
                         <button class="btn btn-square" type="submit">
