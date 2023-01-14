@@ -1,4 +1,4 @@
-<div class="navbar text-primary max-w-5xl mx-auto">
+<div class="navbar text-primary max-w-5xl mx-auto pt-3">
     <div class="navbar-start">
         <div class="dropdown">
             <label tabindex="0" class="btn btn-ghost lg:hidden">

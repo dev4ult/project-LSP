@@ -1,45 +1,73 @@
 <?php $nomor_induk = $data['user-type'] == "asesor" ? "nip" : "nim" ?>
 <?= Flasher::flash() ?>
 
-<div class="min-h-screen w-full">
-    <div class="overflow-x-auto">
-        <table class="table w-full">
+<div class="min-h-screen w-full flex">
+    <div class="pt-14 pr-8 px-12">
+        <button type="button" id="hamburger" class="text-primary">
+            <!-- hamburger icon -->
+            <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 512 512">
+                <path d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z" />
+            </svg>
+        </button>
+    </div>
+    <div class="overflow-x-auto px-8">
+        <?php require_once "../app/views/templates/breadcrumbs.php" ?>
+        <div class="flex justify-between items-center gap-5 my-5">
+            <?php require_once "../app/views/dashboard/admin/form/add_" . $data['user-type'] . ".php" ?>
+            <?php require_once "../app/views/dashboard/admin/form/pagination.php" ?>
+        </div>
+        <table class="table w-full rounded-xs shadow-lg">
             <thead>
                 <tr>
-                    <th></th>
-                    <th>Username</th>
-                    <th>Name</th>
-                    <th class="uppercase"><?= $nomor_induk ?></th>
-                    <th>Phone Number</th>
-                    <th></th>
+                    <th class="bg-base-100"></th>
+                    <th class="bg-base-100">Nama Lengkap</th>
+                    <th class="uppercase bg-base-100"><?= $nomor_induk ?></th>
+                    <th class="bg-base-100">No Telepon</th>
+                    <th class="bg-base-100">Email</th>
+                    <th class="bg-base-100"></th>
                 </tr>
             </thead>
             <tbody>
                 <?php $i = ($data['page'] - 1) * (int)$data['limit'] + 1; ?>
                 <?php foreach ($data['list-user'] as $user) : ?>
                 <tr>
-                    <th><?= $i ?></th>
-                    <td><?= $user['username'] ?></td>
+                    <td><?= $i ?></td>
                     <td><?= $user['nama'] ?></td>
                     <td><?= $user[$nomor_induk] ?></td>
                     <td><?= $user['no_telepon'] ?></td>
+                    <td><?= $user['email'] ?></td>
 
-                    <td><a href="<?= BASEURL ?>/dashboard/user_detail/<?= $data['user-type'] ?>/<?= $user['id'] ?>"
-                            class="btn btn-sm">detail</a>
-                        <label for="delete-user-<?= $user['id'] ?>" class="btn btn-sm btn-outline">delete</label>
+                    <td>
+                        <ul class="flex gap-2 items-center">
+                            <li>
+                                <a href="<?= BASEURL ?>/dashboard/user_detail/<?= $data['user-type'] ?>/<?= $user['id'] ?>"
+                                    class="bg-primary hover:bg-info px-1.5 py-1 text-white rounded-sm uppercase flex items-center gap-1">
+                                    <img src="<?= BASEURL ?>/img/info_white.svg" class="w-5" alt="info">
+                                    <span class="font-semibold">info</span></a>
+                            </li>
+                            <li>
+                                <label for="delete-user-<?= $user['id'] ?>"
+                                    class="border-2 rounded-sm text-accent/50 border-accent/50 px-2 py-1 uppercase cursor-pointer hover:text-white hover:bg-accent/50 hover:border-accent/0 flex items-center gap-1">
+                                    <img src="<?= BASEURL ?>/img/delete_accent.svg" class="w-5" alt="delete">
+                                    <span class="font-semibold">hapus</span></label>
+                            </li>
+                        </ul>
+
+
                     </td>
                 </tr>
                 <!-- Put this part before </body> tag -->
                 <input type="checkbox" id="delete-user-<?= $user['id'] ?>" class="modal-toggle" />
-                <div class="modal modal-bottom sm:modal-middle">
-                    <div class="modal-box">
-                        <h3 class="font-bold text-lg">Are you sure you want to delete this user?</h3>
-                        <p class="py-4">The account and its bio will be deleted at the same time</p>
+                <div class="modal modal-bottom sm:modal-middle bg-[#EDF4F8]/50">
+                    <div class="modal-box ">
+                        <h3 class="font-bold text-2xl">Hapus <?= ucfirst($data['user-type']) ?></h3>
+                        <p class="py-4 text-lg">Apakah anda yakin untuk menghapus asesor ini?</p>
                         <form action="<?= BASEURL ?>/dashboard/delete_user/<?= $data['user-type'] ?>/<?= $user['id'] ?>"
                             method="post" class="modal-action">
                             <button type="submit" name="delete-user-<?= $user['id'] ?>"
-                                class="btn btn-sm btn-outline">yes</button>
-                            <label for="delete-user-<?= $user['id'] ?>" class="btn btn-sm">no</label>
+                                class="btn btn-sm btn-outline btn-accent rounded-sm">hapus</button>
+                            <label for="delete-user-<?= $user['id'] ?>"
+                                class="btn btn-sm rounded-sm btn-secondary text-white">batal</label>
                         </form>
                     </div>
                 </div>
@@ -47,14 +75,37 @@
                 <?php endforeach; ?>
             </tbody>
         </table>
-    </div>
+        <div class="btn-group rounded-sm mt-3">
+            <?php if ($data['page'] > 1) : ?>
 
-    <div class="btn-group mt-3">
-        <a href="<?= BASEURL ?>/dashboard/user_list/<?= $data['user-type'] ?>/<?= ($data['page'] <= 1) ? 1 : $data['page'] - 1 ?>"
-            class="btn">«</a>
-        <button class="btn">Page <?= $data["page"] ?></button>
-        <a href="<?= BASEURL ?>/dashboard/user_list/<?= $data['user-type'] ?>/<?= $data['page'] + 1 ?>"
-            class="btn">»</a>
-    </div>
+            <a href="<?= BASEURL ?>/dashboard/user_list/<?= $data['user-type'] ?>/<?= ($data['page'] <= 1) ? 1 : $data['page'] - 1 ?>"
+                class="btn rounded-xs hover:border-secondary bg-base-100 hover:bg-secondary border-base-100 text-black hover:text-white">«</a>
+            <?php endif ?>
 
+            <?php if ($data['page'] > 2) : ?>
+            <a href="<?= BASEURL ?>/dashboard/user_list/<?= $data['user-type'] ?>/<?= $data["page"] - 2 ?>"
+                class="btn border-base-100 hover:border-secondary bg-base-100 hover:bg-secondary hover:text-white text-black"><?= $data["page"] - 2 ?></a>
+            <?php endif ?>
+            <?php if ($data['page'] > 1) : ?>
+
+            <a href="<?= BASEURL ?>/dashboard/user_list/<?= $data['user-type'] ?>/<?= $data["page"] - 1 ?>"
+                class="btn border-base-100 hover:border-secondary bg-base-100 hover:bg-secondary hover:text-white text-black"><?= $data["page"] - 1 ?></a>
+            <?php endif ?>
+            <button
+                class="btn bg-black text-white border-black hover:border-black hover:bg-black"><?= $data["page"] ?></button>
+            <?php if ($data['page-total'] >= $data['page'] + 1) : ?>
+            <a href="<?= BASEURL ?>/dashboard/user_list/<?= $data['user-type'] ?>/<?= $data["page"] + 1 ?>"
+                class="btn border-base-100 hover:border-secondary bg-base-100 hover:bg-secondary hover:text-white text-black"><?= $data["page"] + 1 ?></a>
+            <?php endif ?>
+            <?php if ($data['page-total'] >= $data['page'] + 2) : ?>
+            <a href="<?= BASEURL ?>/dashboard/user_list/<?= $data['user-type'] ?>/<?= $data["page"] + 2 ?>"
+                class="btn border-base-100 hover:border-secondary bg-base-100 hover:bg-secondary hover:text-white text-black"><?= $data["page"] + 2 ?></a>
+            <?php endif ?>
+            <?php if ($data['page-total'] != $data['page']) : ?>
+            <a href="<?= BASEURL ?>/dashboard/user_list/<?= $data['user-type'] ?>/<?= $data['page'] + 1 ?>"
+                class="btn rounded-xs hover:border-secondary bg-base-100 hover:bg-secondary border-base-100 hover:text-white text-black">»</a>
+            <?php endif ?>
+        </div>
+    </div>
 </div>
+<script src="<?= BASEURL ?>/js/sidebar.js"></script>

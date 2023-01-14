@@ -39,6 +39,7 @@ class User_model {
         return $this->db->single()[$field];
     }
 
+
     public function fetchAllUserConditional($user_type, $keyword, $page, $limit) {
         $query_select = $this->account_join_biodata($user_type);
         $search_key = htmlspecialchars($keyword);
@@ -113,7 +114,7 @@ class User_model {
 
         // biodata
         $nama = htmlspecialchars($data['nama']);
-        $no_telepon = htmlspecialchars($data['no_telepon']);
+        $no_telepon = htmlspecialchars($data['no-telepon']);
         $alamat = htmlspecialchars($data['alamat']);
         $jenis_kelamin = htmlspecialchars($data['jenis-kelamin']);
 
@@ -123,8 +124,8 @@ class User_model {
             $nik = htmlspecialchars($data['nik']);
             $nip = htmlspecialchars($data['nip']);
             $pendidikan_terakhir = htmlspecialchars($data['pendidikan-terakhir']);
-            $tempat_lahir = htmlspecialchars($data['tempat_lahir']);
-            $tanggal_lahir = htmlspecialchars($data['tanggal_lahir']);
+            $tempat_lahir = htmlspecialchars($data['tempat-lahir']);
+            $tanggal_lahir = htmlspecialchars($data['tanggal-lahir']);
 
             $query_field = $query_field . ", nik, nip, pendidikan_terakhir, tempat_lahir, tanggal_lahir)";
             $query_values = $query_values . ", :nik, :nip, :pendidikan_terakhir, :tempat_lahir, :tanggal_lahir)";
@@ -221,7 +222,7 @@ class User_model {
     public function updateBiodata($data, $user_type) {
         $bio_id = htmlspecialchars($data['bio-id']);
         $nama = htmlspecialchars($data['nama']);
-        $no_telepon = htmlspecialchars($data['no_telepon']);
+        $no_telepon = htmlspecialchars($data['no-telepon']);
         $alamat = htmlspecialchars($data['alamat']);
         $jenis_kelamin = htmlspecialchars($data['jenis-kelamin']);
 
@@ -230,10 +231,10 @@ class User_model {
         if ($user_type == "asesor") {
             $nik = htmlspecialchars($data['nik']);
             $nip = htmlspecialchars($data['nip']);
-            $pendidikan_terakhir = htmlspecialchars($data['pendidikan_terakhir']);
-            $tempat_lahir = htmlspecialchars($data['tempat_lahir']);
-            $tanggal_lahir = htmlspecialchars($data['tanggal_lahir']);
-            $query_set = $query_set . ", nik=:nik, nip=:nip, pendidikan_terakhir=:pendidikan_terakhir, tempat_lahir=:tanggal_lahir, tanggal_lahir=:tanggal_lahir";
+            $pendidikan_terakhir = htmlspecialchars($data['pendidikan-terakhir']);
+            $tempat_lahir = htmlspecialchars($data['tempat-lahir']);
+            $tanggal_lahir = htmlspecialchars($data['tanggal-lahir']);
+            $query_set = $query_set . ", nik=:nik, nip=:nip, pendidikan_terakhir=:pendidikan_terakhir, tempat_lahir=:tempat_lahir, tanggal_lahir=:tanggal_lahir";
         } else if ($user_type == "asesi") {
             $nim = htmlspecialchars($data['nim']);
             $jurusan = htmlspecialchars($data['jurusan']);

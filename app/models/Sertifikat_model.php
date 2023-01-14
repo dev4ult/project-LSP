@@ -13,6 +13,11 @@ class Sertifikat_model {
         $this->db = new Database;
     }
 
+    public function getTotalListPersyaratan() {
+        $this->db->query('SELECT * FROM list_persyaratan');
+        return count($this->db->resultSet());
+    }
+
     public function getIdBiodata($username) {
 
         $query = "SELECT id_biodata_asesi FROM asesi WHERE username =:username";

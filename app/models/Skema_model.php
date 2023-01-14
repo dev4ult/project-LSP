@@ -312,6 +312,11 @@ class Skema_model {
     return $this->db->single()['id_biodata_asesi'];
   }
 
+  public function getTotalSchema() {
+    $this->db->query("SELECT * FROM skema_sertifikasi");
+    return count($this->db->resultSet());
+  }
+
   public function getTotalUpload() {
 
     $idBio = $this->getIdBiodata($_SESSION['username']);

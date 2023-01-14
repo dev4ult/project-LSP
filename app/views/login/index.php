@@ -32,7 +32,7 @@
                 <label for="captcha-modal" class="btn btn-secondary rounded-sm text-white">Login</label>
             </div>
             <input type="checkbox" id="captcha-modal" class="modal-toggle" />
-            <div class="modal">
+            <div class="modal bg-[#EDF4F8]/60">
                 <div class="modal-box relative w-[430px] p-12">
                     <h3 class="font-semibold text-2xl text-center">Verifikasi Kode Captcha!</h3>
                     <?php $captcha_code = substr(md5(rand()), 0, 7); ?>
@@ -54,7 +54,8 @@
                                     d="M6 18L18 6M6 6l12 12" />
                             </svg>
                         </label>
-                        <button type="submit" class="btn w-full rounded-sm text-white">VERIFIKASI CAPTCHA</button>
+                        <button type="submit" class="btn w-full btn-secondary rounded-sm text-white">VERIFIKASI
+                            CAPTCHA</button>
                     </div>
                 </div>
             </div>

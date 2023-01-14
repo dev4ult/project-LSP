@@ -7,11 +7,9 @@ class Dashboard extends Controller {
     public function __construct() {
         $this->breadcrumbs = [
             "name" => [
-                "home",
-                "dashboard"
+                "Dashboard"
             ],
             "link" => [
-                "home",
                 "dashboard"
             ]
         ];
@@ -30,13 +28,17 @@ class Dashboard extends Controller {
         $data['username'] = $_SESSION['username'];
         $data['total-asesor'] = $this->model("User_model")->getUserTotal('asesor');
         $data['total-asesi'] = $this->model("User_model")->getUserTotal('asesi');
+        $data['total-skema'] = $this->model("Skema_model")->getTotalSchema();
+        $data['total-list-persyaratan'] = $this->model("Sertifikat_model")->getTotalListPersyaratan();
 
         $data['nomor-induk'] = $this->model("User_model")->getUserRegNumber($_SESSION['username'], "admin", "nip");
         $this->view('templates/sidebar');
-        $this->view('dashboard/admin/index', $data);
 
-        // $this->view('templates/footer');
+        $data['user-type'] = 'admin';
+        $this->view('dashboard/admin/index', $data);
     }
+
+
 
     public function asesi() {
         $this->model('User_model')->checkUserLogin("asesi");
@@ -44,41 +46,57 @@ class Dashboard extends Controller {
         $data['page-title'] = 'Dashboard Asesi LSP';
 
         $this->view('templates/header', $data);
-        $this->view('templates/navbar/dashboard-navbar');
 
         $data['username'] = $_SESSION['username'];
         $this->view('dashboard/asesi/index', $data);
-
-        $this->view('templates/footer');
     }
 
     public function asesor() {
         $this->model('User_model')->checkUserLogin("asesor");
+
         $data['page-title'] = 'Dashboard page';
         $this->view('templates/header', $data);
-
-        $this->view('templates/navbar/dashboard-navbar');
 
         $this->view('dashboard/asesor/index');
 
         $this->view('templates/footer');
     }
 
+    public function edit_profile($user_type = null) {
+        if ($user_type == "asesor" || $user_type == "asesi" || $user_type == "admin") {
+            $data['page-title'] = "Edit Profil";
+
+            $this->view('templates/header', $data);
+
+            $this->view('templates/sidebar');
+
+            $data['user-type'] = $user_type;
+            $data['page-link'] = $this->breadcrumbs;
+            $this->view('dashboard/' . $user_type . '/edit_profile', $data);
+        } else {
+            header('Location: ' . BASEURL . '/dashboard');
+            exit;
+        }
+    }
+
     public function user_list($user_type = null, $index = 1) {
         $this->model('User_model')->checkUserLogin("admin");
 
         if ($user_type == "asesor" || $user_type == "asesi") {
-            $data['page-title'] = 'list ' . $user_type;
-            $this->view("templates/header", $data);
-            $this->view('templates/navbar/dashboard-navbar');
+            if ((int)$index <= 0) {
+                header('Location: ' . BASEURL . '/dashboard/user_list/' . $user_type);
+                exit;
+            }
 
-            $data["page"] = $this->breadcrumbs;
+            $data['page-title'] = 'List ' . ucfirst($user_type);
+            $this->view("templates/header", $data);
+
             $data['user-type'] = $user_type;
-            $this->view('templates/breadcrumbs', $data);
 
             $data['jurusan'] = $this->model("User_model")->fetchAllJurusan();
 
-            $this->view('dashboard/admin/form/add_' . $user_type, $data);
+            $this->view('templates/sidebar');
+
 
             $keyword = "";
             if (isset($_POST['search-key'])) {
@@ -90,21 +108,27 @@ class Dashboard extends Controller {
             }
 
             $limit = 5;
+            $total_page = ceil($this->model('User_model')->getUserTotal($user_type) / $limit);
             if (isset($_SESSION['table-limit'])) {
                 $limit = $_SESSION['table-limit'];
+                $total_page = ceil($this->model('User_model')->getUserTotal($user_type) / $limit);
+            }
+
+            if ((int)$index > $total_page) {
+                header('Location: ' . BASEURL . '/dashboard/user_list/' . $user_type);
+                exit;
             }
 
             $data['list-user'] = $this->model('User_model')->fetchAllUserConditional($user_type, $keyword, $index - 1, $limit);
             $data["page"] = $index;
             $data['limit'] = $limit;
+            $data['page-total'] = $total_page;
 
             $data['url'] = "dashboard/user_list/" . $user_type;
-            $this->view('dashboard/admin/form/pagination', $data);
+            // $this->view('dashboard/admin/form/pagination', $data);
 
+            $data['page-link'] = $this->breadcrumbs;
             $this->view('dashboard/admin/list/user', $data);
-
-
-            $this->view('templates/footer');
         } else {
             header('Location: ' . BASEURL . '/dashboard/admin');
             exit;
@@ -115,23 +139,21 @@ class Dashboard extends Controller {
         $this->model('User_model')->checkUserLogin("admin");
 
         if ($user_type == "asesor" || $user_type == "asesi") {
-            $data['page-title'] = 'detail';
+            $data['page-title'] = 'Detail ' . ucfirst($user_type);
             $this->view("templates/header", $data);
 
-            $data["page"] = $this->breadcrumbs;
-            array_push($data["page"]["name"], "list " . $user_type);
-            array_push($data["page"]["link"], "dashboard/user_list/" . $user_type);
+            $data["page-link"] = $this->breadcrumbs;
+            array_push($data["page-link"]["name"], "List " . ucfirst($user_type));
+            array_push($data["page-link"]["link"], "dashboard/user_list/" . $user_type);
 
+            $this->view('templates/sidebar');
 
-            $this->view('templates/breadcrumbs', $data);
             $data['user-type'] = $user_type;
 
             $data['jurusan'] = $this->model("User_model")->fetchAllJurusan();
 
             $data['user'] = $this->model('User_model')->fetchSingleUser($user_type, $user_id);
             $this->view('dashboard/admin/detail/' . $user_type, $data);
-
-            $this->view('templates/footer');
         } else {
             header('Location: ' . BASEURL . '/dashboard/admin');
             exit;

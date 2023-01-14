@@ -1,17 +1,14 @@
 <?php
 
-class Flasher
-{
-    public static function setFlash($msg = 'default message for alert', $type = '')
-    {
+class Flasher {
+    public static function setFlash($msg = 'default message for alert', $type = '') {
         $_SESSION['flash'] = [
             "msg" => $msg,
             "type" => $type
         ];
     }
 
-    public static function flash()
-    {
+    public static function flash() {
         if (isset($_SESSION['flash'])) {
             $flash = $_SESSION['flash'];
 

@@ -1,7 +1,11 @@
-<div class="text-sm breadcrumbs">
+<div class="text-xl font-semibold breadcrumbs pt-14">
     <ul>
-        <?php for ($i = 0; $i < count($data["page"]["name"]); $i++) : ?>
-        <li><a href="<?= BASEURL ?>/<?= $data["page"]["link"][$i] ?>"><?= $data["page"]["name"][$i] ?></a></li>
+        <li><a href="<?= BASEURL ?>">
+                <img src="<?= BASEURL ?>/img/home.svg" class="w-6" alt="home">
+            </a></li>
+        <?php for ($i = 0; $i < count($data["page-link"]["name"]); $i++) : ?>
+        <li><a href="<?= BASEURL ?>/<?= $data["page-link"]["link"][$i] ?>"
+                class="text-primary"><?= $data["page-link"]["name"][$i] ?></a></li>
         <?php endfor; ?>
         <li><?= $data["page-title"] ?></li>
     </ul>

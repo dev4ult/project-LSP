@@ -1,122 +1,167 @@
 <?php $user = $data['user']; ?>
 
-<?= Flasher::flash() ?>
-<div class="min-h-screen w-full">
-    <div class="rounded-lg shadow-md p-5">
-        <div class="flex justify-between">
-            <h3 class="font-bold text-3xl uppercase underline">Biodata</h3>
-            <label for="biodata" class="btn btn-sm">edit</label>
-        </div>
-        <table class="mt-5">
-            <tr class="text-2xl font-semibold">
-                <td>Nama</td>
-                <td class="px-5">:</td>
-                <td><?= $user["nama"] ?></td>
-            </tr>
-            <tr class="text-2xl font-semibold">
-                <td>NIM</td>
-                <td class="px-5">:</td>
-                <td><?= $user["nim"] ?></td>
-            </tr>
-            <tr class="text-2xl font-semibold">
-                <td>No Telepon</td>
-                <td class="px-5">:</td>
-                <td><?= $user["no_telepon"] ?></td>
-            </tr>
-            <tr class="text-2xl font-semibold">
-                <td>Alamat</td>
-                <td class="px-5">:</td>
-                <td><?= $user["alamat"] ?></td>
-            </tr>
-            <tr class="text-2xl font-semibold">
-                <td>Jurusan</td>
-                <td class="px-5">:</td>
-                <td id="nama-jurusan"><?= $user["jurusan"] ?></td>
-            </tr>
-            <tr class="text-2xl font-semibold">
-                <td>Prodi</td>
-                <td class="px-5">:</td>
-                <td id="nama-prodi"><?= $user["prodi"] ?></td>
-            </tr>
-        </table>
+<div class="min-h-screen w-full flex">
+    <div class="pt-14 px-8 pr-12">
+        <button type="button" id="hamburger" class="text-primary">
+            <!-- hamburger icon -->
+            <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 512 512">
+                <path d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z" />
+            </svg>
+        </button>
     </div>
-    <div class="rounded-lg shadow-md p-5 mt-5">
-        <div class="flex justify-between">
-            <h3 class="font-bold text-3xl uppercase underline">Akun</h3>
-            <label for="akun" class="btn btn-sm">edit</label>
+    <div class="mb-5">
+        <?php require_once "../app/views/templates/breadcrumbs.php" ?>
+        <div class="mt-5">
+            <?= Flasher::flash() ?>
         </div>
-        <table class="mt-5">
-            <tr class="text-2xl font-semibold">
-                <td>Username</td>
-                <td class="px-5">:</td>
-                <td><?= $user["username"] ?></td>
-            </tr>
-            <tr class="text-2xl font-semibold">
-                <td>Email</td>
-                <td class="px-5">:</td>
-                <td><?= $user["email"] ?></td>
-            </tr>
-            <tr class="text-2xl font-semibold">
-                <td>Password</td>
-                <td class="px-5">:</td>
-                <td>*******</td>
-            </tr>
-        </table>
+        <div class=" flex gap-5 mt-5">
+            <div class="rounded-lg shadow-md p-10 bg-base-100">
+                <div class="flex justify-between">
+                    <h3 class="font-bold text-2xl">Biodata</h3>
+                    <label for="biodata" class="btn btn-sm rounded-sm btn-secondary text-white">edit</label>
+                </div>
+                <div class="mt-5">
+                    <div class="text-lg font-semibold mt-10 border-b-2 border-base-200 flex gap-10 justify-between">
+                        <p class="text-slate-400">Nama</p>
+                        <p class="text-right"><?= $user["nama"] ?></p>
+                    </div>
+                    <div class="text-lg font-semibold mt-10 border-b-2 border-base-200 flex gap-10 justify-between">
+                        <p class="text-slate-400">NIM</p>
+                        <p class="text-right"><?= $user["nim"] ?></p>
+                    </div>
+                    <div class="text-lg font-semibold mt-10 border-b-2 border-base-200 flex gap-10 justify-between">
+                        <p class="text-slate-400">Jurusan</p>
+                        <p class="text-right" id="nama-jurusan"><?= $user["jurusan"] ?></p>
+                    </div>
+                    <div class="text-lg font-semibold mt-10 border-b-2 border-base-200 flex gap-10 justify-between">
+                        <p class="text-slate-400">Prodi</p>
+                        <p class="text-right" id="nama-prodi"><?= $user["prodi"] ?></p>
+                    </div>
+                    <div class="text-lg font-semibold mt-10 border-b-2 border-base-200 flex gap-10 justify-between">
+                        <p class="text-slate-400">No Telepon</p>
+                        <p class="text-right"><?= $user["no-telepon"] ?></p>
+                    </div>
+                    <div class="text-lg font-semibold mt-10 border-b-2 border-base-200 flex gap-10 justify-between">
+                        <p class="text-slate-400">Jenis Kelamin</p>
+                        <p class="text-right max-w-sm"><?= $user["jenis_kelamin"] ?></p>
+                    </div>
+                    <div class="text-lg font-semibold mt-10 border-b-2 border-base-200 flex gap-10 justify-between">
+                        <p class="text-slate-400">Alamat</p>
+                        <p class="text-right max-w-sm"><?= $user["alamat"] ?></p>
+                    </div>
+
+                </div>
+            </div>
+            <div class="flex flex-col gap-5">
+                <div class="rounded-lg shadow-md p-10 bg-base-100">
+                    <div class="flex justify-between">
+                        <h3 class="font-bold text-2xl">Akun</h3>
+                        <label for="akun" class="btn btn-sm btn-secondary rounded-sm text-white">edit</label>
+                    </div>
+                    <div class="mt-5">
+                        <div class="text-lg font-semibold mt-10 border-b-2 border-base-200 flex gap-10 justify-between">
+                            <p class="text-slate-400">Username</p>
+                            <p class="text-right"><?= $user["username"] ?></p>
+                        </div>
+                        <div class="text-lg font-semibold mt-10 border-b-2 border-base-200 flex gap-10 justify-between">
+                            <p class="text-slate-400">Email</p>
+                            <p class="text-right"><?= $user["email"] ?></p>
+                        </div>
+                        <div class="text-lg font-semibold mt-10 border-b-2 border-base-200 flex gap-10 justify-between">
+                            <p class="text-slate-400">Password</p>
+                            <p class="text-right">*******</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="rounded-lg shadow-md p-10 bg-base-100">
+                    <h3 class="font-bold text-2xl">Skema Terdaftar</h3>
+                    <ul class="mt-5 whitespace-nowrap flex flex-col gap-2 overflow-y-auto h-40">
+                        <li class="flex items-center">
+                            <img src="<?= BASEURL ?>/img/bookmark.svg" alt="bookmark">
+                            <div>
+                                <h4 class="text-sm font-semibold">Front End Developer</h4>
+                                <a href="<?= BASEURL ?>/" class="uppercase text-xs">lihat skema sertifikasi</a>
+                            </div>
+                        </li>
+                        <li class="flex items-center">
+                            <img src="<?= BASEURL ?>/img/bookmark.svg" alt="bookmark">
+                            <div>
+                                <h4 class="text-sm font-semibold">Front End Developer</h4>
+                                <a href="<?= BASEURL ?>/" class="uppercase text-xs">lihat skema sertifikasi</a>
+                            </div>
+                        </li>
+                        <li class="flex items-center">
+                            <img src="<?= BASEURL ?>/img/bookmark.svg" alt="bookmark">
+                            <div>
+                                <h4 class="text-sm font-semibold">Front End Developer</h4>
+                                <a href="<?= BASEURL ?>/" class="uppercase text-xs">lihat skema sertifikasi</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <input type="checkbox" id="biodata" class="modal-toggle" />
-<div class="modal">
-    <form action="<?= BASEURL ?>/dashboard/bio_update/<?= $data['user-type'] ?>" method="post" class="modal-box">
+<div class="modal bg-[#EDF4F8]/50">
+    <form action="<?= BASEURL ?>/dashboard/bio_update/<?= $data['user-type'] ?>" method="post"
+        class="modal-box max-w-none w-fit">
         <input type="number" name="account-id" class="hidden" value="<?= $user['id'] ?>">
 
         <input type="number" name="bio-id" class="hidden" value="<?= $user['id_biodata_asesi'] ?>">
-        <h3 class="font-bold text-lg">Update Biodata <?= $user['nama'] ?></h3>
-        <div class="flex gap-5">
-            <div class="form-control">
+        <h3 class="font-bold text-2xl mb-5">Update Biodata</h3>
+        <div class="grid grid-flow-row grid-cols-2 gap-5">
+            <div class="form-control ">
                 <label class="label">
-                    <span class="label-text">Nama</span>
+                    <span class="label-text">Nama Lengkap</span>
                 </label>
-                <label class="input-group input-group-md">
-                    <input type="text" placeholder="Type here" class="input input-bordered input-md" name="nama"
-                        value="<?= $user['nama'] ?>" />
+                <label class="">
+                    <input type="text" placeholder="Type here" class="rounded-sm input w-full input-bordered"
+                        name="nama" value="<?= $user['nama'] ?>" />
                 </label>
             </div>
-            <div class="form-control">
+            <div class="form-control ">
                 <label class="label">
                     <span class="label-text">NIM</span>
                 </label>
-                <label class="input-group input-group-md">
-                    <input type="number" placeholder="Type here" class="input input-bordered input-md" name="nim"
-                        value="<?= $user['nim'] ?>" />
+                <label class="">
+                    <input type="number" placeholder="Type here" class="rounded-sm input w-full input-bordered"
+                        name="nim" value="<?= $user['nim'] ?>" />
                 </label>
             </div>
-        </div>
-        <div class="flex gap-5">
-            <div class="form-control">
+            <div class="form-control ">
                 <label class="label">
                     <span class="label-text">No Telepon</span>
                 </label>
-                <label class="input-group input-group-md">
-                    <input type="text" placeholder="Type here" class="input input-bordered input-md" name="no_telepon"
-                        value="<?= $user['no_telepon'] ?>" />
+                <label class="">
+                    <input type="text" placeholder="Type here" class="rounded-sm input w-full input-bordered"
+                        name="no_telepon" value="<?= $user['no_telepon'] ?>" />
                 </label>
             </div>
             <div class="form-control">
-                <label class="label">
-                    <span class="label-text">Alamat</span>
-                </label>
-                <label class="input-group input-group-md">
-                    <input type="text" placeholder="Type here" class="input input-bordered input-md" name="alamat"
-                        value="<?= $user['alamat'] ?>" />
-                </label>
+                <label class="label-text mb-2 mt-2">Jenis Kelamin</label>
+                <div class="flex gap-2 justify-between">
+                    <label
+                        class="form-control flex-row items-center gap-3 border-2 rounded-sm border-slate-200 py-2 pl-3 pr-10">
+                        <input type="radio" class="radio-1 radio " name="jenis-kelamin" value="Laki-laki" required
+                            <?= $user['jenis_kelamin'] == "Laki-laki" ? "checked" : "" ?> />
+                        <span>Laki-laki</span>
+                    </label>
+                    <label
+                        class="form-control flex-row items-center gap-3 border-2 rounded-sm border-slate-200 py-2 pl-3 pr-10">
+                        <input type="radio" class="radio-1 radio" name="jenis-kelamin" value="Perempuan"
+                            <?= $user['jenis_kelamin'] == "Perempuan" ? "checked" : "" ?> />
+                        <span>Perempuan</span>
+                    </label>
+                </div>
             </div>
-        </div>
-        <div class="flex gap-5">
-            <div class="form-control">
+
+            <div class="form-control ">
                 <label class="label">
                     <span class="label-text">Jurusan</span>
                 </label>
-                <select class="select select-bordered w-full max-w-xs" name="jurusan" required>
+                <select class="select select-bordered rounded-sm w-full" name="jurusan" required>
                     <option disabled>-- PILIH JURUSAN --</option>
                     <?php foreach ($data['jurusan'] as $jurusan) : ?>
                     <option <?= $jurusan['nama'] == $user['jurusan'] ? "disabled selected" : "" ?>
@@ -129,120 +174,36 @@
                 <label class="label">
                     <span class="label-text">Prodi</span>
                 </label>
-                <select class="select select-bordered w-full max-w-xs" name="prodi" required>
+                <select class="select select-bordered rounded-sm w-full" name="prodi" required>
                     <option disabled selected>-- PILIH JURUSAN TERLEBIH DAHULU--</option>
                 </select>
             </div>
-            <script>
-            let prodi = {
-                'Teknik Informatika dan Komputer': [
-                    'Teknik Informatika',
-                    'Teknik Multimedia Digital',
-                    'Teknik Multimedia dan Jaringan',
-                    'Teknik Komputer dan Jaringan'
-                ],
-                'Teknik Sipil': [
-                    'Konstruksi Sipil',
-                    'Konstruksi Gedung',
-                    'Teknik Perancangan Jalan dan Jembatan',
-                    'Teknik Konstruksi Gedung',
-                ],
-                'Teknik Mesin': [
-                    'Teknik Mesin',
-                    'Teknik Mesin - PSDKU Kab. Demak',
-                    'Teknik Konversi Energi',
-                    'Manufaktur',
-                    'Manufaktur - PSDKU Kab. Pekalongan',
-                    'Pembangkit Tenaga Listrik',
-                    'Teknologi Rekayasa Konversi Energi',
-                    'Teknologi Rekayasa Perawatan Alat Berat',
-                    'Magister Rekayasa Teknologi Manufaktur',
-                ],
-                'Teknik Elektro': [
-                    'Elektronika Industri',
-                    'Teknik Listrik',
-                    'Telekomunikasi',
-                    'Instrumentasi Kontrol Industri',
-                    'Teknik Otomasi Listrik Industri',
-                    'Broadband Multimedia',
-                    'Magister Teknik Elektro',
-                ],
-                'Teknik Grafika dan Penerbitan': [
-                    'Penerbitan',
-                    'Teknik Grafika',
-                    'Desain Grafis',
-                    'Teknologi Industri Cetak Kemasan',
-                ],
-                'Akuntansi': [
-                    'Akuntansi',
-                    'Keuangan dan Perbankan',
-                    'Akuntansi Keuangan',
-                    'Keuangan dan Perbankan',
-                    'Keuangan dan Perbankan Syariah',
-                    'Manajemen Keuangan',
-                    'Manajemen Pemasaran (WNBK',
-                ],
-                'Administrasi Niaga': [
-                    'Administrasi Bisnis',
-                    'Administrasi Bisnis Terapan',
-                    'Usaha Jasa Konvensi, Perjalanan Insentif dan Pameran /MICE',
-                    'Usaha Jasa Konvensi, Perjalanan Insentif dan Pameran /MICE - PSDKU Kab. Demak',
-                    'Bahasa Inggris untuk Komunikasi Bisnis dan Profesional',
-                ],
-
-            };
-
-            let selectedJurusan = $('#nama-jurusan').text();
-            let selectedProdi = $('#nama-prodi').text();
-
-            $('select[name="prodi"]').empty();
-            for (let i = 0; i < prodi[selectedJurusan].length; i++) {
-                // Output choice in the target field
-                $('select[name="prodi"]').append("<option " + (selectedProdi == prodi[selectedJurusan][i] ?
-                        "disabled selected" : "") + " value='" + prodi[selectedJurusan][i] +
-                    "'>" + prodi[selectedJurusan][i] + "</option>");
-            }
-
-            // When an option is changed, search the above for matching choices
-            $('select[name="jurusan"]').on('change', function() {
-                // Set selected option as variable
-                selectedJurusan = $(this).val();
-
-                // Empty the target field
-                $('select[name="prodi"]').empty();
-
-                // For each chocie in the selected option
-                for (let i = 0; i < prodi[selectedJurusan].length; i++) {
-                    // Output choice in the target field
-                    $('select[name="prodi"]').append("<option value='" + prodi[selectedJurusan][i] +
-                        "'>" + prodi[selectedJurusan][i] + "</option>");
-                }
-            });
-            </script>
-        </div>
-        <div class="mt-3">
-            <label class="label-text">Jenis Kelamin</label>
-            <div class="flex gap-5">
-                <label class="form-control flex-row items-center gap-3">
-                    <input type="radio" class="radio-1" name="jenis-kelamin" value="Laki-laki"
-                        <?= $user['jenis_kelamin'] == 'Laki-laki' ? "checked" : "" ?> />
-                    <span>Laki-laki</span>
+            <div class="form-control ">
+                <label class="label">
+                    <span class="label-text">Alamat</span>
                 </label>
-                <label class="form-control flex-row items-center gap-3">
-                    <input type="radio" class="radio-1" name="jenis-kelamin" value="Perempuan"
-                        <?= $user['jenis_kelamin'] == 'Perempuan' ? "checked" : "" ?> />
-                    <span>Perempuan</span>
+                <label class="">
+                    <textarea name="alamat" class="p-3.5 input input-bordered rounded-sm w-full h-36 resize-none "
+                        placeholder="alamat" required><?= $user['alamat'] ?></textarea>
+                </label>
+            </div>
+            <div class="modal-action">
+                <button type="submit" class="btn btn-secondary text-white rounded-sm mt-2">simpan perubahan</button>
+                <label for="biodata" class="btn btn-circle btn-outline absolute top-6 right-5 btn-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
                 </label>
             </div>
         </div>
-        <div class="modal-action">
-            <button type="submit" class="btn btn-sm">Save Changes</button>
-            <label for="biodata" class="btn btn-sm btn-outline">Cancel</label>
-        </div>
+
+
     </form>
 </div>
 <input type="checkbox" id="akun" class="modal-toggle" />
-<div class="modal">
+<div class="modal bg-[#EDF4F8]/50">
     <form action="<?= BASEURL ?>/dashboard/account_update/<?= $data['user-type'] ?>" method="post" class="modal-box">
         <input type="number" name="account-id" class="hidden" value="<?= $user['id'] ?>">
         <h3 class="font-bold text-lg">Update Akun <?= $user['username'] ?></h3>
@@ -251,18 +212,18 @@
                 <label class="label">
                     <span class="label-text">Username</span>
                 </label>
-                <label class="input-group input-group-md">
-                    <input type="text" placeholder="Type here" class="input input-bordered input-md" name="username"
-                        value="<?= $user['username'] ?>" />
+                <label class="">
+                    <input type="text" placeholder="Type here" class="rounded-sm input w-full input-bordered"
+                        name="username" value="<?= $user['username'] ?>" />
                 </label>
             </div>
             <div class="form-control">
                 <label class="label">
                     <span class="label-text">Email</span>
                 </label>
-                <label class="input-group input-group-md">
-                    <input type="text" placeholder="Type here" class="input input-bordered input-md" name="email"
-                        value="<?= $user['email'] ?>" />
+                <label class="">
+                    <input type="text" placeholder="Type here" class="rounded-sm input w-full input-bordered"
+                        name="email" value="<?= $user['email'] ?>" />
                 </label>
             </div>
         </div>
@@ -270,9 +231,9 @@
             <label class="label">
                 <span class="label-text">New Password</span>
             </label>
-            <label class="input-group input-group-md">
+            <label class="">
                 <input type="password" name="new-password" placeholder="Type here"
-                    class="input input-bordered input-md" />
+                    class="rounded-sm input w-full input-bordered" />
             </label>
         </div>
 
@@ -282,3 +243,7 @@
         </div>
     </form>
 </div>
+<script src="<?= BASEURL ?>/js/sidebar.js"></script>
+<script src="<?= BASEURL ?>/js/prodi.js"></script>
+<script src="<?= BASEURL ?>/js/set_prodi.js"></script>
+<script src="<?= BASEURL ?>/js/main.js"></script>
