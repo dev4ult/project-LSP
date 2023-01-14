@@ -22,4 +22,7 @@ class Home extends Controller {
 
     public function about_us() {
     }
+
+    public function about_us() {
+    }
 }

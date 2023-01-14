@@ -58,7 +58,6 @@ class Signup_model {
 
 
     public function getOTPCode($email) {
-
         $this->db->query("SELECT otp_code FROM unreg_asesi WHERE email=:email");
         $this->db->bind('email', $email);
         return $this->db->single();
