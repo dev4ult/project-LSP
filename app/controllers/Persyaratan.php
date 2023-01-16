@@ -4,11 +4,41 @@ class Persyaratan extends Controller
   public function index()
   {
     $data['page-title'] = "Persyaratan";
-    // $data['skkni'] = $this->model("Skema_model")->fetchAllSKKNI();
+    $data['list-persyaratan'] = $this->model("Persyaratan_model")->fetchAllSyarat();
     $this->view('templates/header', $data);
     $this->view('templates/navbar/main-navbar');
     $this->view('persyaratan/create', $data);
     $this->view('templates/footer');
+  }
+
+  public function edit($id)
+  {
+    $data['page-title'] = "Persyaratan";
+    $data['list-syarat-id'] = $this->model("Persyaratan_model")->getSyaratById($id);
+    $data['id-syarat'] = $id;
+    $this->view('templates/header', $data);
+    $this->view('templates/navbar/main-navbar');
+    $this->view('persyaratan/update', $data);
+    $this->view('templates/footer');
+  }
+
+  public function update($id)
+  {
+    $deskripsi = $this->model("Persyaratan_model")->getSyaratById($id)['deskripsi'];
+    if ($this->model("Persyaratan_model")->updatePersyaratanById($id, $_POST) > 0 || $_POST['deskripsi'] == $deskripsi) {
+      header('Location: ' . BASEURL . '/persyaratan');
+    } else {
+      header('Location: ' . BASEURL . '/persyaratan');
+    }
+  }
+
+  public function hapus($id)
+  {
+    if ($this->model("Persyaratan_model")->deletePersyaratanById($id) > 0) {
+      header('Location: ' . BASEURL . '/persyaratan');
+    } else {
+      header('Location: ' . BASEURL . '/persyaratan');
+    }
   }
 
   public function add()

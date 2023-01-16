@@ -51,10 +51,10 @@ class Skema extends Controller
     }
   }
 
-  public function update($idSkema)
+  public function update($idSkema, $level)
   {
     // $nama = preg_replace("/(?<=[a-z])(?=[A-Z])/", " ", $nama);
-    // $level = preg_replace("/(?<=[a-z])(?=[A-Z])/", " ", $level);
+    $level = preg_replace("/(?<=[a-z])(?=[A-Z])/", " ", $level);
     // $idSkema = $this->model("Persyaratan_model")->getIdSkemaByNama($nama, $level)['id'];
     $level = $this->model("Skema_model")->getSingleSkema($idSkema)['level'];
     $syaratExisting = [];

@@ -9,7 +9,7 @@
 <?= Flasher::flash(); ?>
 
 <div class="container-form w-full h-fit mb-4">
-  <form action="<?= BASEURL ?>/skema/update/<?= $data['id-skema'] ?>" method="post" class="w-full">
+  <form action="<?= BASEURL ?>/skema/update/<?= $data['id-skema'] ?>/<?= $data['data-skema']['level'] ?>" method="post" class="w-full">
     <div class="group-input flex justify-between">
       <div class="left-form w-1/2">
         <div class="form-control w-[500px]">
