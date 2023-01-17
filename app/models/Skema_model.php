@@ -391,6 +391,18 @@ class Skema_model {
     return $this->db->resultSet();
   }
 
+  public function checkRegistSkema($data){
+    $idBio = $this->getIdBiodata($_SESSION['username']);
+
+    $query = "SELECT id_skema_sertifikasi FROM daftar_asesi_sertifikasi WHERE id_biodata_asesi=:id_biodata_asesi AND id_skema_sertifikasi = :id_skema_sertifikasi";
+
+    $this->db->query($query);
+    $this->db->bind('id_biodata_asesi', $idBio);
+    $this->db->bind('id_skema_sertifikasi', $data);
+
+    return count($this->db->resultSet());
+  }
+
   public function registSkema($data) {
 
     $idBio = $this->getIdBiodata($_SESSION['username']);
