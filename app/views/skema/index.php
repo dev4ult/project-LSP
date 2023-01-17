@@ -1,161 +1,178 @@
 <?php
-function makeCode($arr, $delimiter)
-{
-  $part1 = explode(" ", end($arr));
-  $result = "";
+function makeCode($arr, $delimiter) {
+    $part1 = explode(" ", end($arr));
+    $result = "";
 
-  foreach ($part1 as $p1) {
-    $result .= substr($p1, 0, 1);
-  }
-
-  $arr[count($arr) - 1] = $result;
-  $result = "";
-
-  for ($i = 0; $i < count($arr); $i++) {
-    $result .= $arr[$i];
-    if ($i < count($arr) - 1) {
-      $result .= $delimiter;
+    foreach ($part1 as $p1) {
+        $result .= substr($p1, 0, 1);
     }
-  }
 
-  return $result;
+    $arr[count($arr) - 1] = $result;
+    $result = "";
+
+    for ($i = 0; $i < count($arr); $i++) {
+        $result .= $arr[$i];
+        if ($i < count($arr) - 1) {
+            $result .= $delimiter;
+        }
+    }
+
+    return $result;
 }
 
-function getAmountRegistered($id)
-{
-  $skema = new Skema();
-  $method = "countRegistered";
-  return call_user_func_array([$skema, $method], [$id])['jumlah'];
+function getAmountRegistered($id) {
+    $skema = new Skema();
+    $method = "countRegistered";
+    return call_user_func_array([$skema, $method], [$id])['jumlah'];
 }
 
-function getAmountAssessed($id)
-{
-  $skema = new Skema();
-  $method = "countAssessed";
-  return call_user_func_array([$skema, $method], [$id])['jumlah'];
+function getAmountAssessed($id) {
+    $skema = new Skema();
+    $method = "countAssessed";
+    return call_user_func_array([$skema, $method], [$id])['jumlah'];
 }
 
-function getAmountPersyaratan($id)
-{
-  $skema = new Skema();
-  $method = "countPersyaratan";
-  return call_user_func_array([$skema, $method], [$id])['jumlah'];
+function getAmountPersyaratan($id) {
+    $skema = new Skema();
+    $method = "countPersyaratan";
+    return call_user_func_array([$skema, $method], [$id])['jumlah'];
 }
 
-function getAmountKompetensi($id)
-{
-  $skema = new Skema();
-  $method = "countKompetensi";
-  return call_user_func_array([$skema, $method], [$id])['jumlah'];
+function getAmountKompetensi($id) {
+    $skema = new Skema();
+    $method = "countKompetensi";
+    return call_user_func_array([$skema, $method], [$id])['jumlah'];
 }
 
 ?>
 
-<!-- Button Tambah dan Search -->
-<div class="manageSkema w-full flex justify-between items-center my-6">
-  <a href="<?= BASEURL ?>/skema/create/" class="btn btn-outline btn-warning">Tambah skema</a>
-  <form action="<?= BASEURL ?>/skema/index" method="post">
-    <div class="form-control flex items-center">
-      <div class="input-group">
-        <input type="text" placeholder="Search…" class="input input-bordered" name="keyword" />
-        <button class="btn btn-square" type="submit" name="search">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
+<div class="w-full min-h-screen flex">
+    <div class="pt-14 pr-8 px-12">
+        <button type="button" id="hamburger" class="text-primary">
+            <!-- hamburger icon -->
+            <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 512 512">
+                <path d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z" />
+            </svg>
         </button>
-      </div>
     </div>
-  </form>
-</div>
-
-
-
-<!-- Tabel -->
-<div class="overflow-x-auto">
-  <table class="table table-zebra w-full">
-    <!-- head -->
-    <thead>
-      <tr class="text-center text-5xl">
-        <th>No.</th>
-        <th>Kode Skema</th>
-        <th>Nama Skema</th>
-        <th>SKK/KKNI</th>
-        <th>Status</th>
-        <th>Persyaratan</th>
-        <th>Aksi</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- row 1 -->
-      <?php $no = ($data['page'] - 1) * 5 + 1; ?>
-      <?php if (count($data['list-skema']) > 0) : ?>
-        <?php foreach ($data['list-skema'] as $ds) : ?>
-          <tr>
-            <td><?= $no++; ?></td>
-            <?php $level = explode(" ", $ds['level']); ?>
-            <td><?= makeCode(["KKNI " . end($level), $ds['id'], $ds['nama_skema']], "/"); ?></td>
-            <td>
-              <?= $ds['level']; ?> pada kompetensi <?= $ds['nama_skema']; ?>
-              <ul class="list-inside list-disc relative translate-x-4">
-                <li><span><?= getAmountKompetensi($ds['id']); ?></span> Unit Kompetensi</li>
-                <li><span><?= getAmountRegistered($ds['id']); ?></span> Asesi Terdaftar</li>
-                <li><span><?= getAmountAssessed($ds['id']); ?></span> Asesi telah Asesmen Mandiri (APL-02)</li>
-              </ul>
-            </td>
-            <td><?= $ds['skkni']; ?></td>
-            <td class="text-center"><?= $ds['status']; ?></td>
-            <td class="text-center">
-              <span class="block font-bold">(<span><?= getAmountPersyaratan($ds['id']); ?></span>) Persyaratan</span>
-              <!-- The button to open modal -->
-              <label for="my-modal-6" data-skema="<?= $ds['nama_skema']; ?>" data-level="<?= $ds['level']; ?>" class="btn btn-success rounded-md mt-5 show-syarat">Lihat Persyaratan</label>
-            </td>
-            <td class="text-center flex flex-col items-center justify-between">
-              <?php if ($ds['status'] == "Aktif") : ?>
-                <a href="<?= BASEURL ?>/skema/status/<?= $ds['id'] ?>/<?= $ds['status'] ?>" class="btn btn-outline btn-warning rounded-md">Nonaktifkan</a>
-              <?php else : ?>
-                <a href="<?= BASEURL ?>/skema/status/<?= $ds['id'] ?>/<?= $ds['status'] ?>" class="btn btn-outline btn-warning rounded-md">Aktifkan</a>
-              <?php endif; ?>
-              <a href="<?= BASEURL ?>/skema/detail/<?= $ds['id'] ?>" class="btn btn-outline btn-info rounded-md mt-5">Detail</a>
-            </td>
-          </tr>
-        <?php endforeach; ?>
-      <?php else : ?>
-        <tr>
-          <td>
-            <h1 class="text-lg">Tidak ada baris</h1>
-          </td>
-        </tr>
-      <?php endif; ?>
-    </tbody>
-  </table>
-</div>
-
-<!-- Pagination -->
-<div class="btn-group my-10">
-  <a href="<?= BASEURL ?>/skema/index/<?= ($data['page'] == 1) ? 1 : $data['page'] - 1 ?>" class="btn">«</a>
-  <button class="btn">Page <?= $data["page"] ?></button>
-  <a href="<?= BASEURL ?>/skema/index/<?= $data['page'] + 1 ?>" class="btn">»</a>
-</div>
-
-<!-- Put this part before </body> tag -->
-<input type="checkbox" id="my-modal-6" class="modal-toggle" />
-<div class="modal">
-  <div class="modal-box w-[800px] max-w-[800px]">
-    <h3 class="font-bold text-lg">Persyaratan Skema Sertifikasi</h3>
-    <div class="group-input-persyaratan w-full flex justify-between">
-      <div class="list-umum w-1/2">
-        <h1 class="text-lg font-semibold mt-5 mb-3">Kategori Umum</h1>
-        <ul class="list-inside input-umum w-full list-disc relative translate-x-4">
-        </ul>
-      </div>
-      <div class="list-teknis w-1/2">
-        <h1 class="text-lg font-semibold mt-5 mb-3">Kategori Teknis</h1>
-        <ul class="list-inside input-teknis w-full list-disc relative translate-x-4">
-        </ul>
-      </div>
+    <div class="px-8 w-full">
+        <h1 class="text-3xl font-semibold mb-3 pt-14">List Skema Sertifikasi</h1>
+        <?php require_once "../app/views/templates/breadcrumbs.php" ?>
+        <div class="my-5">
+            <?= Flasher::flash() ?>
+        </div>
+        <?php require_once "../app/views/skema/admin/form/add_skema.php" ?>
+        <div class="flex justify-between mb-5">
+            <div class="flex flex-wrap gap-5">
+                <?php $index = 0 ?>
+                <?php if (count($data['list-skema'])  == 0) : ?>
+                <h2 class="text-3xl uppercase font-semibold bg-base-100 p-4 h-fit rounded-md shadow-md">DATA SKEMA TIDAK
+                    ADA
+                </h2>
+                <?php endif ?>
+                <?php foreach ($data['list-skema'] as $skema) : ?>
+                <div
+                    class="rounded-lg shadow-md bg-base-100 p-5 hover:-translate-y-1 transition-all min-w-[20rem] w-[30%] flex flex-col">
+                    <div class="flex justify-between items-start gap-5">
+                        <p><?= strlen($skema['skkni']) >= 20 ? substr($skema['skkni'], 0, 20) . '...' : $skema['skkni'] ?>
+                        </p>
+                        <div class="flex gap-2">
+                            <p
+                                class="font-semibold text-xs py-1 px-2 rounded-md <?= ($skema['status'] == 'Aktif') ? 'text-white bg-[#5E38BA]' : 'text-slate-400 bg-base-200' ?>">
+                                <?= strtoupper($skema['status']) ?>
+                            </p>
+                            <p class="font-semibold text-xs py-1 px-2 rounded-md text-info bg-neutral">
+                                <?= $skema['jurusan'] ?>
+                            </p>
+                        </div>
+                    </div>
+                    <h3 class="font-semibold text-2xl"><?= $skema['nama_skema'] ?></h3>
+                    <p><?= strtoupper($skema['level']) ?></p>
+                    <div class="flex gap-2 my-3">
+                        <div class="dropdown dropdown-hover">
+                            <label tabindex="<?= $index ?>"
+                                class="font-semibold text-sm py-1 px-2 rounded-md text-info bg-[#EEF2FA] cursor-pointer">
+                                <?= getAmountPersyaratan($skema['id']); ?>
+                                Persyaratan</label>
+                            <div tabindex="<?= $index ?>"
+                                class="mt-1 dropdown-content bg-[#EEF2FA] p-2 text-sm rounded-md font-semibold text-info max-w-none w-72">
+                                <p>Umum</p>
+                                <ul class="list-disc pl-5 mb-1">
+                                    <?php foreach ($data['lp-skema'] as $persyaratan) : ?>
+                                    <?php if ($persyaratan['id_skema'] == $skema['id'] && $persyaratan['kategori'] == 'Umum') : ?>
+                                    <li><?= $persyaratan['deskripsi'] ?></li>
+                                    <?php endif ?>
+                                    <?php endforeach; ?>
+                                </ul>
+                                <p>Teknis</p>
+                                <ul class="list-disc pl-5">
+                                    <?php foreach ($data['lp-skema'] as $persyaratan) : ?>
+                                    <?php if ($persyaratan['id_skema'] == $skema['id'] && $persyaratan['kategori'] == 'Teknis') : ?>
+                                    <li><?= $persyaratan['deskripsi'] ?></li>
+                                    <?php endif ?>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="dropdown dropdown-hover">
+                            <label tabindex="<?= $index ?>"
+                                class="font-semibold text-sm py-1 px-2 rounded-md text-info bg-[#EEF2FA] cursor-pointer">
+                                <?= getAmountKompetensi($skema['id']); ?> Unit
+                                Kompetensi</label>
+                            <div tabindex="<?= $index ?>"
+                                class="mt-1 dropdown-content bg-[#EEF2FA] p-2 text-sm rounded-md font-semibold text-info w-52">
+                                <ul class="list-disc pl-5">
+                                    <?php foreach ($data['list-ukom'] as $ukom) : ?>
+                                    <?php if ($ukom['id_skema'] == $skema['id']) : ?>
+                                    <li><?= $ukom['nama_kompetensi'] ?></li>
+                                    <?php endif ?>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-sm mt-3 mb-2">Asesor - <?= $skema["asesor"] ?></p>
+                    <div class="flex gap-3 mt-auto">
+                        <a href="<?= BASEURL ?>/skema/detail/<?= $skema['id'] ?>"
+                            class="bg-primary hover:bg-info px-1.5 py-1 text-white rounded-sm uppercase flex items-center gap-1">
+                            <img src="<?= BASEURL ?>/img/info_white.svg" class="w-5" alt="info">
+                            <span class="font-semibold">info</span></a>
+                    </div>
+                </div>
+                <?php $index++ ?>
+                <?php endforeach ?>
+            </div>
+            <div>
+                <div class="bg-base-100 p-3 font-semibold rounded-lg w-32">
+                    <p class="uppercase text-center">total skema <?= $data['total-skema'] ?></p>
+                </div>
+                <form action="<?= BASEURL ?>/skema/list" method="post" class="flex flex-col gap-3 mt-3">
+                    <?php if ($data['user-type'] != "asesi") : ?>
+                    <select class="select rounded-sm select-sm w-32" name="id-jurusan">
+                        <option disabled selected>JURUSAN</option>
+                        <?php foreach ($data['list-jurusan'] as $jurusan) : ?>
+                        <option value="<?= $jurusan['id'] ?>"><?= $jurusan['singkatan'] ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                    <?php endif ?>
+                    <select class="select rounded-sm select-sm w-32" name="level">
+                        <option disabled selected>LEVEL</option>
+                        <option value="Level I">I</option>
+                        <option value="Level II">II</option>
+                        <option value="Level III">III</option>
+                        <option value="Level IV">IV</option>
+                        <option value="Level V">V</option>
+                    </select>
+                    <select class="select rounded-sm select-sm w-32" name="status">
+                        <option disabled selected>STATUS</option>
+                        <option value="Aktif">AKTIF</option>
+                        <option value="Nonaktif">NONAKTIF</option>
+                    </select>
+                    <button type="submit" name="kategori" class="btn btn-sm btn-ghost text-primary mt-3">set
+                        kategori</button>
+                </form>
+            </div>
+        </div>
     </div>
-    <div class="modal-action">
-      <label for="my-modal-6" class="btn">Tutup</label>
-    </div>
-  </div>
+
 </div>

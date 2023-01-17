@@ -1,9 +1,7 @@
 <?php
-class Asesor extends Controller
-{
+class Asesor extends Controller {
 
-  public function info($idSkema, $page = 1)
-  {
+  public function info($idSkema, $page = 1) {
     // $this->model('User_model')->checkUserLogin("asesor");
     $data['page-title'] = 'Asesor Page';
     $data['page'] = $page;
@@ -22,8 +20,7 @@ class Asesor extends Controller
     $this->view('templates/footer');
   }
 
-  public function penilaian($idAsesi, $idSkema)
-  {
+  public function penilaian($idAsesi, $idSkema) {
     $data['page-title'] = 'Asesor Page';
     // require_once '../app/controllers/Asesor.php';
     // require_once '../app/controllers/Skema.php';
@@ -45,8 +42,7 @@ class Asesor extends Controller
     $this->view('templates/footer');
   }
 
-  public function addPenilaian($idSkema, $idAsesi)
-  {
+  public function addPenilaian($idSkema, $idAsesi) {
     $data = [];
     $nilai = [];
     $finish = 0;
@@ -84,8 +80,7 @@ class Asesor extends Controller
     }
   }
 
-  public function update_status($idAsesi, $idSkema, $status)
-  {
+  public function update_status($idAsesi, $idSkema, $status) {
     $status = $status == 0 ? "Belum Lulus" : "Lulus";
     if ($this->model("Asesi_model")->updateStatusKelulusan($idAsesi, $idSkema, $status) > 0) {
       header('Location: ' . BASEURL . '/asesor/info/' . $idSkema);
@@ -95,38 +90,31 @@ class Asesor extends Controller
     }
   }
 
-  public function countAsesi()
-  {
+  public function countAsesi() {
     return $this->model("Asesor_model")->amountAsesiByAsesor();
   }
 
-  public function countSkema()
-  {
+  public function countSkema() {
     return $this->model("Asesor_model")->amountSkemaByAsesor();
   }
 
-  public function countKompetensi()
-  {
+  public function countKompetensi() {
     return $this->model("Asesor_model")->amountKompetensiByAsesor();
   }
 
-  public function countDokumenAsesmen($id)
-  {
+  public function countDokumenAsesmen($id) {
     return $this->model("Asesor_model")->amountAsesmen($id);
   }
 
-  public function countDokumenAsesmenByIdAsesi($id)
-  {
+  public function countDokumenAsesmenByIdAsesi($id) {
     return $this->model("Asesor_model")->amountAsesmenByAsesi($id);
   }
 
-  public function getStatusAsesmenAsesi($idSkema, $idAsesi)
-  {
+  public function getStatusAsesmenAsesi($idSkema, $idAsesi) {
     return $this->model("Asesi_model")->getStatusAsesmen($idSkema, $idAsesi);
   }
 
-  public function getNilaiAsesi($idAsesi)
-  {
+  public function getNilaiAsesi($idAsesi) {
     return $this->model("Asesi_model")->fetchNilaiDokumenAsesi($idAsesi);
   }
 }

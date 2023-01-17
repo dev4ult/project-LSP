@@ -11,6 +11,7 @@
         </button>
     </div>
     <div class="overflow-x-auto px-8">
+        <h1 class="text-3xl font-bold pt-14 mb-3">List <?= ucfirst($data['user-type']) ?></h1>
         <?php require_once "../app/views/templates/breadcrumbs.php" ?>
         <div class="flex justify-between items-center gap-5 my-5">
             <?php require_once "../app/views/dashboard/admin/form/add_" . $data['user-type'] . ".php" ?>
@@ -36,7 +37,6 @@
                     <td><?= $user[$nomor_induk] ?></td>
                     <td><?= $user['no_telepon'] ?></td>
                     <td><?= $user['email'] ?></td>
-
                     <td>
                         <ul class="flex gap-2 items-center">
                             <li>
@@ -52,8 +52,6 @@
                                     <span class="font-semibold">hapus</span></label>
                             </li>
                         </ul>
-
-
                     </td>
                 </tr>
                 <!-- Put this part before </body> tag -->
@@ -75,37 +73,7 @@
                 <?php endforeach; ?>
             </tbody>
         </table>
-        <div class="btn-group rounded-sm mt-3">
-            <?php if ($data['page'] > 1) : ?>
-
-            <a href="<?= BASEURL ?>/dashboard/user_list/<?= $data['user-type'] ?>/<?= ($data['page'] <= 1) ? 1 : $data['page'] - 1 ?>"
-                class="btn rounded-xs hover:border-secondary bg-base-100 hover:bg-secondary border-base-100 text-black hover:text-white">«</a>
-            <?php endif ?>
-
-            <?php if ($data['page'] > 2) : ?>
-            <a href="<?= BASEURL ?>/dashboard/user_list/<?= $data['user-type'] ?>/<?= $data["page"] - 2 ?>"
-                class="btn border-base-100 hover:border-secondary bg-base-100 hover:bg-secondary hover:text-white text-black"><?= $data["page"] - 2 ?></a>
-            <?php endif ?>
-            <?php if ($data['page'] > 1) : ?>
-
-            <a href="<?= BASEURL ?>/dashboard/user_list/<?= $data['user-type'] ?>/<?= $data["page"] - 1 ?>"
-                class="btn border-base-100 hover:border-secondary bg-base-100 hover:bg-secondary hover:text-white text-black"><?= $data["page"] - 1 ?></a>
-            <?php endif ?>
-            <button
-                class="btn bg-black text-white border-black hover:border-black hover:bg-black"><?= $data["page"] ?></button>
-            <?php if ($data['page-total'] >= $data['page'] + 1) : ?>
-            <a href="<?= BASEURL ?>/dashboard/user_list/<?= $data['user-type'] ?>/<?= $data["page"] + 1 ?>"
-                class="btn border-base-100 hover:border-secondary bg-base-100 hover:bg-secondary hover:text-white text-black"><?= $data["page"] + 1 ?></a>
-            <?php endif ?>
-            <?php if ($data['page-total'] >= $data['page'] + 2) : ?>
-            <a href="<?= BASEURL ?>/dashboard/user_list/<?= $data['user-type'] ?>/<?= $data["page"] + 2 ?>"
-                class="btn border-base-100 hover:border-secondary bg-base-100 hover:bg-secondary hover:text-white text-black"><?= $data["page"] + 2 ?></a>
-            <?php endif ?>
-            <?php if ($data['page-total'] != $data['page']) : ?>
-            <a href="<?= BASEURL ?>/dashboard/user_list/<?= $data['user-type'] ?>/<?= $data['page'] + 1 ?>"
-                class="btn rounded-xs hover:border-secondary bg-base-100 hover:bg-secondary border-base-100 hover:text-white text-black">»</a>
-            <?php endif ?>
-        </div>
+        <?php require_once "../app/views/templates/pagination_bottom.php" ?>
     </div>
 </div>
 <script src="<?= BASEURL ?>/js/sidebar.js"></script>

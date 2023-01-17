@@ -1,4 +1,4 @@
-<div class="bg-base-100 pt-14 px-8 absolute h-full z-10 top-0 -translate-x-full transition-all duration-300"
+<div class="bg-base-100 pt-14 px-8 absolute h-full z-20 top-0 -translate-x-full transition-all duration-300"
     id="sidebar">
     <button type="button" id="close" class="text-primary">
         <!-- close icon -->

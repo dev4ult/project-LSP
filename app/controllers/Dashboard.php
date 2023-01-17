@@ -25,6 +25,8 @@ class Dashboard extends Controller {
         $data['page-title'] = 'Dashboard Admin';
         $this->view('templates/header', $data);
 
+        $data['last-3-created'] = $this->model("Skema_model")->fetchThreeLastCreatedSchema();
+
         $data['username'] = $_SESSION['username'];
         $data['total-asesor'] = $this->model("User_model")->getUserTotal('asesor');
         $data['total-asesi'] = $this->model("User_model")->getUserTotal('asesi');
@@ -36,54 +38,106 @@ class Dashboard extends Controller {
 
         $data['user-type'] = 'admin';
         $this->view('dashboard/admin/index', $data);
+        $this->view('templates/close_html_tag');
     }
-
-
 
     public function asesi() {
-
         $this->model('User_model')->checkUserLogin("asesi");
 
-        $data['page-title'] = 'Dashboard Asesi LSP';
+        $data['page-title'] = 'Dashboard Asesi';
 
         $this->view('templates/header', $data);
+        $this->view('templates/sidebar');
 
+        $data['nomor-induk'] = $this->model("User_model")->getUserRegNumber($_SESSION['username'], "asesi", "nim");
+
+        $data['user-type'] = 'asesi';
         $data['username'] = $_SESSION['username'];
+        $data['total-skema'] = $this->model("Skema_model")->getTotalSchema();
+        $asesi_id = $this->model('User_model')->getIdBioByUsername('asesi', $data['username']);
+        $data['total-skema-saya'] = count($this->model('Skema_model')->getSchemaOfAsesi($asesi_id));
+
         $this->view('dashboard/asesi/index', $data);
+        $this->view('templates/close_html_tag');
     }
 
-    public function asesor($page = 1) {
+    public function asesor() {
         $this->model('User_model')->checkUserLogin("asesor");
 
-        $data['page-title'] = 'Dashboard page';
-        $data['page'] = $page;
-        require_once '../app/controllers/Asesor.php';
-        require_once '../app/controllers/Skema.php';
-        $data['list-skema-asesor'] = $this->model("Asesor_model")->getSkemaByAsesor($page);
+        $data['page-title'] = 'Dashboard Asesor';
         $this->view('templates/header', $data);
+        $this->view('templates/sidebar');
+
+        $data['username'] = $_SESSION['username'];
+        $data['nomor-induk'] = $this->model("User_model")->getUserRegNumber($_SESSION['username'], "asesor", "nip");
+        $data['user-type'] = "asesor";
 
 
+        // $data['list-skema-asesor'] = $this->model("Asesor_model")->getSkemaByAsesor($page);
 
         $this->view('dashboard/asesor/index', $data);
+        $this->view('templates/close_html_tag');
+    }
 
-        $this->view('templates/footer');
+    public function logout() {
+        unset($_SESSION['user-type']);
+        unset($_SESSION['login']);
+        unset($_SESSION['username']);
+        header('Location: ' . BASEURL . '/login');
+        exit;
     }
 
     public function edit_profile($user_type = null) {
+        // $this->model('User_model')->checkUserLogin();
+
         if ($user_type == "asesor" || $user_type == "asesi" || $user_type == "admin") {
+
+            if ($_SESSION['user-type'] != $user_type) {
+                header('Location: ' . BASEURL . '/dashboard/edit_profile/' . $_SESSION['user-type']);
+                exit;
+            }
+
             $data['page-title'] = "Edit Profil";
 
             $this->view('templates/header', $data);
 
             $this->view('templates/sidebar');
+            $data['user'] = $this->model('User_model')->fetchSingleUserByUsername($user_type, $_SESSION['username']);
 
             $data['user-type'] = $user_type;
             $data['page-link'] = $this->breadcrumbs;
             $this->view('dashboard/' . $user_type . '/edit_profile', $data);
+            $this->view('templates/close_html_tag');
         } else {
             header('Location: ' . BASEURL . '/dashboard');
             exit;
         }
+    }
+
+    public function change_password($user_type = null) {
+        if ($user_type == "asesor" || $user_type == "asesi" || $user_type == "admin") {
+            if ($this->model('User_model')->changePassword($_POST, $user_type) > 0) {
+                Flasher::setFlash('Password telah diupdate', 'success');
+                header('Location: ' . BASEURL . '/dashboard/logout');
+            } else {
+                header('Location: ' . BASEURL . '/dashboard/edit_profile/' . $_SESSION['user-type']);
+            }
+        } else {
+            header('Location: ' . BASEURL . '/dashboard');
+        }
+        exit;
+    }
+
+    public function profile_update($user_type = null) {
+        // $this->model('User_model')->checkUserLogin('');
+
+        if ($user_type == "asesor" || $user_type == "asesi" || $user_type == "admin") {
+            if ($this->model('User_model')->updateProfile($_POST, $user_type) > 0) {
+                Flasher::setFlash('Akun telah diupdate', 'success');
+            }
+        }
+        header('Location: ' . BASEURL . '/dashboard/edit_profile/' . $_SESSION['user-type']);
+        exit;
     }
 
 
@@ -136,7 +190,10 @@ class Dashboard extends Controller {
             // $this->view('dashboard/admin/form/pagination', $data);
 
             $data['page-link'] = $this->breadcrumbs;
+
+            $data['page-controller'] = "dashboard/user_list/" . $user_type;
             $this->view('dashboard/admin/list/user', $data);
+            $this->view('templates/close_html_tag');
         } else {
             header('Location: ' . BASEURL . '/dashboard/admin');
             exit;

@@ -81,13 +81,10 @@
                     <textarea name="alamat" class="rounded-sm w-full input input-bordered h-36 resize-none" id=""
                         placeholder="alamat" required></textarea>
                 </div>
-
                 <div class="col-span-2 pt-10">
                     <p class="w-fit ml-auto ">Sudah punya akun? <a href="<?= BASEURL ?>/login"
                             class="link-primary">Login</a></p>
-
                 </div>
-
             </div>
             <div class="pl-7 flex flex-col gap-3">
                 <div>

@@ -6,17 +6,29 @@ class Persyaratan_model {
     $this->db = new Database;
   }
 
+  public function isPersyaratanExist($deskripsi) {
+    $this->db->query("SELECT * FROM list_persyaratan WHERE deskripsi=:deskripsi");
+    $this->db->bind("deskripsi", $deskripsi);
+
+    return count($this->db->resultSet());
+  }
+
   public function addData($data) {
-    $query = "INSERT INTO list_persyaratan VALUES ('', :jenis, :deskripsi)";
-    $this->db->query($query);
-    $this->db->bind("jenis", $data['kategori']);
-    $this->db->bind("deskripsi", $data['persyaratan']);
-    try {
-      $this->db->execute();
-      return $this->db->rowChangeCheck();
-    } catch (\Throwable $th) {
-      Flasher::setFlash("Persyaratan sudah ada dalam database", 'warning');
+    $kategori = $data['kategori'];
+    $deskripsi = htmlspecialchars($data['deskripsi']);
+
+    if ($this->isPersyaratanExist($deskripsi) > 0) {
+      Flasher::setFlash("Persyaratan sudah ada", "error");
+      return -1;
     }
+
+    $this->db->query("INSERT INTO list_persyaratan(kategori, deskripsi) VALUES (:kategori, :deskripsi)");
+    $this->db->bind("kategori", $kategori);
+    $this->db->bind("deskripsi", $deskripsi);
+
+    $this->db->execute();
+
+    return $this->db->rowChangeCheck();
   }
 
   public function fetchAllPersyaratan($kategori) {
@@ -70,6 +82,11 @@ class Persyaratan_model {
     $this->db->execute();
   }
 
+  public function fetchAllPersyaratanSkema() {
+    $this->db->query("SELECT persyaratan_skema.id_skema as id_skema ,persyaratan_skema.deskripsi as deskripsi, list_persyaratan.kategori as kategori FROM persyaratan_skema JOIN list_persyaratan ON persyaratan_skema.deskripsi = list_persyaratan.deskripsi");
+    return $this->db->resultSet();
+  }
+
   public function fetchPersyaratanBySkema($id) {
     // $idSkema = $this->getIdSkemaByNama($nama, $level)['id'];
     $query = "SELECT deskripsi from persyaratan_skema WHERE id_skema=:id";
@@ -93,6 +110,53 @@ class Persyaratan_model {
 
   public function countPersyaratanByID($id) {
     $query = "SELECT COUNT(*) as jumlah from persyaratan_skema WHERE id_skema =:id";
+    $this->db->query($query);
+    $this->db->bind("id", $id);
+    return $this->db->single();
+  }
+
+  public function isPersyaratanExistExceptional($id, $deskripsi) {
+    $this->db->query("SELECT * FROM list_persyaratan WHERE deskripsi=:deskripsi AND NOT id=:id");
+    $this->db->bind("id", $id);
+    $this->db->bind("deskripsi", $deskripsi);
+
+    return count($this->db->resultSet());
+  }
+
+  public function updatePersyaratanById($id, $data) {
+    $deskripsi = htmlspecialchars($data['deskripsi']);
+
+    if ($this->isPersyaratanExistExceptional($id, $deskripsi) > 0) {
+      Flasher::setFlash("Persyaratan sudah ada", "error");
+      return -1;
+    }
+
+    $this->db->query("UPDATE list_persyaratan SET kategori=:kategori, deskripsi=:deskripsi WHERE id=:id");
+    $this->db->bind("deskripsi", $deskripsi);
+    $this->db->bind("kategori", $data['kategori']);
+    $this->db->bind("id", $id);
+
+    $this->db->execute();
+
+    return $this->db->rowChangeCheck();
+  }
+
+  public function deletePersyaratanById($id) {
+    $query = "DELETE FROM list_persyaratan WHERE id=:id";
+    $this->db->query($query);
+    $this->db->bind("id", $id);
+    $this->db->execute();
+    return $this->db->rowChangeCheck();
+  }
+
+  public function fetchAllSyarat() {
+    $query = "SELECT id, deskripsi, kategori from list_persyaratan ORDER BY kategori ASC";
+    $this->db->query($query);
+    return $this->db->resultSet();
+  }
+
+  public function getSyaratById($id) {
+    $query = "SELECT id, deskripsi, kategori from list_persyaratan WHERE id=:id";
     $this->db->query($query);
     $this->db->bind("id", $id);
     return $this->db->single();

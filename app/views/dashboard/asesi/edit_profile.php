@@ -1,6 +1,6 @@
-<?php $user = $data['user'];
-?>
+<?php $user = $data['user'] ?>
 <div class="min-h-screen w-full flex pb-5">
+
     <div class="pt-14 px-8 pr-12">
         <button type="button" id="hamburger" class="text-primary">
             <!-- hamburger icon -->
@@ -11,15 +11,10 @@
     </div>
     <div class="px-8">
         <h1 class="text-3xl font-bold pt-14 mb-3">Profil Saya</h1>
+
         <?php require_once "../app/views/templates/breadcrumbs.php" ?>
-        <div class="my-3">
-            <?= Flasher::flash() ?>
-        </div>
-        <form action="<?= BASEURL ?>/dashboard/profile_update/admin" method="post"
+        <form action="<?= BASEURL ?>/dashboard/edit_profile/<?= $data['user-type'] ?>" method="post"
             class="bg-base-100 rounded-lg shadow-md p-5 mt-5">
-            <input type="number" name="account-id" value="<?= $user['id'] ?>" class="hidden" />
-            <input type="number" name="bio-id" value="<?= $user['id_biodata_' . $data['user-type']] ?>"
-                class="hidden" />
             <div class="flex justify-between items-end border-b-2 border-slate-200 pb-5">
                 <div class="flex gap-5">
                     <div class="form-control">
@@ -29,7 +24,7 @@
                         <label>
                             <input type="text" placeholder="Ketikan username-mu"
                                 class="input rounded-sm w-full input-bordered" value="<?= $user['username'] ?>"
-                                name="username" required />
+                                name="username" disabled />
                         </label>
                     </div>
                     <div class="form-control">
@@ -37,9 +32,9 @@
                             <span class="label-text">Email</span>
                         </label>
                         <label>
-                            <input type="text" placeholder="Ketikan email-mu"
+                            <input type="text" placeholder="Ketika email-mu"
                                 class="input rounded-sm w-full input-bordered" value="<?= $user['email'] ?>"
-                                name="email" required />
+                                name="email" disabled />
                         </label>
                     </div>
                 </div>
@@ -58,36 +53,11 @@
                 </div>
                 <div class="form-control">
                     <label class="label" for="skema">
-                        <span class="label-text">NIP</span>
+                        <span class="label-text">NIM</span>
                     </label>
                     <label>
                         <input type="text" placeholder="" class="input rounded-sm w-full input-bordered"
-                            value="<?= $user['nip'] ?>" name="nip" required />
-                    </label>
-                </div>
-                <div class="form-control">
-                    <label class="label" for="skema">
-                        <span class="label-text">NIK</span>
-                    </label>
-                    <label>
-                        <input type="text" placeholder="" class="input rounded-sm w-full input-bordered"
-                            value="<?= $user['nik'] ?>" name="nik" required />
-                    </label>
-                </div>
-                <div class="form-control row-span-2">
-                    <label class="label">
-                        <span class="label-text">Alamat</span>
-                    </label>
-                    <textarea name="alamat" class="rounded-sm w-full input input-bordered h-full resize-none p-3"
-                        placeholder="alamat" required><?= $user['alamat'] ?></textarea>
-                </div>
-                <div class="form-control">
-                    <label class="label" for="skema">
-                        <span class="label-text">Tempat Lahir</span>
-                    </label>
-                    <label>
-                        <input type="text" class="input rounded-sm w-full input-bordered"
-                            value="<?= $user['tempat_lahir'] ?>" name="tempat-lahir" required />
+                            value="<?= $user['nim'] ?>" name="nip" disabled />
                     </label>
                 </div>
                 <div class="form-control">
@@ -99,13 +69,20 @@
                             value="<?= $user['no_telepon'] ?>" name="no-telepon" required />
                     </label>
                 </div>
+                <div class="form-control row-span-2">
+                    <label class="label">
+                        <span class="label-text">Alamat</span>
+                    </label>
+                    <textarea name="alamat" class="rounded-sm w-full input input-bordered h-full resize-none p-3"
+                        placeholder="alamat" required><?= $user['alamat'] ?></textarea>
+                </div>
                 <div class="form-control">
                     <label class="label" for="skema">
-                        <span class="label-text">Tanggal Lahir</span>
+                        <span class="label-text">Jurusan</span>
                     </label>
                     <label>
-                        <input type="date" class="input rounded-sm w-full input-bordered"
-                            value="<?= $user['tanggal_lahir'] ?>" name="tanggal-lahir" required />
+                        <input type="text" class="input rounded-sm w-full input-bordered"
+                            value="<?= $user['jurusan'] ?>" name="jurusan" disabled />
                     </label>
                 </div>
                 <div class="form-control">
@@ -113,7 +90,7 @@
                         <span class="label-text">Jenis Kelamin</span>
                     </label>
                     <label>
-                        <select name="jenis-kelamin" class="select select-bordered rounded-sm w-full max-w-xs" required>
+                        <select name="jenis-kelamin" class="select select-bordered rounded-sm w-full max-w-xs" disabled>
                             <option value="Laki-laki"
                                 <?= $user['jenis_kelamin'] == "Laki-laki"  ? "selected disabled" : "" ?>>Laki-laki
                             </option>
@@ -124,6 +101,16 @@
 
                     </label>
                 </div>
+                <div class="form-control">
+                    <label class="label" for="skema">
+                        <span class="label-text">Prodi</span>
+                    </label>
+                    <label>
+                        <input type="text" class="input rounded-sm w-full input-bordered" value="<?= $user['prodi'] ?>"
+                            name="prodi" disabled />
+                    </label>
+                </div>
+
                 <div class="modal-action col-span-3">
                     <button type="submit" class="btn btn-secondary text-white rounded-sm ml-auto">simpan
                         perubahan</button>
@@ -134,7 +121,7 @@
 </div>
 <input type="checkbox" id="change-password" class="modal-toggle" />
 <div class="modal bg-[#EDF4F8]/50">
-    <form action="<?= BASEURL ?>/dashboard/change_password/admin" method="post" class="modal-box">
+    <form action="<?= BASEURL ?>/dashboard/change_password/asesi" method="post" class="modal-box">
         <h3 class="font-bold text-xl mb-3">Ubah Password</h3>
         <input type="number" name="account-id" value="<?= $user['id'] ?>" class="hidden" />
         <div class="grid grid-flow-row grid-cols-2 gap-5">

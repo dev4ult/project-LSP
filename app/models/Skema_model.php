@@ -6,9 +6,8 @@ class Skema_model {
   }
 
   public function fetchAllSkema() {
-    $query = "SELECT skema_sertifikasi.id, nama_skema, skkni, status, level, jurusan.nama as jurusan, biodata_asesor.nama as asesor FROM skema_sertifikasi JOIN jurusan ON skema_sertifikasi.id_jurusan = jurusan.id JOIN biodata_asesor ON skema_sertifikasi.id_biodata_asesor = biodata_asesor.id ORDER BY skema_sertifikasi.id ASC";
+    $query = "SELECT skema_sertifikasi.id, id_jurusan, nama_skema, skkni, status, level, jurusan.singkatan as jurusan, biodata_asesor.nama as asesor FROM skema_sertifikasi JOIN jurusan ON skema_sertifikasi.id_jurusan = jurusan.id JOIN biodata_asesor ON skema_sertifikasi.id_biodata_asesor = biodata_asesor.id ORDER BY skema_sertifikasi.id ASC";
     $this->db->query($query);
-    // $this->db->bind("page", 5 * ($page - 1));
     return $this->db->resultSet();
   }
 
@@ -22,8 +21,8 @@ class Skema_model {
   public function addSkema($data) {
     // $idSkkni = $this->getIdSKKNI($data['SKKNI'])['id'];
     $skema = htmlspecialchars($data['skema']);
-    $idJurusan = $this->getIdJurusan($data['jurusan'])['id'];
-    $idAsesor = $this->getIdAsesor($data['asesor'])['id'];
+    $idJurusan = htmlspecialchars($data['jurusan']);
+    $idAsesor = htmlspecialchars($data['asesor']);
     $query = "INSERT INTO skema_sertifikasi VALUES ('', :nama, :skkni, :status, :level, :id_asesor, :id_jurusan)";
     $this->db->query($query);
     $this->db->bind("nama", $skema);
@@ -125,15 +124,48 @@ class Skema_model {
     }
   }
 
-  public function searchDataSkema($page, $keyword) {
+  public function filterSkemaByKategori($data) {
+    $query_where = "";
+
+    if (isset($data['id-jurusan'])) {
+      $query_where .= " WHERE id_jurusan=:id_jurusan";
+    }
+
+    if (isset($data['level'])) {
+      $query_where .= (isset($data['id-jurusan']) ? " AND" : " WHERE") . " skema_sertifikasi.level=:level";
+    }
+
+    if (isset($data['status'])) {
+      $query_where .= (isset($data['id-jurusan']) || isset($data['level']) ? " AND" : " WHERE") . " skema_sertifikasi.status=:status";
+    }
+
+    $query_select = "SELECT skema_sertifikasi.id, id_jurusan, nama_skema, skkni, status, level, jurusan.singkatan as jurusan, biodata_asesor.nama as asesor FROM skema_sertifikasi JOIN jurusan ON skema_sertifikasi.id_jurusan = jurusan.id JOIN biodata_asesor ON skema_sertifikasi.id_biodata_asesor = biodata_asesor.id ";
+
+    $this->db->query($query_select . $query_where . " ORDER BY skema_sertifikasi.id ASC");
+
+    if (isset($data['id-jurusan'])) {
+      $this->db->bind('id_jurusan', $data['id-jurusan']);
+    }
+
+    if (isset($data['level'])) {
+      $this->db->bind('level', $data['level']);
+    }
+
+    if (isset($data['status'])) {
+      $this->db->bind('status', $data['status']);
+    }
+
+    return $this->db->resultSet();
+  }
+
+  public function searchDataSkema($keyword) {
     // $idSkkni = $this->getIdSKKNI($keyword)['id'];
 
-    $query = "SELECT skema_sertifikasi.id, nama_skema, skkni, status, level, jurusan.nama as jurusan, biodata_asesor.nama as asesor FROM skema_sertifikasi JOIN jurusan ON skema_sertifikasi.id_jurusan = jurusan.id JOIN biodata_asesor ON skema_sertifikasi.id_biodata_asesor = biodata_asesor.id WHERE nama_skema LIKE :word OR skkni LIKE :word OR status LIKE :word OR jurusan.nama LIKE :word OR biodata_asesor.nama LIKE :word ORDER BY skema_sertifikasi.id ASC";
+    $query = "SELECT skema_sertifikasi.id, id_jurusan, nama_skema, skkni, status, level, jurusan.singkatan as jurusan, biodata_asesor.nama as asesor FROM skema_sertifikasi JOIN jurusan ON skema_sertifikasi.id_jurusan = jurusan.id JOIN biodata_asesor ON skema_sertifikasi.id_biodata_asesor = biodata_asesor.id WHERE nama_skema LIKE :word OR skkni LIKE :word OR status LIKE :word OR jurusan.nama LIKE :word OR biodata_asesor.nama LIKE :word ORDER BY skema_sertifikasi.id ASC";
     $this->db->query($query);
     $this->db->bind("word", "%" . $keyword . "%");
     // $this->db->bind("'%status%'", $keyword);
     // $this->db->bind("'%skkni%'", $keyword);
-    $this->db->bind("page", 5 * ($page - 1));
     return $this->db->resultSet();
   }
 
@@ -166,6 +198,11 @@ class Skema_model {
     $this->db->query($query);
     $this->db->bind("page", 5 * ($page - 1));
     return $this->db->resultSet();
+  }
+
+  public function getTotalAsesmen() {
+    $this->db->query("SELECT * FROM unit_kompetensi");
+    return count($this->db->resultSet());
   }
 
   public function searchDataUnitKompetensi($page, $keyword) {
@@ -401,6 +438,28 @@ class Skema_model {
     $this->db->query($query);
     $this->db->bind('keyword', "%$keyword%");
     $this->db->bind("page", 5 * ($page - 1));
+
+    return $this->db->resultSet();
+  }
+
+  public function getSchemaOfAsesi($id) {
+    $this->db->query("SELECT skema_sertifikasi.id, id_jurusan, nama_skema, skkni, status, level, jurusan.singkatan as jurusan, biodata_asesor.nama as asesor FROM skema_sertifikasi JOIN jurusan ON skema_sertifikasi.id_jurusan = jurusan.id JOIN biodata_asesor ON skema_sertifikasi.id_biodata_asesor = biodata_asesor.id JOIN daftar_asesi_sertifikasi ON skema_sertifikasi.id = daftar_asesi_sertifikasi.id_skema_sertifikasi WHERE daftar_asesi_sertifikasi.id_biodata_asesi=:id ORDER BY skema_sertifikasi.id ASC");
+
+    $this->db->bind("id", $id);
+
+    return $this->db->resultSet();
+  }
+
+  public function getSchemaOfAsesor($id) {
+    $this->db->query("SELECT skema_sertifikasi.id, id_jurusan, nama_skema, skkni, status, level, jurusan.singkatan as jurusan, biodata_asesor.nama as asesor FROM skema_sertifikasi JOIN jurusan ON skema_sertifikasi.id_jurusan = jurusan.id JOIN biodata_asesor ON skema_sertifikasi.id_biodata_asesor = biodata_asesor.id WHERE skema_sertifikasi.id_biodata_asesor=:id ORDER BY skema_sertifikasi.id ASC");
+
+    $this->db->bind("id", $id);
+
+    return $this->db->resultSet();
+  }
+
+  public function fetchThreeLastCreatedSchema() {
+    $this->db->query("SELECT * FROM skema_sertifikasi ORDER BY id DESC LIMIT 3");
 
     return $this->db->resultSet();
   }

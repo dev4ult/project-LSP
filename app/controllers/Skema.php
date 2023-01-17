@@ -1,35 +1,83 @@
 <?php
-class Skema extends Controller
-{
-  public function index($page = 1)
-  {
-    $data['page-title'] = "Skema";
-    $data['username'] = 'test';
-    $data['page'] = $page;
-    if (isset($_POST['keyword'])) {
-      $data["list-skema"] = $this->model("Skema_model")->searchDataSkema($page, $_POST['keyword']);
-    } else {
-      $data["list-skema"] = $this->model("Skema_model")->fetchAllSkemaPagination($page);
-      // var_dump($data['list-skema']);
-      // die;
+class Skema extends Controller {
+
+  private $breadcrumbs;
+
+  public function __construct() {
+    $this->breadcrumbs = [
+      "name" => [
+        "Dashboard"
+      ],
+      "link" => [
+        "dashboard"
+      ]
+    ];
+  }
+
+  public function index() {
+    if (isset($_SESSION['user-type'])) {
+      $this->model('User_model')->checkUserLogin($_SESSION['user-type']);
     }
+
+    header('Location: ' . BASEURL . '/skema/list');
+    exit;
+  }
+
+  public function list() {
+
+    // check login
+    if (isset($_SESSION['user-type'])) {
+      $this->model('User_model')->checkUserLogin($_SESSION['user-type']);
+    }
+
+    $data['user-type'] = $_SESSION['user-type'];
+    $data['page-title'] = "List Skema Sertifikasi" . ($data['user-type'] == "asesi" ? " Saya" : "");
+
+    if ($data['user-type'] == "asesi" || $data['user-type'] == "asesor") {
+      $bio_id = $this->model("User_model")->getIdBioByUsername($data['user-type'], $_SESSION['username']);
+    }
+
     $this->view('templates/header', $data);
-    $this->view('templates/navbar/main-navbar');
-    $this->view('skema/index', $data);
-    $this->view('templates/footer');
-  }
 
-  public function add()
-  {
-    if ($this->model("Skema_model")->addSkema($_POST) > 0) {
-      header('Location: ' . BASEURL . '/skema/index');
+    $data['page-link'] = $this->breadcrumbs;
+
+
+    if (isset($_POST['search-key']) && $_POST['search-key'] != "") {
+      $data["list-skema"] = $this->model("Skema_model")->searchDataSkema($_POST['search-key']);
+    } else if (isset($_POST['kategori'])) {
+      $data["list-skema"] = $this->model("Skema_model")->filterSkemaByKategori($_POST);
     } else {
-      header('Location: ' . BASEURL . '/skema/create');
+      $data["list-skema"] = ($data['user-type'] == "admin") ? $this->model("Skema_model")->fetchAllSkema() : ($data['user-type'] == "asesi" ? $this->model("Skema_model")->getSchemaOfAsesi($bio_id) : $this->model("Skema_model")->getSchemaOfAsesor($bio_id));
     }
+
+    $this->view('templates/sidebar');
+
+    if ($data['user-type'] == "admin") {
+      $data['list-skkni'] = $this->model('Skema_model')->fetchAllSKKNI();
+      $data['list-asesor'] = $this->model('Asesor_model')->fetchAllAsesor();
+    }
+
+    if ($data['user-type'] != "asesi") {
+      $data['list-jurusan'] = $this->model('User_model')->fetchAllJurusan();
+    }
+
+    $data['lp-skema'] = $this->model('Persyaratan_model')->fetchAllPersyaratanSkema();
+    $data['total-skema'] = count($data['list-skema']);
+    $data['list-ukom'] = $this->model('Unit_kompetensi_model')->fetchAllUnitKompetensi();
+
+    $this->view('skema/index', $data);
+    $this->view('templates/close_html_tag');
   }
 
-  public function create()
-  {
+  public function add() {
+    if ($this->model("Skema_model")->addSkema($_POST) > 0) {
+      Flasher::setFlash("Skema sertifikasi baru berhasil ditambahkan", "success");
+    }
+    header('Location: ' . BASEURL . '/skema/index');
+    exit;
+  }
+
+  public function create() {
     $data['page-title'] = "Skema";
     $data['skkni'] = $this->model("Skema_model")->fetchAllSKKNI();
     $data['jurusan'] = $this->model("Skema_model")->fetchAllJurusan();
@@ -40,8 +88,7 @@ class Skema extends Controller
     $this->view('templates/footer');
   }
 
-  public function status($id, $status)
-  {
+  public function status($id, $status) {
     $newStatus = $status == "Aktif" ? "Nonaktif" : "Aktif";
     if ($this->model("Skema_model")->updateStatus($id, $newStatus) > 0) {
       header('Location: ' . BASEURL . '/skema/index');
@@ -51,8 +98,7 @@ class Skema extends Controller
     }
   }
 
-  public function update($idSkema)
-  {
+  public function update($idSkema) {
     // $nama = preg_replace("/(?<=[a-z])(?=[A-Z])/", " ", $nama);
     // $level = preg_replace("/(?<=[a-z])(?=[A-Z])/", " ", $level);
     // $idSkema = $this->model("Persyaratan_model")->getIdSkemaByNama($nama, $level)['id'];
@@ -88,9 +134,8 @@ class Skema extends Controller
     }
   }
 
-  public function detail($idSkema)
-  {
-    $data['page-title'] = "Skema";
+  public function detail($idSkema) {
+    $data['page-title'] = "Detail Skema Sertifikasi";
     $data['id-skema'] = $idSkema;
     $data['list-level'] = $this->model("Persyaratan_model")->fetchLevelBySkema($idSkema);
     $data['persyaratan-skema'] = $this->model("Persyaratan_model")->fetchPersyaratanBySkema($idSkema);
@@ -112,13 +157,17 @@ class Skema extends Controller
     $data['list-asesi'] = $this->model("Skema_model")->fetchAllAsesiBySkema($idSkema);
 
     $this->view('templates/header', $data);
-    $this->view('templates/navbar/main-navbar');
-    $this->view('skema/edit', $data);
-    $this->view('templates/footer');
+
+    $data['page-link'] = $this->breadcrumbs;
+    array_push($data['page-link']['name'], "List Skema Sertifikasi");
+    array_push($data['page-link']['link'], "skema/list");
+
+    $this->view('templates/sidebar');
+    $this->view('skema/admin/detail', $data);
+    $this->view('templates/close_html_tag');
   }
 
-  public function getSyaratSkema()
-  {
+  public function getSyaratSkema() {
     $nama = $_POST['skema'];
     $level = $_POST['level'];
     $syaratExisting = [];
@@ -132,26 +181,28 @@ class Skema extends Controller
   }
 
   // Unit Kompetensi
-  public function asesmen($page = 1)
-  {
-    $data['page-title'] = "Asesmen";
-    $data['username'] = 'test';
+  public function asesmen($page = 1) {
+    $data['page-title'] = "Jadwal Asesmen";
     $data['page'] = $page;
+    $data['page-total'] = ceil($this->model("Skema_model")->getTotalAsesmen() / 5);
     if (isset($_POST['keyword'])) {
       $data["list-kompetensi"] = $this->model("Skema_model")->searchDataUnitKompetensi($page, $_POST['keyword']);
     } else {
       $data["list-kompetensi"] = $this->model("Skema_model")->fetchAllUnitKompetensi($page);
     }
+
+    $data['page-link'] = $this->breadcrumbs;
     // var_dump($data['list-kompetensi']);
     // die;
     $this->view('templates/header', $data);
-    $this->view('templates/navbar/main-navbar');
+    $this->view("templates/sidebar");
+
+    $data['page-controller'] = "skema/asesmen";
     $this->view('skema/asesmen', $data);
-    $this->view('templates/footer');
+    $this->view('templates/close_html_tag');
   }
 
-  public function tambah_kompetensi($idSkema)
-  {
+  public function tambah_kompetensi($idSkema) {
     $data['page-title'] = "Skema";
     $data['id-skema'] = $idSkema;
     // $data['nama-skema'] = preg_replace("/(?<=[a-z])(?=[A-Z])/", " ", $nama);
@@ -182,8 +233,7 @@ class Skema extends Controller
     }
   }
 
-  public function edit_kompetensi($id, $idSkema)
-  {
+  public function edit_kompetensi($id, $idSkema) {
     $data['page-title'] = "Skema";
     $data['id-kompetensi'] = $id;
     $data['id-skema'] = $idSkema;
@@ -221,8 +271,7 @@ class Skema extends Controller
     }
   }
 
-  private function checkExtensionOfFile($nama, $level, $url)
-  {
+  private function checkExtensionOfFile($nama, $level, $url) {
     $namaFile = $_FILES['soal-kompetensi']['name'];
     $ukuranFile = $_FILES['soal-kompetensi']['size'];
     $error = $_FILES['soal-kompetensi']['error'];
@@ -260,8 +309,7 @@ class Skema extends Controller
     return $namaFileBaru;
   }
 
-  public function hapus_kompetensi($id, $idSkema)
-  {
+  public function hapus_kompetensi($id, $idSkema) {
     // $nama = preg_replace("/(?<=[a-z])(?=[A-Z])/", " ", $nama);
     // $level = preg_replace("/(?<=[a-z])(?=[A-Z])/", " ", $level);
     if ($this->model("Skema_model")->deleteKompetensiById($id) > 0) {
@@ -272,36 +320,19 @@ class Skema extends Controller
     }
   }
 
-  public function countRegistered($id)
-  {
+  public function countRegistered($id) {
     return $this->model("Skema_model")->countAsesiRegistered($id);
   }
 
-  public function countAssessed($id)
-  {
+  public function countAssessed($id) {
     return $this->model("Skema_model")->countAsesiAssessed($id);
   }
 
-  public function countPersyaratan($id)
-  {
+  public function countPersyaratan($id) {
     return $this->model("Persyaratan_model")->countPersyaratanByID($id);
   }
 
-  public function countKompetensi($id)
-  {
+  public function countKompetensi($id) {
     return $this->model("Skema_model")->countKompetensiByID($id);
-  }
-
-
-  public function lastCreated()
-  {
-    $data['page-title'] = "Skema";
-    $data['username'] = 'test';
-    // $data['page'] = $page;
-    $data["list-skema"] = $this->model("Skema_model")->lastCreated5();
-    $this->view('templates/header', $data);
-    $this->view('templates/navbar/main-navbar');
-    $this->view('skema/last', $data);
-    $this->view('templates/footer');
   }
 }

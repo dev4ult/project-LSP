@@ -17,7 +17,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="<?= BASEURL ?>/logout"
+                    <a href="<?= BASEURL ?>/dashboard/logout"
                         class="btn btn-outline rounded-full text-primary hover:text-white hover:bg-primary btn-sm hover:border-primary">logout</a>
                 </li>
             </ul>
@@ -39,7 +39,7 @@
                 </div>
                 <img class="w-12" src="<?= BASEURL ?>/img/people_outline.svg" alt="people outline">
             </a>
-            <a href="<?= BASEURL ?>/dashboard/user_list/asesi"
+            <a href="<?= BASEURL ?>/persyaratan"
                 class="bg-gradient-to-r from-primary to-info hover:bg-gradient-to-r hover:from-info hover:to-info hover:bg-primary w-fit gap-14 flex justify-between text-white py-3.5 px-8 rounded-2xl">
                 <div class="text-lg ">
                     <p class="font-bold uppercase">persyaratan skema</p>
@@ -50,7 +50,7 @@
         </div>
         <div class="grid grid-flow-row grid-cols-3 gap-5 mt-10">
             <div
-                class="bg-white flex justify-between rounded-2xl shadow-lg p-5 hover:-translate-y-1 transition-all col-span-2 ">
+                class="bg-white flex justify-between rounded-2xl shadow-md p-5 hover:-translate-y-1 transition-all col-span-2 ">
                 <div class="flex flex-col justify-between">
                     <div>
                         <h3 class="text-2xl capitalize font-semibold">skema sertifikasi</h3>
@@ -64,22 +64,25 @@
                     <a href="<?= BASEURL ?>/skema" class="btn btn-sm btn-secondary text-white rounded-sm">kelola</a>
                 </div>
             </div>
-            <div class="bg-white rounded-2xl shadow-lg p-5 hover:-translate-y-1 transition-all row-span-2 text-center">
+            <div class="bg-white rounded-2xl shadow-md p-5 hover:-translate-y-1 transition-all row-span-2 text-center">
                 <div>
                     <h3 class="text-2xl capitalize font-semibold">jadwal asesmen</h3>
                     <p class="text-lg">Pelaksanaan uji kompetensi untuk nama kegiatan dan tempatnya</p>
                 </div>
                 <div class="text-center mt-2">
                     <img src="<?= BASEURL ?>/img/access_time.svg" alt="clock" class="mx-auto">
-                    <a href="<?= BASEURL ?>/jadwal_asesmen" class="btn btn-secondary text-white rounded-sm">kelola
+                    <a href="<?= BASEURL ?>/skema/asesmen" class="btn btn-secondary text-white rounded-sm">kelola
                         jadwal</a>
                 </div>
             </div>
-            <div class="bg-white rounded-2xl shadow-lg p-5 hover:-translate-y-1 transition-all col-span-2">
+            <div class="bg-white rounded-2xl shadow-md p-5 hover:-translate-y-1 transition-all col-span-2">
                 <div>
                     <h3 class="text-2xl capitalize font-semibold">persentase kelulusan</h3>
                     <p class="text-lg">Total perbandingan antara peserta yang
                         lulus dengan tidak lulus dalam pendaftaran skema sertifikasi</p>
+                    <div class="w-full">
+                        <canvas id="chart-kelulusan"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
@@ -90,34 +93,26 @@
             <div class="px-5 py-3 bg-neutral rounded-lg mt-3 w-full">
                 <h3 class="font-semibold text-info text-2xl"><?= $data['username'] ?></h3>
                 <h3 class="text-info "><?= $data['nomor-induk'] ?></h3>
-                <a href="<?= BASEURL ?>/dashboard/edit_profile/<?= $data['user-type'] ?>"
+                <a href="<?= BASEURL ?>/dashboard/edit_profile/admin"
                     class="mt-3 btn btn-sm rounded-full bg-primary text-white hover:bg-info">edit
                     profil</a>
             </div>
             <div class="mt-10">
                 <h3 class="font-semibold text-xl">Skema Terbaru</h3>
                 <ul class="mt-5 whitespace-nowrap flex flex-col gap-2">
+                    <?php foreach ($data['last-3-created'] as $skema) : ?>
                     <li class="flex items-center">
                         <img src="<?= BASEURL ?>/img/bookmark.svg" alt="bookmark">
                         <div>
-                            <h4 class="text-sm font-semibold">Front End Developer</h4>
-                            <a href="<?= BASEURL ?>/" class="uppercase text-xs text-primary">lihat skema sertifikasi</a>
+                            <h4 class="text-sm font-semibold">
+                                <?= (strlen($skema['nama_skema']) > 17 ? substr($skema['nama_skema'], 0, 17) . "..." : $skema['nama_skema']) ?>
+                            </h4>
+                            <a href="<?= BASEURL ?>/skema/detail/<?= $skema['id'] ?>"
+                                class="uppercase text-xs text-primary">lihat skema sertifikasi</a>
                         </div>
                     </li>
-                    <li class="flex items-center">
-                        <img src="<?= BASEURL ?>/img/bookmark.svg" alt="bookmark">
-                        <div>
-                            <h4 class="text-sm font-semibold">Front End Developer</h4>
-                            <a href="<?= BASEURL ?>/" class="uppercase text-xs text-primary">lihat skema sertifikasi</a>
-                        </div>
-                    </li>
-                    <li class="flex items-center">
-                        <img src="<?= BASEURL ?>/img/bookmark.svg" alt="bookmark">
-                        <div>
-                            <h4 class="text-sm font-semibold">Front End Developer</h4>
-                            <a href="<?= BASEURL ?>/" class="uppercase text-xs text-primary">lihat skema sertifikasi</a>
-                        </div>
-                    </li>
+                    <?php endforeach; ?>
+
                 </ul>
             </div>
             <div class="mt-10">
@@ -141,18 +136,35 @@
                             <img src="<?= BASEURL ?>/img/info_black.svg" alt="info">
                         </a>
                     </li>
-                    <li>
-                        <a href="" class="flex bg-accent/50 justify-between gap-3 hover:bg-accent rounded-sm p-3">
-                            <div>
-                                <h4 class="text-sm font-semibold">Android Developer</h4>
-                                <p class="text-xs">Skema sertifikasi</p>
-                            </div>
-                            <img src="<?= BASEURL ?>/img/info_black.svg" alt="info">
-                        </a>
-                    </li>
+
                 </ul>
             </div>
         </div>
     </div>
 </div>
 <script src="<?= BASEURL ?>/js/sidebar.js"></script>
+<script>
+const configData = {
+    data: {
+        datasets: [{
+            data: [
+                <?= $data["sudah-lulus"] ?>,
+                <?= $data['belum-lulus'] ?>,
+            ]
+        }],
+
+        // These labels appear in the legend and in the tooltips when hovering different arcs
+        labels: [
+            "Sudah Lulus",
+            "Belum Lulus",
+        ]
+    },
+};
+
+const barContainer = document.querySelector('#chart-kelulusan');
+
+new Chart(barContainer, {
+    type: 'bar',
+    ...configData,
+})
+</script>

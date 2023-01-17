@@ -8,7 +8,7 @@ class User_model {
     }
 
     public function fetchAllJurusan() {
-        $this->db->query("SELECT nama FROM jurusan");
+        $this->db->query("SELECT * FROM jurusan");
         return $this->db->resultSet();
     }
 
@@ -62,6 +62,13 @@ class User_model {
         return $this->db->single();
     }
 
+    public function fetchSingleUserByUsername($user_type, $username) {
+        $this->db->query($this->account_join_biodata($user_type) . " WHERE " . $user_type . ".username=:username");
+        $this->db->bind("username", $username);
+
+        return $this->db->single();
+    }
+
     public function accountIsExist($username, $email) {
         $tables = ["admin", "asesi", "asesor"];
         for ($i = 0; $i < 3; $i++) {
@@ -83,17 +90,24 @@ class User_model {
         $this->db->query("SELECT password FROM " . $user_type . " WHERE id=:id");
         $this->db->bind("id", $account_id);
 
-        return $this->db->single();
+        return $this->db->single()['password'];
     }
 
-    function getIdBio($user_type, $name) {
+    public function getIdBio($user_type, $name) {
         $this->db->query("SELECT id FROM biodata_" . $user_type . " WHERE nama=:nama");
         $this->db->bind("nama", $name);
 
         return $this->db->single()['id'];
     }
 
-    function getIdAccount($user_type, $bio_id) {
+    public function getIdBioByUsername($user_type, $username) {
+        $this->db->query("SELECT id_biodata_" . $user_type . " FROM " . $user_type . " WHERE username=:username");
+        $this->db->bind("username", $username);
+
+        return $this->db->single()['id_biodata_' . $user_type];
+    }
+
+    public function getIdAccount($user_type, $bio_id) {
         $this->db->query("SELECT id FROM " . $user_type . " WHERE id_biodata_" . $user_type . "=:id");
         $this->db->bind("id", $bio_id);
 
@@ -194,15 +208,6 @@ class User_model {
             $query_set = $query_set . ", password=:password";
         }
 
-        // asesor / asesi side
-        if (isset($data['old-password'])) {
-            $old_pass = htmlspecialchars($data['old-password']);
-            if (!password_verify($old_pass, $this->getPassword($user_type, $account_id))) {
-                Flasher::setFlash("old pass is wrong");
-                return false;
-            }
-        }
-
         $this->db->query("UPDATE " . $user_type . " SET " . $query_set . " WHERE id=:id");
 
         $this->db->bind("username", $username);
@@ -267,6 +272,104 @@ class User_model {
 
         // execute update stmt
         $this->db->execute();
+
+        return $this->db->rowChangeCheck();
+    }
+
+    public function checkIfUsernameOrEmailAvailable($id, $username, $email, $user_type) {
+        $this->db->query("SELECT * FROM " . $user_type . " WHERE (username=:username OR email=:email) AND NOT id=:id");
+        $this->db->bind("id", $id);
+        $this->db->bind("username", $username);
+        $this->db->bind("email", $email);
+        return count($this->db->resultSet());
+    }
+
+    public function changePassword($data, $user_type) {
+        $account_id = $data['account-id'];
+        $new_pass = htmlspecialchars($data['new-password']);
+        $new_pass_conf = htmlspecialchars($data['new-password-confirmation']);
+        $old_pass = htmlspecialchars($data['old-password']);
+
+        $hashed_pass = $this->getPassword($user_type, $account_id);
+        if (strcmp(hash("sha256", $old_pass), $hashed_pass)) {
+            Flasher::setFlash("Password lama salah!", "error");
+            return -1;
+        }
+
+        if ($new_pass != $new_pass_conf) {
+            Flasher::setFlash("Password konfirmasi salah!", "error");
+            return -1;
+        }
+
+        $this->db->query("UPDATE " . $user_type . " SET password=:password WHERE id=:id");
+        $this->db->bind("password", hash("sha256", $new_pass));
+        $this->db->bind("id", $account_id);
+
+        $this->db->execute();
+        return $this->db->rowChangeCheck();
+    }
+
+    public function updateProfile($data, $user_type) {
+        $bio_id = $data['bio-id'];
+        $query_update = "UPDATE biodata_" . $user_type . " SET nama=:nama, alamat=:alamat, no_telepon=:no_telepon";
+
+        $nama = htmlspecialchars($data['nama']);
+        $alamat = htmlspecialchars($data['alamat']);
+        $no_telepon = htmlspecialchars($data['no-telepon']);
+
+        if ($user_type == "admin") {
+            $query_update .= ", nip=:nip, nik=:nik, jenis_kelamin=:jenis_kelamin";
+            $nip = htmlspecialchars($data['nip']);
+            $nik = htmlspecialchars($data['nik']);
+            $jenis_kelamin = htmlspecialchars($data['jenis-kelamin']);
+        }
+
+        if ($user_type == "admin" || $user_type == "asesor") {
+            $query_update .= ", tanggal_lahir=:tanggal_lahir, tempat_lahir=:tempat_lahir";
+            $tanggal_lahir = htmlspecialchars($data['tanggal-lahir']);
+            $tempat_lahir = htmlspecialchars($data['tempat-lahir']);
+        }
+
+        $this->db->query($query_update . " WHERE id=:id");
+        $this->db->bind('id', $bio_id);
+        $this->db->bind('nama', $nama);
+        $this->db->bind('alamat', $alamat);
+        $this->db->bind('no_telepon', $no_telepon);
+
+        if ($user_type == "admin") {
+            $this->db->bind('nip', $nip);
+            $this->db->bind('nik', $nik);
+            $this->db->bind('jenis_kelamin', $jenis_kelamin);
+        }
+
+        if ($user_type == "admin" || $user_type == "asesor") {
+            $this->db->bind('tanggal_lahir', $tanggal_lahir);
+            $this->db->bind('tempat_lahir', $tempat_lahir);
+        }
+
+        $this->db->execute();
+
+
+
+        if ($user_type == "admin") {
+            $username = htmlspecialchars($data['username']);
+            $email = htmlspecialchars($data['email']);
+            $account_id = $data['account-id'];
+
+            if ($this->checkIfUsernameOrEmailAvailable($account_id, $username, $email, "admin") > 0) {
+                Flasher::setFlash('Username atau email sudah pernah digunakan oleh user lain', 'error');
+                return -1;
+            }
+
+            $this->db->query("UPDATE admin SET username=:username, email=:email WHERE id=:id");
+            $this->db->bind("username", $username);
+            $this->db->bind("email", $email);
+            $this->db->bind("id", $account_id);
+
+            $this->db->execute();
+
+            $_SESSION['username'] = $username;
+        }
 
         return $this->db->rowChangeCheck();
     }

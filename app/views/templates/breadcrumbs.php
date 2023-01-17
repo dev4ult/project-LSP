@@ -1,4 +1,4 @@
-<div class="text-xl font-semibold breadcrumbs pt-14">
+<div class="text-xl font-semibold breadcrumbs">
     <ul>
         <li><a href="<?= BASEURL ?>">
                 <img src="<?= BASEURL ?>/img/home.svg" class="w-6" alt="home">

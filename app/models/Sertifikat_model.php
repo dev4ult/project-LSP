@@ -67,7 +67,7 @@ class Sertifikat_model {
 
         $idBio = $this->getIdBiodata($_SESSION['username']);
 
-        $query = "SELECT DiSTINCT biodata_asesi.nama As nama_asesi, biodata_asesi.nim, skema_sertifikasi.nama_skema, biodata_asesor.nama As nama_asesor FROM daftar_asesi_sertifikasi 
+        $query = "SELECT DISTINCT biodata_asesi.nama As nama_asesi, biodata_asesi.nim, skema_sertifikasi.nama_skema, biodata_asesor.nama As nama_asesor FROM daftar_asesi_sertifikasi 
                         JOIN skema_sertifikasi ON daftar_asesi_sertifikasi.id_skema_sertifikasi = skema_sertifikasi.id
                         JOIN biodata_asesor ON skema_sertifikasi.id_biodata_asesor = biodata_asesor.id 
                         JOIN biodata_asesi ON daftar_asesi_sertifikasi.id_biodata_asesi = biodata_asesi.id 
