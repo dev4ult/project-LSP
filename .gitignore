@@ -2,3 +2,4 @@ node_modules
 app/config/email_config.php
 vendor
 run_live_server.html
+.vscode

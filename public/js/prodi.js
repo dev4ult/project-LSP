@@ -1,0 +1,25 @@
+let prodi = {
+  'Teknik Informatika dan Komputer': ['Teknik Informatika', 'Teknik Multimedia Digital', 'Teknik Multimedia dan Jaringan', 'Teknik Komputer dan Jaringan'],
+  'Teknik Sipil': ['Konstruksi Sipil', 'Konstruksi Gedung', 'Teknik Perancangan Jalan dan Jembatan', 'Teknik Konstruksi Gedung'],
+  'Teknik Mesin': [
+    'Teknik Mesin',
+    'Teknik Mesin - PSDKU Kab. Demak',
+    'Teknik Konversi Energi',
+    'Manufaktur',
+    'Manufaktur - PSDKU Kab. Pekalongan',
+    'Pembangkit Tenaga Listrik',
+    'Teknologi Rekayasa Konversi Energi',
+    'Teknologi Rekayasa Perawatan Alat Berat',
+    'Magister Rekayasa Teknologi Manufaktur',
+  ],
+  'Teknik Elektro': ['Elektronika Industri', 'Teknik Listrik', 'Telekomunikasi', 'Instrumentasi Kontrol Industri', 'Teknik Otomasi Listrik Industri', 'Broadband Multimedia', 'Magister Teknik Elektro'],
+  'Teknik Grafika dan Penerbitan': ['Penerbitan', 'Teknik Grafika', 'Desain Grafis', 'Teknologi Industri Cetak Kemasan'],
+  Akuntansi: ['Akuntansi', 'Keuangan dan Perbankan', 'Akuntansi Keuangan', 'Keuangan dan Perbankan', 'Keuangan dan Perbankan Syariah', 'Manajemen Keuangan', 'Manajemen Pemasaran (WNBK'],
+  'Administrasi Niaga': [
+    'Administrasi Bisnis',
+    'Administrasi Bisnis Terapan',
+    'Usaha Jasa Konvensi, Perjalanan Insentif dan Pameran /MICE',
+    'Usaha Jasa Konvensi, Perjalanan Insentif dan Pameran /MICE - PSDKU Kab. Demak',
+    'Bahasa Inggris untuk Komunikasi Bisnis dan Profesional',
+  ],
+};
