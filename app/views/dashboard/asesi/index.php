@@ -35,7 +35,7 @@
                 class="bg-gradient-to-r from-primary to-info hover:bg-gradient-to-r hover:from-info hover:to-info hover:bg-primary w-fit gap-14 flex justify-between text-white py-3.5 px-8 rounded-2xl">
                 <div class="text-lg ">
                     <p class="font-bold uppercase">terbit sertifikat</p>
-                    <p class="font-semibold"> Sertifikat</p>
+                    <p class="font-semibold"><?= $data['total-skema-saya'] ?> Sertifikat</p>
                 </div>
                 <img class="w-12" src="<?= BASEURL ?>/img/library_books.svg" alt="people outline">
             </a>
@@ -45,7 +45,7 @@
                 class="bg-white flex justify-between rounded-2xl shadow-md p-5 hover:-translate-y-1 transition-all col-span-2 ">
                 <div class="flex flex-col justify-between">
                     <div>
-                        <h3 class="text-2xl capitalize font-semibold">daftar skema yang didaftarkan</h3>
+                        <h3 class="text-2xl capitalize font-semibold">skema yang didaftari</h3>
                         <p class="text-lg max-w-md">Persyaratan sertifikasi spesifik yang berkaitan dengan kategori
                             profesi</p>
                     </div>
@@ -53,7 +53,8 @@
                 </div>
                 <div class="text-center self-end">
                     <img src="<?= BASEURL ?>/img/book.svg" alt="book">
-                    <a href="<?= BASEURL ?>/skema" class="btn btn-sm btn-secondary text-white rounded-sm">lihat</a>
+                    <a href="<?= BASEURL ?>/skema/list/asesi"
+                        class="btn btn-sm btn-secondary text-white rounded-sm">lihat</a>
                 </div>
             </div>
             <div class="bg-white rounded-2xl shadow-md p-5 hover:-translate-y-1 transition-all row-span-2 text-center">
@@ -70,78 +71,18 @@
             <div class="bg-white rounded-2xl shadow-md p-5 hover:-translate-y-1 transition-all col-span-2 flex">
                 <div>
                     <h3 class="text-2xl capitalize font-semibold">dokumen persyaratan</h3>
-                    <p class="text-lg max-w-md">dokumen dokumen yang diperlukan untuk mendaftarkan diri kedalam skema
+                    <p class="text-lg max-w-md">Dokumen dokumen yang diperlukan untuk mendaftarkan diri kedalam skema
                         sertifikasi
                     </p>
                 </div>
                 <div class="self-end flex flex-col items-center">
                     <img src="<?= BASEURL ?>/img/drafts.svg" alt="draft">
-                    <a href="<?= BASEURL ?>/" class="btn btn-secondary text-white rounded-sm">unggah</a>
+                    <a href="<?= BASEURL ?>/asesi/upload_document"
+                        class="btn btn-secondary text-white rounded-sm">unggah</a>
                 </div>
             </div>
         </div>
     </div>
-    <div class="h-full pt-14 pb-5 bg-base-100">
-        <div class="px-8 flex-shrink-0 flex-grow min-w-[270px] overflow-y-auto h-screen pb-5">
-            <h1 class="text-xl font-semibold">Profil</h1>
-            <div class="px-5 py-3 bg-neutral rounded-lg mt-3 w-full">
-                <h3 class="font-semibold text-info text-2xl"><?= $data['username'] ?></h3>
-                <h3 class="text-info "><?= $data['nomor-induk'] ?></h3>
-                <a href="<?= BASEURL ?>/dashboard/edit_profile/asesi"
-                    class="mt-3 btn btn-sm rounded-full bg-primary text-white hover:bg-info">edit
-                    profil</a>
-            </div>
-            <div class="mt-10">
-                <h3 class="font-semibold text-xl">Skema Terbaru</h3>
-                <ul class="mt-5 whitespace-nowrap flex flex-col gap-2">
-                    <li class="flex items-center">
-                        <img src="<?= BASEURL ?>/img/bookmark.svg" alt="bookmark">
-                        <div>
-                            <h4 class="text-sm font-semibold">Front End Developer</h4>
-                            <a href="<?= BASEURL ?>/" class="uppercase text-xs text-primary">lihat skema sertifikasi</a>
-                        </div>
-                    </li>
-                    <li class="flex items-center">
-                        <img src="<?= BASEURL ?>/img/bookmark.svg" alt="bookmark">
-                        <div>
-                            <h4 class="text-sm font-semibold">Front End Developer</h4>
-                            <a href="<?= BASEURL ?>/" class="uppercase text-xs text-primary">lihat skema sertifikasi</a>
-                        </div>
-                    </li>
-                    <li class="flex items-center">
-                        <img src="<?= BASEURL ?>/img/bookmark.svg" alt="bookmark">
-                        <div>
-                            <h4 class="text-sm font-semibold">Front End Developer</h4>
-                            <a href="<?= BASEURL ?>/" class="uppercase text-xs text-primary">lihat skema sertifikasi</a>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div class="mt-10">
-                <h3 class="font-semibold text-xl">Aktifitas Terakhir</h3>
-                <ul class="mt-5 flex flex-col gap-2">
-                    <li>
-                        <a href="" class="flex bg-accent/50 justify-between gap-3 hover:bg-accent rounded-sm p-3">
-                            <div>
-                                <h4 class="text-sm font-semibold">Android Developer</h4>
-                                <p class="text-xs">Skema sertifikasi</p>
-                            </div>
-                            <img src="<?= BASEURL ?>/img/info_black.svg" alt="info">
-                        </a>
-                    </li>
-                    <li>
-                        <a href="" class="flex bg-accent/50 justify-between gap-3 hover:bg-accent rounded-sm p-3">
-                            <div>
-                                <h4 class="text-sm font-semibold">Android Developer</h4>
-                                <p class="text-xs">Skema sertifikasi</p>
-                            </div>
-                            <img src="<?= BASEURL ?>/img/info_black.svg" alt="info">
-                        </a>
-                    </li>
-
-                </ul>
-            </div>
-        </div>
-    </div>
+    <?php require_once("../app/views/templates/dashboard_right.php") ?>
 </div>
 <script src="<?= BASEURL ?>/js/sidebar.js"></script>

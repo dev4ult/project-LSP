@@ -1,7 +1,7 @@
 <?php
 
 // Convert HTML to PDF
-use Dompdf\Dompdf; 
+use Dompdf\Dompdf;
 
 require '../vendor/autoload.php';
 
@@ -50,16 +50,21 @@ class Sertifikat_model {
         return count($this->db->resultSet());
     }
 
-    public function checkLulus() {
+    public function checkLulus($id_skema) {
+        $id_bio = $this->getIdBiodata($_SESSION['username']);
 
-        $idBio = $this->getIdBiodata($_SESSION['username']);
-
-        $query = "SELECT status_kelulusan FROM daftar_asesi_sertifikasi WHERE id_biodata_asesi = :id_biodata_asesi";
+        $query = "SELECT status_kelulusan FROM daftar_asesi_sertifikasi WHERE id_biodata_asesi = :id_biodata_asesi AND id_skema_sertifikasi=:id_skema";
 
         $this->db->query($query);
-        $this->db->bind("id_biodata_asesi", $idBio);
+        $this->db->bind("id_biodata_asesi", $id_bio);
+        $this->db->bind("id_skema", $id_skema);
 
-        return $this->db->single();
+        return $this->db->single()['status_kelulusan'];
+    }
+
+    public function fetchAllSertifikasiAsesi() {
+        $this->db->query("SELECT * FROM daftar_asesi_sertifikasi");
+        return $this->db->resultSet();
     }
 
     public function getDataSertifikat($id_skema) {
@@ -104,13 +109,13 @@ class Sertifikat_model {
         $dompdf->setPaper('A5', 'landscape');
 
         // Render the HTML as PDF 
-        $dompdf->render(); 
- 
+        $dompdf->render();
+
         // Output the generated PDF to Browser 
         $dompdf->stream("Sertifikat", array("Attachment" => 0));
     }
 
-    public function searchSertifikat($page){
+    public function searchSertifikat($page) {
         $keyword = $_POST['keyword'];
         $query = $query = "SELECT skema_sertifikasi.id, skema_sertifikasi.nama_skema, skema_sertifikasi.tgl_Kadaluarsa_sertifikasi FROM daftar_asesi_sertifikasi
                                 JOIN skema_sertifikasi ON daftar_asesi_sertifikasi.id_skema_sertifikasi=skema_sertifikasi.id WHERE nama_skema LIKE :keyword LIMIT :page, 5";

@@ -9,8 +9,7 @@
             </label>
             <ul tabindex="0" class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
                 <li><a href="<?= BASEURL ?>/login">DASHBOARD</a></li>
-                <li><a>PROFIL </a></li>
-                <li><a>HUBUNGI KAMI</a></li>
+                <li><a href="<?= BASEURL ?>/home/index#hubungi-kami">HUBUNGI KAMI</a></li>
             </ul>
         </div>
         <a href="<?= BASEURL ?>" class="btn btn-ghost hover:bg-primary hover:text-white normal-case text-xl">LSPPNJ</a>
@@ -19,9 +18,9 @@
         <ul class="menu menu-horizontal p-0 gap-2 font-semibold">
             <li><a class="hover:bg-primary hover:text-white rounded-lg" href="<?= BASEURL ?>/dashboard">DASHBOARD</a>
             </li>
-            <li><a class="hover:bg-primary hover:text-white rounded-lg" href="<?= BASEURL ?>/login">PROFIL</a></li>
-            <li><a class="hover:bg-primary hover:text-white rounded-lg" href="<?= BASEURL ?>">HUBUNGI KAMI</a></li>
-
+            </li>
+            <li><a class="hover:bg-primary hover:text-white rounded-lg"
+                    href="<?= BASEURL ?>/home/index#hubungi-kami">HUBUNGI KAMI</a></li>
         </ul>
     </div>
     <div class="navbar-end">

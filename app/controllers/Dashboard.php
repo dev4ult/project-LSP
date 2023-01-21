@@ -37,6 +37,33 @@ class Dashboard extends Controller {
         $this->view('templates/sidebar');
 
         $data['user-type'] = 'admin';
+
+        $data['sudah-lulus'] = 0;
+        $data['belum-lulus'] = 0;
+
+        foreach ($this->model("Sertifikat_model")->fetchAllSertifikasiAsesi() as $sertif_asesi) {
+            if ($sertif_asesi['status_kelulusan'] == "Lulus") {
+                $data['sudah-lulus']++;
+            } else {
+                $data['belum-lulus']++;
+            }
+        }
+
+        $last_activity = $_SESSION['last-activity']["admin"];
+        // var_dump($last_activity);
+
+
+        if ($last_activity->first->name != "") {
+            $data['laf']['name'] = $last_activity->first->name;
+            $data['laf']['id'] = $last_activity->first->id;
+        }
+
+        if ($last_activity->second->name  != "") {
+            $data['las']['name'] = $last_activity->second->name;
+            $data['las']['id'] = $last_activity->second->id;
+        }
+
+
         $this->view('dashboard/admin/index', $data);
         $this->view('templates/close_html_tag');
     }
@@ -51,9 +78,31 @@ class Dashboard extends Controller {
 
         $data['nomor-induk'] = $this->model("User_model")->getUserRegNumber($_SESSION['username'], "asesi", "nim");
 
+        unset($_SESSION['flash']);
+
         $data['user-type'] = 'asesi';
         $data['username'] = $_SESSION['username'];
-        $data['total-skema'] = $this->model("Skema_model")->getTotalSchema();
+
+
+        $bio_id = $this->model("User_model")->getIdBioByUsername("asesi", $_SESSION['username']);
+
+        $id_jurusan_asesi = $this->model("User_model")->getIdJurusanOfAsesi($bio_id);
+        $data['total-skema'] = count($this->model("Skema_model")->getSchemaOfJurusan($id_jurusan_asesi));
+
+        $data['last-3-created'] = $this->model("Skema_model")->fetchThreeLastCreatedSchemaOfJurusan($id_jurusan_asesi);
+
+        $last_activity = $_SESSION['last-activity']['asesi'];
+
+        if ($last_activity->first->name != "") {
+            $data['laf']['name'] = $last_activity->first->name;
+            $data['laf']['id'] = $last_activity->first->id;
+        }
+
+        if ($last_activity->second->name  != "") {
+            $data['las']['name'] = $last_activity->second->name;
+            $data['las']['id'] = $last_activity->second->id;
+        }
+
         $asesi_id = $this->model('User_model')->getIdBioByUsername('asesi', $data['username']);
         $data['total-skema-saya'] = count($this->model('Skema_model')->getSchemaOfAsesi($asesi_id));
 
@@ -71,6 +120,35 @@ class Dashboard extends Controller {
         $data['username'] = $_SESSION['username'];
         $data['nomor-induk'] = $this->model("User_model")->getUserRegNumber($_SESSION['username'], "asesor", "nip");
         $data['user-type'] = "asesor";
+
+        $id_bio = $this->model("User_model")->getIdBioByUsername('asesor', $data['username']);
+        $data['skema-asesor'] = $this->model("Skema_model")->getSchemaOfAsesor($id_bio);
+        $data['total-skema'] = count($data['skema-asesor']);
+
+        $data['total-asesi-skema'] = array_map(function ($v) {
+            return $this->model('Skema_model')->countAsesiRegistered($v['id']);
+        }, $data['skema-asesor']);
+
+        $data['total-asesmen'] = 0;
+
+        foreach ($this->model("Skema_model")->fetchAllSkema() as $skema) {
+            if ($skema['username_asesor'] == $data['username']) {
+                $data['total-asesmen'] += (int)$this->model("Skema_model")->fetchAllAsesmenByIdSkema($skema['id']);
+            }
+        }
+
+
+        $last_activity = $_SESSION['last-activity']['asesor'];
+
+        if ($last_activity->first->name != "") {
+            $data['laf']['name'] = $last_activity->first->name;
+            $data['laf']['id'] = $last_activity->first->id;
+        }
+
+        if ($last_activity->second->name  != "") {
+            $data['las']['name'] = $last_activity->second->name;
+            $data['las']['id'] = $last_activity->second->id;
+        }
 
 
         // $data['list-skema-asesor'] = $this->model("Asesor_model")->getSkemaByAsesor($page);
@@ -200,10 +278,10 @@ class Dashboard extends Controller {
         }
     }
 
-    public function user_detail($user_type, $user_id) {
+    public function user_detail($user_type = null, $user_id = -1) {
         $this->model('User_model')->checkUserLogin("admin");
 
-        if ($user_type == "asesor" || $user_type == "asesi") {
+        if (($user_type == "asesor" || $user_type == "asesi") && $this->model("User_model")->isAccountExistById($user_type, $user_id) > 0) {
             $data['page-title'] = 'Detail ' . ucfirst($user_type);
             $this->view("templates/header", $data);
 
@@ -212,6 +290,13 @@ class Dashboard extends Controller {
             array_push($data["page-link"]["link"], "dashboard/user_list/" . $user_type);
 
             $this->view('templates/sidebar');
+
+            if ($user_type == "asesor") {
+                $data['list-skema'] = $this->model("Skema_model")->getSchemaOfAsesor($user_id);
+            } else {
+                $data['list-skema'] = $this->model("Skema_model")->getSchemaOfAsesi($user_id);
+            }
+
 
             $data['user-type'] = $user_type;
 

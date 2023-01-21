@@ -89,7 +89,7 @@ class Persyaratan_model {
 
   public function fetchPersyaratanBySkema($id) {
     // $idSkema = $this->getIdSkemaByNama($nama, $level)['id'];
-    $query = "SELECT deskripsi from persyaratan_skema WHERE id_skema=:id";
+    $query = "SELECT persyaratan_skema.deskripsi as deskripsi, list_persyaratan.kategori as kategori FROM persyaratan_skema JOIN list_persyaratan ON persyaratan_skema.deskripsi = list_persyaratan.deskripsi WHERE id_skema=:id";
     $this->db->query($query);
     $this->db->bind("id", $id);
     return $this->db->resultSet();
@@ -100,6 +100,8 @@ class Persyaratan_model {
     $this->db->query($query);
     return $this->db->resultSet();
   }
+
+
 
   public function fetchLevelBySkema($id) {
     $query = "SELECT level from skema_sertifikasi WHERE id LIKE :id ORDER BY level";

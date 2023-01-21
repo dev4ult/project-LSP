@@ -14,7 +14,8 @@
                         <span class="label-text">Username / Email</span>
                     </label>
                     <input type="text" placeholder="Ketikan Username atau Email-mu" name="umail"
-                        class="rounded-sm input input-bordered" required />
+                        class="rounded-sm input input-bordered" required
+                        value="<?= isset($_COOKIE['ingat-umail']) ? $_COOKIE['ingat-umail'] : ''  ?>" />
                 </div>
                 <div class="form-control">
                     <label class="label">
@@ -26,7 +27,8 @@
                 <div class="form-control mt-5">
                     <label class="cursor-pointer label">
                         <span class="label-text">Ingat username / email</span>
-                        <input type="checkbox" checked="checked" class="checkbox rounded-sm" />
+                        <input type="checkbox" name="ingat-umail" class="checkbox rounded-sm"
+                            <?= isset($_COOKIE['ingat-umail']) ? 'checked' : ''  ?> />
                     </label>
                 </div>
                 <label for="captcha-modal" class="btn btn-secondary rounded-sm text-white">Login</label>

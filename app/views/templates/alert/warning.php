@@ -1,6 +1,6 @@
 <div class="alert alert-warning w-fit rounded-sm">
     <div>
-        <span class="text-white"><?= $data['msg'] ?></span>
+        <span class="text-black"><?= $data['msg'] ?></span>
     </div>
     <div class="flex-none">
         <svg id="close-alert" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 cursor-pointer" fill="none"

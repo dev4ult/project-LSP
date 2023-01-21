@@ -1,104 +1,76 @@
-<!-- <div class="hero min-h-screen bg-base-200">
-    
-    <div class="hero-content text-left">
-        <div class="max-w-md">      
-                   
-           
+<div class="container mx-auto max-w-5xl">
+    <div class="my-10">
+        <h1 class="text-7xl font-extrabold uppercase py-5 text-center">[ Selamat
+            Datang ]
+        </h1>
+        <div class="flex justify-between mt-20">
+            <div class="text-4xl font-bold flex flex-col gap-10">
+                <h2
+                    class="bg-neutral text-info rounded-full p-5 w-fit px-10 shadow-md transition-all hover:-translate-y-1 ml-auto">
+                    Asesor</h2>
+                <h2
+                    class="bg-primary text-white rounded-full p-5 w-fit px-10 shadow-md transition-all hover:-translate-y-1 ml-auto">
+                    Peserta Asesmen</h2>
+                <h2
+                    class="bg-accent/50 text-secondary rounded-full p-5 w-fit px-10 shadow-md transition-all hover:-translate-y-1 ml-auto">
+                    Administrator</h2>
+
+                <h2
+                    class="bg-secondary text-neutral rounded-full p-5 w-fit px-10 shadow-md transition-all hover:-translate-y-1 ml-auto">
+                    Politeknik Negri Jakarta
+                </h2>
+            </div>
+            <img src="<?= BASEURL ?>/img/lsppeople.png" alt="people" class="flex-shrink-0 flex-grow">
         </div>
-        
     </div>
-    
-
-    
-</div>   -->
-
-<div class="bg-base-200 ">
-
-
-    <div>
-        <p class="text-5xl font-bold-sm mb-6 pt-6">SELAMAT DATANG </p>
-        <p class="mb-6 ml-3">Politeknik Negri Jakarta</p>
-        <p class="mb-6">Peserta Uji Kompetensi</p>
-        <p class="mb-6">Asesor</p>
-        <p class="mb-6">Manajemen</p>
-
-    </div>
-
-    <!-- info grafis -->
-    <div>
-        <h3 class="text-center mt-5"> Infografis</h3>
-        <h1 class="text-center mt-5 text-3xl font-bold"> Statistics LSP</h1>
-        <p class="text-center"> pencapaian LSP DEMO dalam angka</p>
-        <div class="flex items-stretch text-white mb-4">
-
-            <div class="w-1/4 text-center bg-slate-700 rounded-full ">
-                <p>32</p>
-                Asesor
+</div>
+<div class="bg-primary py-32 mt-36">
+    <div class="text-center max-w-5xl mx-auto">
+        <h3 class="text-4xl font-bold uppercase text-white">Info grafis</h3>
+        <p class="text-4xl font-bold uppercase text-white">lsp politeknik negeri jakarta</p>
+        <div class="flex gap-10 justify-center text-black mt-10">
+            <div
+                class="p-5 text-center bg-white rounded-lg shadow-md flex flex-col justify-between max-w-xs transition-all hover:-translate-y-1">
+                <img class="mx-auto w-32" src="<?= BASEURL ?>/img/asesor.png" alt="asesor">
+                <div>
+                    <p class="font-bold text-2xl mt-5">Asesor</p>
+                    <p class="text-xl mt-3">pegawai yang menguji asesi atau peserta dalam
+                        penilaian uji kompetensi</p>
+                    <p class="mt-5 text-3xl font-bold uppercase"><?= $data['total-asesor'] ?> Pegawai</p>
+                </div>
             </div>
-            <div class="w-1/4 text-center  bg-slate-700 rounded-full">
-                <p>32</p>
-                Asesor
+            <div
+                class="p-5 text-center bg-white rounded-lg shadow-md flex flex-col justify-between max-w-xs transition-all hover:-translate-y-1">
+                <img class="mx-auto w-32" src="<?= BASEURL ?>/img/asesi.png" alt="asesi">
+                <div>
+                    <p class="font-bold text-2xl mt-5">Asesi</p>
+                    <p class="text-xl mt-3">peserta yang mengikuti uji kompetensi untuk
+                        mendapatkan sertifikat profesi</p>
+                    <p class="mt-5 text-3xl font-bold uppercase"><?= $data['total-asesi'] ?> Peserta</p>
+                </div>
             </div>
-            <div class="w-1/4 text-center  bg-slate-700 rounded-full">
-                <p>32</p>
-                Asesor
-            </div>
-            <div class="w-1/4 text-center  bg-slate-700 rounded-full">
-                <p>32</p>
-                Asesor
-            </div>
-
-        </div>
-
-    </div>
-
-    <a href="<?= BASEURL ?>/registration" class="btn btn-primary">Hubungi Kami</a>
-
-    <!-- info terkini -->
-    <div class="flex  ">
-        <h1 class="mt-5 text-2xl font-bold"> INFO TERKINI</h1>
-        <h1 class="text-end mt-5 text-2xl font-bold ml-auto mr-5">JADWAL ASESMEN TERKINI </h1>
-
-    </div>
-
-    <div class="flex bg-base-200 gap-3">
-
-        <div class="card card-compact w-96 bg-base-100 shadow-xl">
-            <figure><img src="https://placeimg.com/400/225/arch" alt="Shoes" /></figure>
-            <div class="card-body">
-                <h2 class="card-title">Shoes!</h2>
-                <p>If a dog chews shoes whose shoes does he choose?</p>
-                <div class="card-actions justify-end">
-                    <button class="btn btn-primary">Buy Now</button>
+            <div
+                class="p-5 text-center bg-white rounded-lg shadow-md flex flex-col justify-between max-w-xs transition-all hover:-translate-y-1">
+                <img class="mx-auto w-32" src="<?= BASEURL ?>/img/skema.png" alt="skema">
+                <div>
+                    <p class="font-bold text-2xl mt-5">Sertifikasi</p>
+                    <p class="text-xl mt-3">sistem skema yang dibuatkan untuk asesi mendapatkan
+                        sertifikat profesi</p>
+                    <p class="mt-5 text-3xl font-bold uppercase"><?= $data['total-skema'] ?> Skema</p>
                 </div>
             </div>
         </div>
-
-
-
-
-        <div class="card card-compact w-96 bg-base-100 shadow-xl ">
-            <figure><img src="https://placeimg.com/400/225/arch" alt="Shoes" /></figure>
-            <div class="card-body">
-                <h2 class="card-title">Shoes!</h2>
-                <p>If a dog chews shoes whose shoes does he choose?</p>
-                <div class="card-actions justify-end">
-                    <button class="btn btn-primary">Buy Now</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="card w-96 bg-slate-500 shadow-xl">
-            <div class="card-body">
-
-                <p>Agenda/ jadwal penyelenggaraan uji kompetensi LSP DEMO yang dapat anda ikuti dapat dilihat pada data sebagai berikut.</p>
-                <div class="card-actions justify-end">
-                </div>
-
-            </div>
-
-
-        </div>
     </div>
+</div>
 
+<div class="max-w-5xl mx-auto mt-20 py-10">
+    <h2 class="text-5xl font-bold uppercase">Kinerja Kami</h2>
+    <div class="flex gap-20">
+        <p class="text-3xl mt-5">Kami telah melaksanakan kegiatan
+            asesmen uji kompetensi. Perkembangan yang terus menerus dan pelayanan
+            sertifikasi kepada masyarakat,
+            dengan serangkaian pengalaman
+            kami.</p>
+        <img src="<?= BASEURL ?>/img/peoplework.png" alt="people" class="flex-grow flex-shrink-0 w-96">
+    </div>
 </div>

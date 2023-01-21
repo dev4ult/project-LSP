@@ -8,10 +8,13 @@ class Dokumen_model {
     }
 
     public function fetchAllListPersyaratan() {
+        $this->db->query("SELECT * FROM list_persyaratan");
+        return $this->db->resultSet();
+    }
 
-        $query = "SELECT * FROM list_persyaratan";
-
-        $this->db->query($query);
+    public function fetchAllListPersyaratanOfSkema($id_skema) {
+        $this->db->query("SELECT list_persyaratan.deskripsi, list_persyaratan.id FROM list_persyaratan JOIN persyaratan_skema ON list_persyaratan.deskripsi = persyaratan_skema.deskripsi WHERE list_persyaratan.kategori='Umum' AND persyaratan_skema.id_skema=:id");
+        $this->db->bind("id", $id_skema);
         return $this->db->resultSet();
     }
 
@@ -28,7 +31,7 @@ class Dokumen_model {
 
         $idBio = $this->getIdBiodata($_SESSION['username']);
 
-        $query = "SELECT * FROM dokumen_persyaratan WHERE id_biodata_asesi = :id_biodata_asesi";
+        $query = "SELECT * FROM dokumen_persyaratan WHERE id_biodata_asesi=:id_biodata_asesi";
 
         $this->db->query($query);
 
@@ -62,11 +65,11 @@ class Dokumen_model {
 
             if (!in_array($file_type, $extensions)) {
 
-                Flasher::setFlash('Extensi file salah !');
+                Flasher::setFlash('Extensi file salah !', "error");
                 return false;
             } else if ($file_size > 2097152) {
 
-                Flasher::setFlash('Ukuran file tidak boleh melebihi 2 MB');
+                Flasher::setFlash('Ukuran file tidak boleh melebihi 2 MB', "warning");
                 return false;
             } else {
 
@@ -84,14 +87,24 @@ class Dokumen_model {
 
                     move_uploaded_file($file_tmp, 'public/img/' . $file_name);
                 } else {
-                    Flasher::setFlash('Pilih Jenis Persyaratan Terlebih dahulu');
+                    Flasher::setFlash('Pilih Jenis Persyaratan Terlebih dahulu', "warning");
                     return false;
                 }
             }
         } else {
-            Flasher::setFlash('File tidak ada');
+            Flasher::setFlash('File tidak ada', 'error');
             return false;
         }
+    }
+
+    public function isDocumentExist($id_persyaratan) {
+        $idBio = $this->getIdBiodata($_SESSION['username']);
+
+        $this->db->query("SELECT * FROM dokumen_persyaratan WHERE id_persyaratan=:id_persyaratan AND id_biodata_asesi=:id_biodata_asesi");
+        $this->db->bind('id_persyaratan', $id_persyaratan);
+        $this->db->bind('id_biodata_asesi', $idBio);
+
+        return count($this->db->resultSet()) > 0 ? true : false;
     }
 
     public function deleteFile($id_persyaratan) {

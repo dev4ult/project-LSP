@@ -11,10 +11,15 @@
     </div>
     <div class="px-8">
         <h1 class="text-3xl font-bold pt-14 mb-3">Profil Saya</h1>
-
         <?php require_once "../app/views/templates/breadcrumbs.php" ?>
-        <form action="<?= BASEURL ?>/dashboard/edit_profile/<?= $data['user-type'] ?>" method="post"
+        <div class="my-3">
+            <?= Flasher::flash() ?>
+        </div>
+        <form action="<?= BASEURL ?>/dashboard/profile_update/asesi" method="post"
             class="bg-base-100 rounded-lg shadow-md p-5 mt-5">
+            <input type="number" name="account-id" value="<?= $user['id'] ?>" class="hidden" />
+            <input type="number" name="bio-id" value="<?= $user['id_biodata_' . $data['user-type']] ?>"
+                class="hidden" />
             <div class="flex justify-between items-end border-b-2 border-slate-200 pb-5">
                 <div class="flex gap-5">
                     <div class="form-control">

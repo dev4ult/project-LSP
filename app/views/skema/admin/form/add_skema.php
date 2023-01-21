@@ -1,9 +1,14 @@
 <div class="flex gap-3 items-center justify-between my-5">
+    <?php if ($data['user-type'] == "admin") : ?>
+
     <label for="add-skema"
         class="flex items-center bg-gradient-to-r from-primary to-info rounded-sm py-2 px-2 gap-2 cursor-pointer hover:bg-gradient-to-r hover:from-info hover:to-info">
         <img src="<?= BASEURL ?>/img/collections_bookmark_white.svg" alt="person add" class="w-6">
         <span class="font-semibold uppercase text-white">skema baru</span>
     </label>
+    <?php endif ?>
+
+    <?php if ($data['user-type'] != "asesor") : ?>
     <div class="form-control">
         <form action="<?= BASEURL ?>/skema/list" method="post"
             class="bg-['#EDF4F8'] flex items-center rounded-sm overflow-hidden">
@@ -18,7 +23,11 @@
             </button>
         </form>
     </div>
+    <?php endif ?>
+
 </div>
+
+<?php if ($data['user-type'] == "admin") : ?>
 <input type="checkbox" id="add-skema" class="modal-toggle" />
 <div class="modal bg-[#EDF4F8]/50 p-10">
     <form action="<?= BASEURL ?>/skema/add" method="post" class="modal-box max-w-none w-fit">
@@ -104,3 +113,4 @@
         </div>
     </form>
 </div>
+<?php endif ?>

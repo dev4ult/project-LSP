@@ -45,12 +45,10 @@ class Unit_kompetensi_model {
             $file_type = $file_ext[1];
 
             if (!in_array($file_type, $extensions)) {
-
-                Flasher::setFlash('Extensi file salah !');
+                Flasher::setFlash('Extensi file salah !', 'error');
                 return false;
             } else if ($file_size > 26214400) {
-
-                Flasher::setFlash('Ukuran file tidak boleh melebihi 25 MB');
+                Flasher::setFlash('Ukuran file tidak boleh melebihi 25 MB', 'warning');
                 return false;
             } else {
 
@@ -69,9 +67,16 @@ class Unit_kompetensi_model {
                 move_uploaded_file($file_tmp, 'public/img/' . $file_name);
             }
         } else {
-            Flasher::setFlash('File tidak ada');
+            Flasher::setFlash('File tidak ada', 'error');
             return false;
         }
+    }
+
+    public function isAsesmenExist($id_unit) {
+        $this->db->query("SELECT * FROM unit_kompetensi WHERE id=:id");
+        $this->db->bind("id", $id_unit);
+
+        return count($this->db->resultSet()) > 0 ? true : false;
     }
 
     public function checkUnitUpload($id) {

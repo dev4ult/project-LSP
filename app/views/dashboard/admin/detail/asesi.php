@@ -9,7 +9,8 @@
             </svg>
         </button>
     </div>
-    <div class="mb-5">
+    <div class="mb-5 pt-14">
+        <h1 class="text-3xl font-semibold mb-3">Detail Asesi</h1>
         <?php require_once "../app/views/templates/breadcrumbs.php" ?>
         <div class="mt-5">
             <?= Flasher::flash() ?>
@@ -39,7 +40,7 @@
                     </div>
                     <div class="text-lg font-semibold mt-10 border-b-2 border-base-200 flex gap-10 justify-between">
                         <p class="text-slate-400">No Telepon</p>
-                        <p class="text-right"><?= $user["no-telepon"] ?></p>
+                        <p class="text-right"><?= $user["no_telepon"] ?></p>
                     </div>
                     <div class="text-lg font-semibold mt-10 border-b-2 border-base-200 flex gap-10 justify-between">
                         <p class="text-slate-400">Jenis Kelamin</p>
@@ -76,27 +77,16 @@
                 <div class="rounded-lg shadow-md p-10 bg-base-100">
                     <h3 class="font-bold text-2xl">Skema Terdaftar</h3>
                     <ul class="mt-5 whitespace-nowrap flex flex-col gap-2 overflow-y-auto h-40">
+                        <?php foreach ($data['list-skema'] as $skema) : ?>
                         <li class="flex items-center">
                             <img src="<?= BASEURL ?>/img/bookmark.svg" alt="bookmark">
                             <div>
-                                <h4 class="text-sm font-semibold">Front End Developer</h4>
-                                <a href="<?= BASEURL ?>/" class="uppercase text-xs">lihat skema sertifikasi</a>
+                                <h4 class="text-sm font-semibold"><?= $skema['nama_skema'] ?></h4>
+                                <a href="<?= BASEURL ?>/skema/detail/<?= $skema['id'] ?>"
+                                    class="uppercase text-xs text-info">lihat skema sertifikasi</a>
                             </div>
                         </li>
-                        <li class="flex items-center">
-                            <img src="<?= BASEURL ?>/img/bookmark.svg" alt="bookmark">
-                            <div>
-                                <h4 class="text-sm font-semibold">Front End Developer</h4>
-                                <a href="<?= BASEURL ?>/" class="uppercase text-xs">lihat skema sertifikasi</a>
-                            </div>
-                        </li>
-                        <li class="flex items-center">
-                            <img src="<?= BASEURL ?>/img/bookmark.svg" alt="bookmark">
-                            <div>
-                                <h4 class="text-sm font-semibold">Front End Developer</h4>
-                                <a href="<?= BASEURL ?>/" class="uppercase text-xs">lihat skema sertifikasi</a>
-                            </div>
-                        </li>
+                        <?php endforeach ?>
                     </ul>
                 </div>
             </div>
@@ -206,40 +196,44 @@
 <div class="modal bg-[#EDF4F8]/50">
     <form action="<?= BASEURL ?>/dashboard/account_update/<?= $data['user-type'] ?>" method="post" class="modal-box">
         <input type="number" name="account-id" class="hidden" value="<?= $user['id'] ?>">
-        <h3 class="font-bold text-lg">Update Akun <?= $user['username'] ?></h3>
+        <h3 class="font-bold text-2xl mb-5">Update Akun</h3>
         <div class="flex gap-5">
             <div class="form-control">
                 <label class="label">
-                    <span class="label-text">Username</span>
+                    <span class="label-text">Username Baru</span>
                 </label>
                 <label class="">
-                    <input type="text" placeholder="Type here" class="rounded-sm input w-full input-bordered"
-                        name="username" value="<?= $user['username'] ?>" />
+                    <input type="text" placeholder="Ketikan Username baru"
+                        class="rounded-sm input w-full input-bordered" name="username" />
                 </label>
             </div>
             <div class="form-control">
                 <label class="label">
-                    <span class="label-text">Email</span>
+                    <span class="label-text">Email Baru</span>
                 </label>
                 <label class="">
-                    <input type="text" placeholder="Type here" class="rounded-sm input w-full input-bordered"
-                        name="email" value="<?= $user['email'] ?>" />
+                    <input type="text" placeholder="Ketikan Email baru" class="rounded-sm input w-full input-bordered"
+                        name="email" />
                 </label>
             </div>
         </div>
         <div class="form-control">
             <label class="label">
-                <span class="label-text">New Password</span>
+                <span class="label-text">Password Baru</span>
             </label>
             <label class="">
-                <input type="password" name="new-password" placeholder="Type here"
+                <input type="password" name="new-password" placeholder="Ketikan Password baru"
                     class="rounded-sm input w-full input-bordered" />
             </label>
         </div>
-
         <div class="modal-action">
-            <button type="submit" class="btn btn-sm">Save Changes</button>
-            <label for="akun" class="btn btn-sm btn-outline">Cancel</label>
+            <button type="submit" class="btn btn-secondary rounded-sm text-white">submit</button>
+            <label for="akun" class="btn btn-circle btn-outline absolute top-6 right-5 btn-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </label>
         </div>
     </form>
 </div>

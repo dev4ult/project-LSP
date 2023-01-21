@@ -19,6 +19,7 @@ class User_model {
             exit;
         } else if ($_SESSION['user-type'] != $account_type) {
             header('Location: ' . BASEURL . '/dashboard/' . $_SESSION['user-type']);
+            exit;
         }
     }
 
@@ -39,7 +40,6 @@ class User_model {
         return $this->db->single()[$field];
     }
 
-
     public function fetchAllUserConditional($user_type, $keyword, $page, $limit) {
         $query_select = $this->account_join_biodata($user_type);
         $search_key = htmlspecialchars($keyword);
@@ -51,8 +51,21 @@ class User_model {
         $this->db->bind("page", $page * 5);
         $this->db->bind("limit", (int)$limit);
 
-
         return $this->db->resultSet();
+    }
+
+    public function getIdJurusanOfAsesi($id) {
+        $this->db->query("SELECT jurusan.id as id_jurusan FROM biodata_asesi JOIN jurusan ON jurusan.nama = biodata_asesi.jurusan WHERE biodata_asesi.id=:id");
+        $this->db->bind("id", $id);
+
+        return $this->db->single()['id_jurusan'];
+    }
+
+    public function isAccountExistById($user_type, $id) {
+        $this->db->query("SELECT * FROM biodata_" . $user_type . " WHERE id=:id");
+        $this->db->bind("id", $id);
+
+        return count($this->db->resultSet());
     }
 
     public function fetchSingleUser($user_type, $id) {
@@ -193,25 +206,40 @@ class User_model {
         $username = htmlspecialchars($data['username']);
         $email = htmlspecialchars($data['email']);
 
-        if ($this->accountIsExist($username, $email)) {
-            Flasher::setFlash("account with this username or email has already exist, try another username or email");
+        if (($username != "" || $email != "") && $this->accountIsExist($username, $email)) {
+            Flasher::setFlash("account with this username or email has already exist, try another username or email", "error");
             return false;
         }
 
         $account_id = $this->getIdAccount($user_type, htmlspecialchars($data['account-id']));
 
-        $query_set = "username=:username, email=:email";
+        if ($username != "") {
+            $query_set = "username=:username";
+        }
+
+        if ($username != "" && $email != "") {
+            $query_set .= ", email=:email";
+        } else if ($email != "") {
+            $query_set = "email=:email";
+        }
 
         $new_password = htmlspecialchars($data['new-password']);
 
-        if ($new_password != "") {
-            $query_set = $query_set . ", password=:password";
+        if (($username != "" || $email != "") && $new_password != "") {
+            $query_set .= ", password=:password";
+        } else if ($new_password != "") {
+            $query_set = "password=:password";
         }
 
         $this->db->query("UPDATE " . $user_type . " SET " . $query_set . " WHERE id=:id");
 
-        $this->db->bind("username", $username);
-        $this->db->bind("email", $email);
+        if ($username != "") {
+            $this->db->bind("username", $username);
+        }
+
+        if ($email != "") {
+            $this->db->bind("email", $email);
+        }
 
         if ($new_password != "") {
             $this->db->bind("password", hash("sha256", $new_password));
@@ -309,6 +337,12 @@ class User_model {
         return $this->db->rowChangeCheck();
     }
 
+    public function isAsesiExist($id_asesi) {
+        $this->db->query("SELECT * FROM biodata_asesi WHERE id=:id");
+        $this->db->bind("id", $id_asesi);
+        return count($this->db->resultSet()) > 0 ? true : false;
+    }
+
     public function updateProfile($data, $user_type) {
         $bio_id = $data['bio-id'];
         $query_update = "UPDATE biodata_" . $user_type . " SET nama=:nama, alamat=:alamat, no_telepon=:no_telepon";
@@ -348,8 +382,6 @@ class User_model {
         }
 
         $this->db->execute();
-
-
 
         if ($user_type == "admin") {
             $username = htmlspecialchars($data['username']);

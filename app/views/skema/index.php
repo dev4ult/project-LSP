@@ -78,8 +78,8 @@ function getAmountKompetensi($id) {
                         </p>
                         <div class="flex gap-2">
                             <p
-                                class="font-semibold text-xs py-1 px-2 rounded-md <?= ($skema['status'] == 'Aktif') ? 'text-white bg-[#5E38BA]' : 'text-slate-400 bg-base-200' ?>">
-                                <?= strtoupper($skema['status']) ?>
+                                class="font-semibold text-xs py-1 px-2 rounded-md uppercase <?= ($skema['status'] == 'Aktif') ? 'text-white bg-[#5E38BA]' : 'text-slate-400 bg-base-200' ?>">
+                                <?= $skema['status'] ?>
                             </p>
                             <p class="font-semibold text-xs py-1 px-2 rounded-md text-info bg-neutral">
                                 <?= $skema['jurusan'] ?>
@@ -137,8 +137,33 @@ function getAmountKompetensi($id) {
                             class="bg-primary hover:bg-info px-1.5 py-1 text-white rounded-sm uppercase flex items-center gap-1">
                             <img src="<?= BASEURL ?>/img/info_white.svg" class="w-5" alt="info">
                             <span class="font-semibold">info</span></a>
+                        <?php if ($data['user-type'] == "admin") : ?>
+                        <label for="delete-skema-<?= $skema['id'] ?>"
+                            class="border-2 rounded-sm text-accent/50 border-accent/50 px-2 py-1 uppercase cursor-pointer hover:text-white hover:bg-accent/50 hover:border-accent/0 flex items-center gap-1">
+                            <img src="<?= BASEURL ?>/img/delete_accent.svg" class="w-5" alt="delete">
+                            <span class="font-semibold">hapus</span></label>
+                        <?php endif; ?>
                     </div>
                 </div>
+
+                <?php if ($data['user-type'] == "admin") : ?>
+                <!-- Put this part before </body> tag -->
+                <input type="checkbox" id="delete-skema-<?= $skema['id'] ?>" class="modal-toggle" />
+                <div class="modal modal-bottom sm:modal-middle bg-[#EDF4F8]/50">
+                    <div class="modal-box ">
+                        <h3 class="font-bold text-2xl">Hapus Skema Sertifikasi</h3>
+                        <p class="py-4 text-lg">Apakah anda yakin untuk menghapus skema sertifikasi ini?</p>
+                        <form action="<?= BASEURL ?>/skema/delete/<?= $skema['id'] ?>" method="post"
+                            class="modal-action">
+                            <button type="submit" name="delete-user-<?= $skema['id'] ?>"
+                                class="btn btn-sm btn-outline btn-accent rounded-sm">hapus</button>
+                            <label for="delete-skema-<?= $skema['id'] ?>"
+                                class="btn btn-sm rounded-sm btn-secondary text-white">batal</label>
+                        </form>
+                    </div>
+                </div>
+                <?php endif; ?>
+
                 <?php $index++ ?>
                 <?php endforeach ?>
             </div>
@@ -146,6 +171,7 @@ function getAmountKompetensi($id) {
                 <div class="bg-base-100 p-3 font-semibold rounded-lg w-32">
                     <p class="uppercase text-center">total skema <?= $data['total-skema'] ?></p>
                 </div>
+                <?php if ($data['user-type'] != "asesor") : ?>
                 <form action="<?= BASEURL ?>/skema/list" method="post" class="flex flex-col gap-3 mt-3">
                     <?php if ($data['user-type'] != "asesi") : ?>
                     <select class="select rounded-sm select-sm w-32" name="id-jurusan">
@@ -171,8 +197,10 @@ function getAmountKompetensi($id) {
                     <button type="submit" name="kategori" class="btn btn-sm btn-ghost text-primary mt-3">set
                         kategori</button>
                 </form>
+                <?php endif ?>
             </div>
         </div>
     </div>
 
 </div>
+<script src="<?= BASEURL ?>/js/sidebar.js"></script>

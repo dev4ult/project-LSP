@@ -33,6 +33,12 @@ class Login_model {
         $captCode = htmlspecialchars($data['captcha-code']);
         $captConf = htmlspecialchars($data['captcha-confirmation']);
 
+        if (isset($data['ingat-umail'])) {
+            setcookie("ingat-umail", $umail, time() + (86400 * 30 * 12), "/");
+        } else {
+            setcookie("ingat-umail", $umail, time() - (86400 * 30 * 12), "/");
+        }
+
         // captcha check
         if ($captCode != $captConf) {
             Flasher::setFlash('Captcha is wrong', "error");
@@ -56,5 +62,15 @@ class Login_model {
         $_SESSION['login'] = true;
         $_SESSION['username'] = $this->db->single()['username'];
         $_SESSION['user-type'] = self::$user_table;
+
+        if (!isset($_COOKIE['last-activity'])) {
+            $last_activity = [
+                "admin" => ["first" => ["name" => "", "id" => ""], "second" => ["name" => "", "id" => ""], "lastChange" => "second"],
+                "asesor" => ["first" => ["name" => "", "id" => ""], "second" => ["name" => "", "id" => ""], "lastChange" => "second"],
+                "asesi" => ["first" => ["name" => "", "id" => ""], "second" => ["name" => "", "id" => ""], "lastChange" => "second"]
+            ];
+            setcookie('last-activity', json_encode($last_activity), time() + (86400 * 30), "/");
+        }
+        $_SESSION['last-activity'] = (array) json_decode($_COOKIE['last-activity']);
     }
 }
