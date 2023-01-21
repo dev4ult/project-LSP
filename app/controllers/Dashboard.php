@@ -21,6 +21,7 @@ class Dashboard extends Controller {
 
     public function admin() {
         $this->model('User_model')->checkUserLogin("admin");
+        $_SESSION['last-activity'] = (array) json_decode($_COOKIE["last-activity"]);
 
         $data['page-title'] = 'Dashboard Admin';
         $this->view('templates/header', $data);
@@ -50,7 +51,6 @@ class Dashboard extends Controller {
         }
 
         $last_activity = $_SESSION['last-activity']["admin"];
-        // var_dump($last_activity);
 
 
         if ($last_activity->first->name != "") {
@@ -69,7 +69,9 @@ class Dashboard extends Controller {
     }
 
     public function asesi() {
+
         $this->model('User_model')->checkUserLogin("asesi");
+        $_SESSION['last-activity'] = (array) json_decode($_COOKIE["last-activity"]);
 
         $data['page-title'] = 'Dashboard Asesi';
 
@@ -78,11 +80,9 @@ class Dashboard extends Controller {
 
         $data['nomor-induk'] = $this->model("User_model")->getUserRegNumber($_SESSION['username'], "asesi", "nim");
 
-        unset($_SESSION['flash']);
 
         $data['user-type'] = 'asesi';
         $data['username'] = $_SESSION['username'];
-
 
         $bio_id = $this->model("User_model")->getIdBioByUsername("asesi", $_SESSION['username']);
 
@@ -90,6 +90,7 @@ class Dashboard extends Controller {
         $data['total-skema'] = count($this->model("Skema_model")->getSchemaOfJurusan($id_jurusan_asesi));
 
         $data['last-3-created'] = $this->model("Skema_model")->fetchThreeLastCreatedSchemaOfJurusan($id_jurusan_asesi);
+
 
         $last_activity = $_SESSION['last-activity']['asesi'];
 
@@ -112,6 +113,7 @@ class Dashboard extends Controller {
 
     public function asesor() {
         $this->model('User_model')->checkUserLogin("asesor");
+        $_SESSION['last-activity'] = (array) json_decode($_COOKIE["last-activity"]);
 
         $data['page-title'] = 'Dashboard Asesor';
         $this->view('templates/header', $data);
@@ -137,7 +139,6 @@ class Dashboard extends Controller {
             }
         }
 
-
         $last_activity = $_SESSION['last-activity']['asesor'];
 
         if ($last_activity->first->name != "") {
@@ -150,9 +151,6 @@ class Dashboard extends Controller {
             $data['las']['id'] = $last_activity->second->id;
         }
 
-
-        // $data['list-skema-asesor'] = $this->model("Asesor_model")->getSkemaByAsesor($page);
-
         $this->view('dashboard/asesor/index', $data);
         $this->view('templates/close_html_tag');
     }
@@ -161,6 +159,7 @@ class Dashboard extends Controller {
         unset($_SESSION['user-type']);
         unset($_SESSION['login']);
         unset($_SESSION['username']);
+        unset($_SESSION['last-activity']);
         header('Location: ' . BASEURL . '/login');
         exit;
     }
@@ -315,7 +314,7 @@ class Dashboard extends Controller {
 
         if ($user_type == "asesor" || $user_type == "asesi") {
             if ($this->model('User_model')->updateBiodata($_POST, $user_type) > 0) {
-                Flasher::setFlash('This account has been updated', 'success');
+                Flasher::setFlash('Akun ini berhasil diupdate', 'success');
             }
             header('Location: ' . BASEURL . '/dashboard/user_detail/' . $user_type . '/' . $_POST['account-id']);
         } else {
@@ -329,7 +328,7 @@ class Dashboard extends Controller {
 
         if ($user_type == "asesor" || $user_type == "asesi") {
             if ($this->model('User_model')->updateAccount($_POST, $user_type) > 0) {
-                Flasher::setFlash('This account has been updated', 'success');
+                Flasher::setFlash('Akun ini berhasil diupdate', 'success');
             }
             header('Location: ' . BASEURL . '/dashboard/user_detail/' . $user_type . '/' . $_POST['account-id']);
         } else {
@@ -343,7 +342,7 @@ class Dashboard extends Controller {
 
         if ($user_type == "asesor" || $user_type == "asesi") {
             if ($this->model('User_model')->addUser($_POST, $user_type) > 0) {
-                Flasher::setFlash('This account has been updated', 'success');
+                Flasher::setFlash('Asesor baru berhasil ditambah', 'success');
             }
             header('Location: ' . BASEURL . '/dashboard/user_list/' . $user_type);
         } else {
@@ -357,7 +356,7 @@ class Dashboard extends Controller {
 
         if ($user_type == "asesor" || $user_type == "asesi") {
             if ($this->model('User_model')->deleteUser($user_type, $bio_id) > 0) {
-                Flasher::setFlash('One account has been deleted', 'success');
+                Flasher::setFlash('Satu asesor berhasil dihapus', 'success');
             }
             header('Location: ' . BASEURL . '/dashboard/user_list/' . $user_type);
         } else {

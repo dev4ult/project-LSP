@@ -41,13 +41,13 @@ class Login_model {
 
         // captcha check
         if ($captCode != $captConf) {
-            Flasher::setFlash('Captcha is wrong', "error");
+            Flasher::setFlash('Kode captcha salah', "error");
             return false;
         }
 
         // account check
         if ($this->accountCheck($umail, $password) == false) {
-            Flasher::setFlash('Username / Email or Password is wrong', 'error');
+            Flasher::setFlash('Username / Email salah', 'error');
             return false;
         } else {
             $this->setLoginSession($umail);
@@ -71,6 +71,5 @@ class Login_model {
             ];
             setcookie('last-activity', json_encode($last_activity), time() + (86400 * 30), "/");
         }
-        $_SESSION['last-activity'] = (array) json_decode($_COOKIE['last-activity']);
     }
 }

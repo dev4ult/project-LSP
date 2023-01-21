@@ -1,5 +1,4 @@
 <?php $nomor_induk = $data['user-type'] == "asesor" ? "nip" : "nim" ?>
-<?= Flasher::flash() ?>
 
 <div class="min-h-screen w-full flex">
     <div class="pt-14 pr-8 px-12">
@@ -13,6 +12,9 @@
     <div class="overflow-x-auto px-8">
         <h1 class="text-3xl font-bold pt-14 mb-3">List <?= ucfirst($data['user-type']) ?></h1>
         <?php require_once "../app/views/templates/breadcrumbs.php" ?>
+        <div class="my-5">
+            <?= Flasher::flash() ?>
+        </div>
         <div class="flex justify-between items-center gap-5 my-5">
             <?php require_once "../app/views/dashboard/admin/form/add_" . $data['user-type'] . ".php" ?>
             <?php require_once "../app/views/dashboard/admin/form/pagination.php" ?>

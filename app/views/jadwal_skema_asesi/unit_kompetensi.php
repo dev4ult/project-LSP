@@ -25,7 +25,6 @@
                         <td>Tanggal</td>
                         <td class="pl-4">:
                             <?= date('d F Y', strtotime($data['unit-kompetensi']['tgl_ujian_kompetensi'])) ?>
-
                         </td>
                     </tr>
                     <tr>

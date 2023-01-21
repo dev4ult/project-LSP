@@ -52,7 +52,7 @@
                 </label>
                 <label class=" ">
                     <input type="text" placeholder="Type here" class="input input-bordered rounded-sm w-full "
-                        name="no_telepon" required />
+                        name="no-telepon" required />
                 </label>
             </div>
             <div class="form-control">
@@ -70,7 +70,7 @@
                 </label>
                 <label class=" ">
                     <input type="text" placeholder="Type here" class="input input-bordered rounded-sm w-full "
-                        name="tempat_lahir" required />
+                        name="tempat-lahir" required />
                 </label>
             </div>
             <div class="form-control">
@@ -79,7 +79,7 @@
                 </label>
                 <label class=" ">
                     <input type="date" placeholder="Type here" class="input input-bordered rounded-sm w-full "
-                        name="tanggal_lahir" required />
+                        name="tanggal-lahir" required />
                 </label>
             </div>
             <div class="form-control">
@@ -106,6 +106,14 @@
                         placeholder="alamat" required></textarea>
                 </label>
             </div>
+            <div class="form-control ">
+                <label class="label">
+                    <span class="label-text">Pendidikan Terakhir</span>
+                </label>
+                <select class="select select-bordered rounded-sm w-full" name="pendidikan-terakhir" required>
+                    <option disabled>-- PILIH PENDIDIKAN TERAKHIR --</option>
+                </select>
+            </div>
             <div class="form-control">
                 <label class="label">
                     <span class="label-text">Username</span>
@@ -115,7 +123,6 @@
                         name="username" required />
                 </label>
             </div>
-
             <div class="form-control">
                 <label class="label">
                     <span class="label-text">Email</span>
@@ -125,7 +132,7 @@
                         name="email" required />
                 </label>
             </div>
-            <div class="modal-action p-3">
+            <div class="modal-action p-3 col-span-2 text-right">
                 <button type="submit" class="btn btn-secondary rounded-sm text-white">Submit</button>
                 <label for="add-user" class="btn btn-circle btn-outline absolute top-6 right-5 btn-sm">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
@@ -139,3 +146,4 @@
 
     </form>
 </div>
+<script src="<?= BASEURL ?>/js/pendidikan.js"></script>
