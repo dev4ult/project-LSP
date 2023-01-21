@@ -145,8 +145,8 @@ class User_model {
         $alamat = htmlspecialchars($data['alamat']);
         $jenis_kelamin = htmlspecialchars($data['jenis-kelamin']);
 
-        $query_field = "(nama, no_telepon, jurusan, prodi, alamat, jenis_kelamin";
-        $query_values = "(:nama, :no_telepon, :jurusan, :prodi, :alamat, :jenis_kelamin";
+        $query_field = "(nama, no_telepon, alamat, jenis_kelamin";
+        $query_values = "(:nama, :no_telepon, :alamat, :jenis_kelamin";
         if ($user_type == "asesor") {
             $nik = htmlspecialchars($data['nik']);
             $nip = htmlspecialchars($data['nip']);

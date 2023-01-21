@@ -211,7 +211,7 @@ class Asesi extends Controller {
     public function form_upload_ujian($id_unit = null) {
         $this->model("User_model")->checkUserLogin("asesi");
 
-        if ($id_unit = null || !$this->model('Unit_kompetensi_model')->isAsesmenExist($id_unit)) {
+        if ($id_unit == null || !$this->model('Unit_kompetensi_model')->isAsesmenExist((int)$id_unit)) {
             header('Location: ' . BASEURL . '/dashboard');
             exit;
         }
@@ -227,6 +227,7 @@ class Asesi extends Controller {
 
         $data['unit-kompetensi'] = $this->model('Unit_kompetensi_model')->getUnitKompetensiByid($id_unit);
 
+
         $this->view('jadwal_skema_asesi/unit_kompetensi', $data);
         $this->view('templates/close_html_tag');
     }
@@ -234,7 +235,7 @@ class Asesi extends Controller {
     public function input_ujian($id_unit = null) {
         $this->model("User_model")->checkUserLogin("asesi");
 
-        if ($id_unit = null || !$this->model('Unit_kompetensi_model')->isAsesmenExist($id_unit)) {
+        if ($id_unit == null || !$this->model('Unit_kompetensi_model')->isAsesmenExist($id_unit)) {
             header('Location: ' . BASEURL . '/dashboard');
             exit;
         }

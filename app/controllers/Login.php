@@ -7,7 +7,7 @@ class Login extends Controller {
         $this->view('templates/header', $data);
         $this->view('templates/navbar/main-navbar');
         $this->view('login/index');
-        $this->view('templates/header');
+        $this->view('templates/close_html_tag');
     }
 
     public function validate() {
@@ -17,7 +17,6 @@ class Login extends Controller {
             $_SESSION['login'] = false;
             header('Location: ' . BASEURL . '/login');
         }
-
         exit;
     }
 }

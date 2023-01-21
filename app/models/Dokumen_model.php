@@ -43,11 +43,12 @@ class Dokumen_model {
 
         $idBio = $this->getIdBiodata($_SESSION['username']);
 
-        $query = "SELECT file_dokumen FROM dokumen_persyaratan WHERE id_persyaratan = :id_persyaratan";
+        $query = "SELECT file_dokumen FROM dokumen_persyaratan WHERE id_persyaratan = :id_persyaratan AND id_biodata_asesi = :id_biodata_asesi";
 
         $this->db->query($query);
 
         $this->db->bind('id_persyaratan', $id_persyaratan);
+        $this->db->bind('id_biodata_asesi', $idBio);
         return $this->db->single()['file_dokumen'];
     }
 
